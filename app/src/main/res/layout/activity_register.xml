@@ -1,102 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main" android:layout_width="match_parent"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" tools:context=".ui.RegisterActivity">
+    android:background="@color/foodtec_naranja"
+    tools:context=".ui.RegisterActivity"> <View
+    android:id="@+id/viewTopSection"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@drawable/shape_top_blue_with_pattern"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintHeight_percent="0.35" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imgLogoFlotante"
+        android:layout_width="500dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTopSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewTopSection" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_white_card"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvFooter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewTopSection"
+        android:layout_marginTop="-80dp" app:layout_constraintHeight_percent="0.6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/shape_tab_container"
+                app:tabIndicatorAnimationMode="elastic"
+                app:tabIndicator="@drawable/shape_tab_selected"
+                app:tabIndicatorColor="@null"
+                app:tabIndicatorGravity="stretch"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextAppearance="@style/MyTabTextAppearance">
+
+                <com.google.android.material.tabs.TabItem
+                    android:text="Inicio Sesion" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:text="Registrarse" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ej. Harold Mundo"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="16dp"
+
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear usuario:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/etUsuarioRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ej. RENOSENK14 (4 a 12 caract.)"
+                android:inputType="text"
+                android:layout_marginBottom="16dp"
+
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear Contraseña:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="20dp"/>
+
+
+            <EditText
+                android:id="@+id/etContrasenaRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mínimo 6 caracteres"
+                android:inputType="textPassword"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Contraseña:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="20dp"/>
+            <EditText
+                android:id="@+id/etConfirmarContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mínimo 6 caracteres"
+                android:inputType="textPassword"
+                android:layout_marginBottom="16dp"
+
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo Electrónico:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="20dp"/>
+
+            <EditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mínimo 6 caracteres"
+                android:inputType="textEmailAddress"
+                android:layout_marginBottom="16dp"
+
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"/>
+
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="REGISTRAR"
+                android:layout_marginTop="24dp"
+                android:textSize="20dp"
+                android:fontFamily="@font/lilita_one_regular"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tvFooter"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        android:text="Todos los derechos @Senk"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/lilita_one_regular"/>
 
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/logo"
-            android:layout_marginBottom="24dp"/>
-
-        <TextView
-            android:id="@+id/tvTituloRegistro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Registrarse"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nombre:" />
-
-        <EditText
-            android:id="@+id/etNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ej. Harold Mundo"
-            android:inputType="textPersonName"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Crear usuario:" />
-        <EditText
-            android:id="@+id/etUsuarioRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ej. RENOSENK14 (4 a 12 caract.)"
-            android:inputType="text"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Crear Contraseña:" />
-        <EditText
-            android:id="@+id/etContrasenaRegistro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mínimo 6 caracteres"
-            android:inputType="textPassword"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Confirmar Contraseña:" />
-        <EditText
-            android:id="@+id/etConfirmarContrasena"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mínimo 6 caracteres"
-            android:inputType="textPassword"
-            android:layout_marginBottom="16dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Correo Electrónico:" />
-        <EditText
-            android:id="@+id/etCorreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mínimo 6 caracteres"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="16dp"/>
-
-        <Button
-            android:id="@+id/btnRegistrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="REGISTRAR"
-            android:layout_marginTop="24dp"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

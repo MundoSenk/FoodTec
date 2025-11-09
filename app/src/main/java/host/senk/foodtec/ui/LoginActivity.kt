@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // --- Aquí amarramos todo lo del XML ---
+        // XML!!!
         val etUsuario: EditText = findViewById(R.id.etUsuario)
         val etContra: EditText = findViewById(R.id.etContrasena)
         val btnLogin: Button = findViewById(R.id.btnIniciarSesion)
@@ -61,29 +61,27 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Aquí no nos importa
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                // Aquí tampoco
             }
         }) // Aquí se cierra el listener del Tab
 
 
-        // --- ¡¡EL BOTÓN DE LOGIN!! Estaba afuera del onCreate, por eso tronaba ---
+        // EL BOTÓN DE LOGIN!! Estaba afuera del onCreate, por eso tronaba
         btnLogin.setOnClickListener {
 
-            // 1. Jalamos el texto que puso el vato
+            //  Jalamos el texto que puso el vato
             val usuario = etUsuario.text.toString().trim()
             val contra = etContra.text.toString()
 
-            // 2. Checamos si no se pasó de listo y dejó todo vacío
+            //  Checamos si no se pasó de listo y dejó todo vacío
             if (usuario.isEmpty() || contra.isEmpty()) {
                 Toast.makeText(this, "Ingresa usuario y contraseña, pa", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 3. ¡¡A mandar al cartero (Retrofit)!!
+            //  mandar al cartero (Retrofit)!!
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
             // 4. Lo formamos (en 'enqueue') pa' que no congele la app
@@ -112,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                // SI EL CARTERO NI LLEGÓ (No hay net, dominio mal)
+                // SI EL CARTERO NI LLEGÓ
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "No hay net, pa: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.e("NETWORK_ERROR_LOGIN", "Falló Retrofit", t)
@@ -120,6 +118,6 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-    } // ¡¡ESTA LLAVE { CIERRA EL ONCREATE!!
+    }
 
-} // ¡¡ESTA LLAVE } CIERRA EL LOGINACTIVITY!!
+}

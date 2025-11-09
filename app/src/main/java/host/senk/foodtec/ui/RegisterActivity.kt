@@ -1,5 +1,6 @@
 package host.senk.foodtec.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,18 +17,28 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// ¡¡Este faltaba!! El del TabLayout
+import com.google.android.material.tabs.TabLayout
+
+
+
+
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
-        // Esta parte ya la tenías, déjala como está
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
+
+
 
 
 
@@ -38,6 +49,31 @@ class RegisterActivity : AppCompatActivity() {
         val etContra2: EditText = findViewById(R.id.etConfirmarContrasena)
         val etCorreo: EditText = findViewById(R.id.etCorreo)
         val btnRegistrar: Button = findViewById(R.id.btnRegistrar)
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout)
+
+
+        // 1. Para que se vea seleccionada la pestaña "Registrarse"
+        tabLayout.getTabAt(1)?.select()
+
+        // 2. El listener
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // Cuando el compa le pica a una pestaña
+                if (tab?.position == 0) { // ¡Cero es "Inicio Sesion"!
+                    // Si le picó a "Inicio Sesion" (la #0)
+                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java) // ¡Lo mandamos al Login!
+                    startActivity(intent)
+                    finish() // Matamos esta pa' que no regrese
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        }) // Aquí se cierra el listener del Tab
 
 
         btnRegistrar.setOnClickListener {
