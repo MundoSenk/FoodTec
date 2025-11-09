@@ -40,7 +40,13 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // Retrofit: El "cartero" que hace la llamada a la API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Gson Converter: El "traductor" que convierte el JSON a objetos de Kotlin
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
