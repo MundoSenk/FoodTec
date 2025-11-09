@@ -10,13 +10,10 @@ import retrofit2.http.POST
 interface ApiService {
 
     /**
-     * Esta función llamará a nuestro archivo 'registrarUsuario.php'
+
      *
      * @FormUrlEncoded - Le dice a Retrofit que envíe los datos como un formulario web
-     * (justo como lo espera nuestro $_POST['...'] en PHP).
-     *
-     * @POST("registrarUsuario.php") - Le dice que use el método POST y a qué
-     * archivo específico llamar (dentro de nuestra URL base).
+
      */
     @FormUrlEncoded
     @POST("registrarUsuario.php")
