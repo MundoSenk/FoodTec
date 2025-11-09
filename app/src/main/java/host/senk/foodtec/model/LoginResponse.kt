@@ -1,4 +1,4 @@
-package host.senk.foodtec
+package host.senk.foodtec.model
 
 // Plantilla para la respuesta de login.php
 // ¡OJO! Hacemos 'nombre' y 'usuario' NULABLES (con ?)

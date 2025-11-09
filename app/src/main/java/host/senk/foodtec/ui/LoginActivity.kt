@@ -1,18 +1,19 @@
-package host.senk.foodtec
+package host.senk.foodtec.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button // ¡Import!
-import android.widget.EditText // ¡Import!
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast // ¡Import!
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
-// ¡¡Imports del Cartero (Retrofit)!!
+import host.senk.foodtec.model.LoginResponse
+import host.senk.foodtec.R
+import host.senk.foodtec.api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,19 +31,18 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // --- Conectamos las vistas del XML ---
         val etUsuario: EditText = findViewById(R.id.etUsuario)
         val etContra: EditText = findViewById(R.id.etContrasena)
         val btnLogin: Button = findViewById(R.id.btnIniciarSesion)
         val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // Tu 'link'
 
-        // --- El "link" para ir a Registrarse (Este ya lo tenías) ---
+        // El "link" para ir a Registrarse
         tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        // --- ¡¡AQUÍ VA LA CHAMBA DEL BOTÓN DE LOGIN!! ---
+
         btnLogin.setOnClickListener {
 
             // 1. Obtenemos los textos
@@ -89,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
 
-                // SI EL CARTERO NO LLEGÓ (No hay internet)
+                // SI EL CARTERO NO LLEGÓ
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "Error de red: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.e("NETWORK_ERROR_LOGIN", "Fallo en la llamada Retrofit", t)

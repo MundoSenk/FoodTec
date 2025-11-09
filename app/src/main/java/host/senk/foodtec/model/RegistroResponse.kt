@@ -1,4 +1,4 @@
-package host.senk.foodtec
+package host.senk.foodtec.model
 
 // Esta es la "plantilla" para que Gson entienda la respuesta
 // Los nombres de las variables (status, mensaje) DEBEN ser idénticos
@@ -7,4 +7,3 @@ data class RegistroResponse(
     val status: String,
     val mensaje: String
 )
-

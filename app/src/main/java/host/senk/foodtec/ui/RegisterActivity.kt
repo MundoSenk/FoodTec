@@ -1,16 +1,17 @@
-package host.senk.foodtec
+package host.senk.foodtec.ui
 
-import android.util.Log // ¡IMPORT! Para ver los errores en la consola
 import android.os.Bundle
-import android.widget.Button // ¡IMPORT! Para el botón
-import android.widget.EditText // ¡IMPORT! Para los campos de texto
-import android.widget.Toast // ¡IMPORT! Para el mensajito temporal
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
-// ¡¡IMPORTS DEL CARTERO (RETROFIT)!!
+import host.senk.foodtec.R
+import host.senk.foodtec.model.RegistroResponse
+import host.senk.foodtec.api.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -103,7 +104,3 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
-

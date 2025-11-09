@@ -1,6 +1,5 @@
-package host.senk.foodtec
+package host.senk.foodtec.api
 
-// Los imports del cartero y el traductor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

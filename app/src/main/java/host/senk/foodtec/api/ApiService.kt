@@ -1,6 +1,7 @@
-package host.senk.foodtec
+package host.senk.foodtec.api
 
-// Imports de Retrofit que le dicen cómo "anotar" las llamadas
+import host.senk.foodtec.model.LoginResponse
+import host.senk.foodtec.model.RegistroResponse
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
