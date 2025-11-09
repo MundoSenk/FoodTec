@@ -61,6 +61,29 @@
             android:padding="24dp"
             android:gravity="center_horizontal">
 
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/shape_tab_container"
+                app:tabIndicatorAnimationMode="elastic"
+                app:tabIndicator="@drawable/shape_tab_selected"
+                app:tabIndicatorColor="@null"
+                app:tabIndicatorGravity="stretch"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextColor="@color/black">
+
+                <com.google.android.material.tabs.TabItem
+                    android:text="Inicio Sesion" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:text="Registrarse" />
+
+            </com.google.android.material.tabs.TabLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

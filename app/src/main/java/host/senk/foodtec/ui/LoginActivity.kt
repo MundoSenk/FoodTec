@@ -18,6 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// ¡¡Este faltaba!! El del TabLayout
+import com.google.android.material.tabs.TabLayout
+
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,70 +34,92 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        // --- Aquí amarramos todo lo del XML ---
         val etUsuario: EditText = findViewById(R.id.etUsuario)
         val etContra: EditText = findViewById(R.id.etContrasena)
         val btnLogin: Button = findViewById(R.id.btnIniciarSesion)
-        val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // Tu 'link'
+        val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // El link viejo, este ya ni pela
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
 
-        // El "link" para ir a Registrarse
+        // El "link" para ir a Registrarse (este ya huele a panteón, pero ahí lo dejo)
         tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
+        // --- La chamba del Toggle (el TabLayout) ---
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                // Cuando el compa le pica a una pestaña
+                if (tab?.position == 1) {
+                    // Si le picó a "Registrarse" (la #1)
+                    val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                    startActivity(intent)
+                    finish() // Matamos esta pa' que no regrese
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Aquí no nos importa
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Aquí tampoco
+            }
+        }) // Aquí se cierra el listener del Tab
+
+
+        // --- ¡¡EL BOTÓN DE LOGIN!! Estaba afuera del onCreate, por eso tronaba ---
         btnLogin.setOnClickListener {
 
-            // 1. Obtenemos los textos
+            // 1. Jalamos el texto que puso el vato
             val usuario = etUsuario.text.toString().trim()
-            val contra = etContra.text.toString() // La contra no lleva .trim()
+            val contra = etContra.text.toString()
 
-            // 2. Validación básica
+            // 2. Checamos si no se pasó de listo y dejó todo vacío
             if (usuario.isEmpty() || contra.isEmpty()) {
-                Toast.makeText(this, "Ingresa usuario y contraseña", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ingresa usuario y contraseña, pa", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 3. ¡¡A LLAMAR AL CARTERO!!
+            // 3. ¡¡A mandar al cartero (Retrofit)!!
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
-            // 4. Poner la llamada en la fila (enqueue)
+            // 4. Lo formamos (en 'enqueue') pa' que no congele la app
             call.enqueue(object : Callback<LoginResponse> {
 
-                // SI EL CARTERO LLEGÓ (Hubo respuesta del servidor)
+                // SI EL CARTERO SÍ LLEGÓ (Hubo respuesta de senk.host)
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
-                        // ¡Leemos la respuesta del PHP!
+                        // ¡Leemos qué pedo dijo el PHP!
                         if (loginRespuesta.status == "exito") {
-                            // ¡ÉXITO! ¡BIENVENIDO!
+                            // ¡A HUEVO, SÍ ENTRÓ!
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
-
-                            // ¡AQUÍ IRÍA EL CÓDIGO PARA IR A LA PANTALLA PRINCIPAL!
-                            // ej. val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                            // intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
-                            // startActivity(intent)
-                            // finish() // Cerramos el login para que no pueda volver
+                            
 
                         } else {
-                            // Si el PHP nos dijo 'status: "error"' (ej. pass incorrecto)
+                            // Si el PHP nos bateó (pass incorrecto, etc.)
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
                         }
 
                     } else {
-                        // Si el servidor dio error (500, 404, etc.)
-                        Toast.makeText(this@LoginActivity, "Error del servidor: ${response.code()}", Toast.LENGTH_LONG).show()
-                        Log.e("API_ERROR_LOGIN", "Respuesta no exitosa: ${response.errorBody()?.string()}")
+                        // Si el servidor tronó (Error 500, 404)
+                        Toast.makeText(this@LoginActivity, "Error del server: ${response.code()}", Toast.LENGTH_LONG).show()
+                        Log.e("API_ERROR_LOGIN", "El server se fue a mimir: ${response.errorBody()?.string()}")
                     }
                 }
 
-                // SI EL CARTERO NO LLEGÓ
+                // SI EL CARTERO NI LLEGÓ (No hay net, dominio mal)
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "Error de red: ${t.message}", Toast.LENGTH_LONG).show()
-                    Log.e("NETWORK_ERROR_LOGIN", "Fallo en la llamada Retrofit", t)
+                    Toast.makeText(this@LoginActivity, "No hay net, pa: ${t.message}", Toast.LENGTH_LONG).show()
+                    Log.e("NETWORK_ERROR_LOGIN", "Falló Retrofit", t)
                 }
             })
         }
-    }
-}
+
+    } // ¡¡ESTA LLAVE { CIERRA EL ONCREATE!!
+
+} // ¡¡ESTA LLAVE } CIERRA EL LOGINACTIVITY!!
