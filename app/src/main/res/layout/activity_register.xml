@@ -28,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/viewTopSection" />
 
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"

@@ -92,11 +92,17 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
-                        // ¡Leemos qué pedo dijo el PHP!
+                        // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
-                            // ¡A HUEVO, SÍ ENTRÓ!
+
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
-                            
+
+                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
+                            intent.putExtra("USER_NAME", loginRespuesta.usuario)
+
+                            startActivity(intent)
+                            finish()
 
                         } else {
                             // Si el PHP nos bateó (pass incorrecto, etc.)
