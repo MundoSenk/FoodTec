@@ -116,9 +116,9 @@ class RegisterActivity : AppCompatActivity() {
                             // ¡ÉXITO TOTAL! El PHP guardó en la BD
                             Toast.makeText(this@RegisterActivity, "¡Éxito! ${registroRespuesta.mensaje}", Toast.LENGTH_LONG).show()
 
-                            // Aquí podrías cerrar esta pantalla y volver al Login
-                            // finish()
-
+                            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         } else {
                             // Si el PHP nos mandó un 'status: "error"'
                             Toast.makeText(this@RegisterActivity, "Error: ${registroRespuesta.mensaje}", Toast.LENGTH_LONG).show()
