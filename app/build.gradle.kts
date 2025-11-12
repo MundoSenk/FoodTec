@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,4 +52,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     /// TabLayout del inicio Sesion
     implementation("com.google.android.material:material:1.12.0")
+    ///// GLIDE para las imagenes en la nube
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    ksp("com.github.bumptech.glide:ksp:4.16.0")
 }

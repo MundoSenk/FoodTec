@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import host.senk.foodtec.R
 import host.senk.foodtec.model.ComidaItem
 
+import com.bumptech.glide.Glide /// para la imagen
 //El Adapter recibe la lista de platillos
 class MenuAdapter(private val listaDeComida: List<ComidaItem>) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
@@ -47,6 +48,13 @@ class MenuAdapter(private val listaDeComida: List<ComidaItem>) : RecyclerView.Ad
 
         holder.tvNombre.text = item.nombre
         holder.tvPrecio.text = "$${item.precio}" // Le ponemos el signito de pesos
+
+    ////FOTOOOO
+        Glide.with(holder.itemView.context) // Prepara a Glide en esta pantalla
+            .load(item.imagen_url)          // Jala la URL de la BD
+            .placeholder(R.drawable.logo)   //   Muestra el logo mientras carga
+            .error(R.drawable.logo)         //   Si truena, muestra el logo
+            .into(holder.ivImagen)          // 5.Y méte en este ImageView
 
     }
 }
