@@ -30,7 +30,7 @@ class MenuAdapter(private val listaDeComida: List<ComidaItem>) : RecyclerView.Ad
 
     /**
      * Android pregunta: "¿Cuántos platillos hay en la lista?"
-     * Y nosotros le decimos: "Pues... los que traiga la listaDeComida".
+     * Y nosotros le decimos: "Pues los que traiga la listaDeComida".
      */
     override fun getItemCount(): Int {
         return listaDeComida.size

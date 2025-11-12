@@ -1,6 +1,7 @@
 package host.senk.foodtec.api
 
 import host.senk.foodtec.model.LoginResponse
+import host.senk.foodtec.model.MenuResponse
 import host.senk.foodtec.model.RegistroResponse
 import retrofit2.Call
 import retrofit2.http.Field
@@ -35,5 +36,14 @@ interface ApiService {
         @Field("contra") contra: String
     ): Call<LoginResponse> // Usará un NUEVO sobre de respuesta
 
+    /**
+     * Función para TRAER LOS ITEMS DE COMIDA.
+     */
 
+    @FormUrlEncoded
+    @POST("obtenerMenu.php")
+    fun obtenerMenu(
+        // La clave "categoria" debe ser la misma del $_POST['categoria']
+        @Field("categoria") categoria: String
+    ): Call<MenuResponse> // ¡Usará un "sobre" nuevo!
 }
