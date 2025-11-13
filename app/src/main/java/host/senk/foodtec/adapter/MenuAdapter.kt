@@ -4,16 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout // ¡El 'import' que ya tenías!
 import android.widget.TextView
+import androidx.cardview.widget.CardView // ¡¡IMPORT PA'L CARDVIEW!!
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import host.senk.foodtec.R
 import host.senk.foodtec.model.ComidaItem
-import android.util.Log
-
-// --- ¡¡IMPORT #1!! ¡AQUÍ FALTABA ESTE, PA! ---
-import android.widget.LinearLayout
-
 
 class MenuAdapter(
     private val listaDeComida: List<ComidaItem>,
@@ -21,18 +18,23 @@ class MenuAdapter(
 ) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     /**
-     * El "ViewHolder": Es la cajitaque amarra los IDs del XML
+     * El "ViewHolder": ¡Ahora amarra el CardView Y el LinearLayout!
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        // ¡El 'itemView' ES el CardView!
+        val itemContainer: CardView = itemView as CardView
 
-        val itemContainer: LinearLayout = itemView as LinearLayout
+        // ¡Buscamos al "hijo" (el layout de adentro)!
+        val contentLayout: LinearLayout = view.findViewById(R.id.item_content_layout)
+
+        // (Estos ya los tenías)
         val ivImagen: ImageView = view.findViewById(R.id.ivComidaImagen)
         val tvNombre: TextView = view.findViewById(R.id.tvComidaNombre)
         val tvPrecio: TextView = view.findViewById(R.id.tvComidaPrecio)
     }
 
     /**
-     * "onCreateViewHolder": Aquí creamos el molde
+     * "onCreateViewHolder" (Este jala igual)
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -41,45 +43,38 @@ class MenuAdapter(
     }
 
     /**
-     * "getItemCount": La más fácil Cuántos hady?
+     * "getItemCount" (Este jala igual)
      */
     override fun getItemCount(): Int {
         return listaDeComida.size
     }
 
     /**
-
-     * Este se llama por cada item.
+     * "onBindViewHolder": ¡AQUÍ ESTÁ EL JALE CHIDO!
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //  Agarramos el platillo que toca
         val item = listaDeComida[position]
-
-        // Le metemos los datos
         holder.tvNombre.text = item.nombre
         holder.tvPrecio.text = "$${item.precio}"
 
-        // Jala la foto
         Glide.with(holder.itemView.context)
             .load(item.imagen_url)
             .placeholder(R.drawable.logo)
-            .error(R.drawable.logo) // ¡Los michis! Jaja
+            .error(R.drawable.logo)
             .into(holder.ivImagen)
 
-        Log.d("CATEGORIA_DEBUG", "Item: ${item.nombre}, Categoria: '${item.categoria}'")
-
-        //  Le ponemos el fondo según la categoría
+        // --- ¡¡AQUÍ ESTÁ EL JALE DE SENK, PA!! ---
         if (item.categoria == "Bebida") {
-            // fondo azul
-            holder.itemContainer.setBackgroundResource(R.drawable.shape_item_bebida)
+            // ¡Si es "Bebida", borde azul!
+            // ¡OJO! Se lo ponemos al layout de ADENTRO
+            holder.contentLayout.setBackgroundResource(R.drawable.border_outline_bebida)
         } else {
-            // fondo naranja
-            holder.itemContainer.setBackgroundResource(R.drawable.shape_item_comida)
+            // ¡Si es "Comida", borde naranja!
+            holder.contentLayout.setBackgroundResource(R.drawable.border_outline_comida)
         }
 
-
-
-        holder.itemView.setOnClickListener {
+        // ¡El click se lo ponemos al "papá" (el CardView)!
+        holder.itemContainer.setOnClickListener {
             onItemClicked(item)
         }
     }

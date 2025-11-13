@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import host.senk.foodtec.R
 import android.util.Log // ¡Import pa' ver errores!
-
+import android.content.Intent
 
 import androidx.recyclerview.widget.LinearLayoutManager //  Layout
 import androidx.recyclerview.widget.RecyclerView //  pa RecyclerView
@@ -81,9 +81,13 @@ class HomeActivity : AppCompatActivity() {
 
 
                             val listenerDelClick = { comidaItem: ComidaItem ->
-                                Toast.makeText(this@HomeActivity, "¡Le picaste a ${comidaItem.nombre}!", Toast.LENGTH_SHORT).show()
 
-                                //  Intent pa DetailsActivity
+
+                                val intent = Intent(this@HomeActivity, DetailsActivity::class.java)
+
+                                // LE METEMOS EL PLATILLO
+                                intent.putExtra("COMIDA_SELECCIONADA", comidaItem)
+                                startActivity(intent)
                             }
 
 

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DetailsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/foodtec_naranja"
+        tools:context=".ui.DetailsActivity">
+
+        <!-- 1. El FONDO AZUL CON PATRÓN (El de siempre) -->
+        <View
+            android:id="@+id/viewTopSection"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_top_blue_with_pattern"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 2. LA TARJETA BLANCA (¡Ojo! Usamos la 'shape_white_card' que es toda redonda) -->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/shape_white_card"
+            android:elevation="8dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- El contenido de la tarjeta -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Título "Detalles de la compra" -->
+                <TextView
+                    android:id="@+id/tvTituloDetalle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:text="Detalles de la compra"
+                    android:textColor="@color/black"
+                    android:textSize="24sp" />
+
+                <!-- La Imagen GRANDE del platillo -->
+                <ImageView
+                    android:id="@+id/ivDetalleImagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="16dp"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/logo" />
+
+                <!-- Contenedor pa'l Nombre y Precio -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Nombre del Platillo -->
+                    <TextView
+                        android:id="@+id/tvDetalleNombre"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lilita_one_regular"
+                        android:text="Hamburguesa"
+                        android:textColor="@color/black"
+                        android:textSize="28sp"
+                        app:layout_constraintEnd_toStartOf="@+id/tvDetallePrecio"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Precio del Platillo -->
+                    <TextView
+                        android:id="@+id/tvDetallePrecio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lilita_one_regular"
+                        android:text="$40"
+                        android:textColor="@color/black"
+                        android:textSize="28sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- ¡¡Las Estrellas (RatingBar)!! -->
+                <RatingBar
+                    android:id="@+id/rbDetalleValoracion"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.5" />
+
+                <!-- Título "Descripción" -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:text="Descripción:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <!-- La Descripción (Jalada de la BD) -->
+                <TextView
+                    android:id="@+id/tvDetalleDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/montserrat_alternates_semibold"
+                    android:text="Hamburguesa con jitomate, lechuga, cebolla, queso amarillo. Mayonesa, Catsup, Chiles, Mostaza."
+                    android:textSize="16sp" />
+
+                <!-- Título "Detalles para quien entregue" -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:text="Detalles para quien entregue:"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <!-- El Campo pa' escribir -->
+                <EditText
+                    android:id="@+id/etDetalleExtras"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/shape_input_grey"
+                    android:gravity="top"
+                    android:hint="Ej. La hamburguesa sin picante, 2 servilletas, por favor"
+                    android:minLines="3"
+                    android:padding="16dp" />
+
+                <!-- ¡¡El Botón Naranja de "AGREGAR PEDIDO"!! -->
+                <Button
+                    android:id="@+id/btnAgregarPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_tab_selected"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:text="AGREGAR PEDIDO"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

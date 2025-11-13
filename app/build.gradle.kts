@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -56,4 +57,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     ksp("com.github.bumptech.glide:ksp:4.16.0")
+
+
 }

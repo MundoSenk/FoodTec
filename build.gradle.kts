@@ -5,4 +5,5 @@ plugins {
 
     alias(libs.plugins.ksp) apply false
     //  PARA PODER USAR EL GLIDE
+    alias(libs.plugins.kotlin.parcelize) apply false
 }
