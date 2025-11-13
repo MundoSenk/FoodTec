@@ -1,8 +1,15 @@
 package host.senk.foodtec.model
 
 // El "sobre" que nos manda obtenerMenu.php
-// Tiene que coincidir con el JSON: {"status": "...", "menu": [...]}
 data class MenuResponse(
     val status: String,
-    val menu: List<ComidaItem> // ¡Una lista de los moldes que ya hicimos!
+
+    // --- ¡¡EL TRUCO, PA!! ---
+    // Le decimos que la lista "menu" PUEDE ser nula (con el ?)
+    // (Porque si falla, el PHP no la va a mandar)
+    val menu: List<ComidaItem>?,
+
+    // ¡Y le decimos que el "mensaje" TAMBIÉN puede ser nulo!
+    // (Porque si SÍ jala, el PHP no manda el mensaje)
+    val mensaje: String?
 )

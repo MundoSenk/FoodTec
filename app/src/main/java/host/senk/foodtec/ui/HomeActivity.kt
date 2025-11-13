@@ -20,6 +20,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+import host.senk.foodtec.model.ComidaItem
+
+
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,18 +70,37 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val menuRespuesta = response.body()!!
 
-                    //  Leemos PHP
+
+                    // Leemos PHP
                     if (menuRespuesta.status == "exito") {
 
 
-                        val adapter = MenuAdapter(menuRespuesta.menu)
+                        // Checamos si el menuSÍ vino y no es nulo
+                        menuRespuesta.menu?.let { listaDeMenu ->
 
-                        // LE DECIMOS AL RECYCLERVIEW
-                        recyclerView.adapter = adapter
+
+
+                            val listenerDelClick = { comidaItem: ComidaItem ->
+                                Toast.makeText(this@HomeActivity, "¡Le picaste a ${comidaItem.nombre}!", Toast.LENGTH_SHORT).show()
+
+                                //  Intent pa DetailsActivity
+                            }
+
+
+                            val adapter = MenuAdapter(listaDeMenu, listenerDelClick)
+                            recyclerView.adapter = adapter
+
+                        } ?: run {
+
+                            Toast.makeText(this@HomeActivity, "Error: El PHP dijo 'exito' pero no mandó menú", Toast.LENGTH_LONG).show()
+                        }
 
                     } else {
-                        // Si el PHP  no encontró nadA
-                        Toast.makeText(this@HomeActivity, "Error al jalar menú: ${menuRespuesta.menu}", Toast.LENGTH_SHORT).show()
+
+
+                        val errorMsg = menuRespuesta.mensaje ?: "Error desconocido del PHP"
+                        Toast.makeText(this@HomeActivity, "Error del PHP: $errorMsg", Toast.LENGTH_LONG).show()
+                    Log.d("categoria debug",errorMsg)
                     }
 
                 } else {
@@ -92,6 +114,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onFailure(call: Call<MenuResponse>, t: Throwable) {
                 Toast.makeText(this@HomeActivity, "No hay netWORK, pa: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("NETWORK_ERROR_MENU", "Falló Retrofit", t)
+
             }
         })
     }
