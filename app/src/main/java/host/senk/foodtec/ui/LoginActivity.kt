@@ -18,8 +18,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-// ¡¡Este faltaba!! El del TabLayout
+// TabLayout
 import com.google.android.material.tabs.TabLayout
+
+//Pa que jale el scroll
+import android.widget.ScrollView
+import android.view.View
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,73 +38,66 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // XML!!!
+        // xml
         val etUsuario: EditText = findViewById(R.id.etUsuario)
         val etContra: EditText = findViewById(R.id.etContrasena)
         val btnLogin: Button = findViewById(R.id.btnIniciarSesion)
-        val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // El link viejo, este ya ni pela
+        val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // El link viejo
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
 
-        // El "link" para ir a Registrarse (este ya huele a panteón, pero ahí lo dejo)
-        tvRegistrate.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
 
-        // --- La chamba del Toggle (el TabLayout) ---
+
+
+
+
+
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                // Cuando el compa le pica a una pestaña
+
                 if (tab?.position == 1) {
-                    // Si le picó a "Registrarse" (la #1)
+
                     val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                     startActivity(intent)
-                    finish() // Matamos esta pa' que no regrese
+                    finish()
                 }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         }) // Aquí se cierra el listener del Tab
 
 
-        // EL BOTÓN DE LOGIN!! Estaba afuera del onCreate, por eso tronaba
-        btnLogin.setOnClickListener {
 
-            //  Jalamos el texto que puso el vato
+        btnLogin.setOnClickListener {
+            // Jalamos el texto que puso el vato
             val usuario = etUsuario.text.toString().trim()
             val contra = etContra.text.toString()
 
-            //  Checamos si no se pasó de listo y dejó todo vacío
+            // Checamos si no se pasó de listo y dejó todo vacío
             if (usuario.isEmpty() || contra.isEmpty()) {
                 Toast.makeText(this, "Ingresa usuario y contraseña, pa", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            //  mandar al cartero (Retrofit)!!
+            //  mandar al cartero (Retrofit)
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
-            // 4. Lo formamos (en 'enqueue') pa' que no congele la app
+            // Lo formamos pa' que no congele la app
             call.enqueue(object : Callback<LoginResponse> {
 
-                // SI EL CARTERO SÍ LLEGÓ (Hubo respuesta de senk.host)
+                // SI EL CARTERO SÍ LLEGÓ
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
-                        // ¡Leemos qué dijo el PHP!
+                        // Leemos qué dijo el PHP
                         if (loginRespuesta.status == "exito") {
-
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
+                            // Nos vamos al Home
                             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                             intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
                             intent.putExtra("USER_NAME", loginRespuesta.usuario)
-
                             startActivity(intent)
                             finish()
 
@@ -108,7 +105,6 @@ class LoginActivity : AppCompatActivity() {
                             // Si el PHP nos bateó (pass incorrecto, etc.)
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
                         }
-
                     } else {
                         // Si el servidor tronó (Error 500, 404)
                         Toast.makeText(this@LoginActivity, "Error del server: ${response.code()}", Toast.LENGTH_LONG).show()
@@ -122,6 +118,13 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("NETWORK_ERROR_LOGIN", "Falló Retrofit", t)
                 }
             })
+        }
+
+
+
+        tvRegistrate.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
 
     }
