@@ -46,4 +46,12 @@ interface ApiService {
         // La clave "categoria" debe ser la misma del $_POST['categoria']
         @Field("categoria") categoria: String
     ): Call<MenuResponse> // ¡Usará un "sobre" nuevo!
+
+
+    @FormUrlEncoded
+    @POST("verify.php")
+    fun verificarCodigo(
+        @Field("correo") correo: String,
+        @Field("codigo") codigo: String
+    ): Call<RegistroResponse>
 }

@@ -38,25 +38,33 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        // xml
+        //  XML
         val etUsuario: EditText = findViewById(R.id.etUsuario)
         val etContra: EditText = findViewById(R.id.etContrasena)
         val btnLogin: Button = findViewById(R.id.btnIniciarSesion)
         val tvRegistrate: TextView = findViewById(R.id.txRegistrateAqui) // El link viejo
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
+        val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
+
+        //
+        // Este es el oído pa'l scroll
+        etContra.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                // pa' mostrar el botón de "Iniciar Sesion"
+                scrollView.post {
+                    scrollView.fullScroll(View.FOCUS_DOWN)
+                }
+            }
+        }
 
 
 
-
-
-
-
-
+        ///tablayoutttt
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-
+                // Cuando el compa le pica a una pestaña
                 if (tab?.position == 1) {
-
+                    // Si le picó a Registrarse
                     val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -64,7 +72,8 @@ class LoginActivity : AppCompatActivity() {
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
-        }) // Aquí se cierra el listener del Tab
+        })
+
 
 
 
@@ -79,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            //  mandar al cartero (Retrofit)
+            // mandar al cartero (Retrofit)
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
             // Lo formamos pa' que no congele la app
@@ -90,19 +99,29 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
-                        // Leemos qué dijo el PHP
+                        // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
-                            // Nos vamos al Home
+                            // ¡Nos vamos al Home!
                             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                             intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
                             intent.putExtra("USER_NAME", loginRespuesta.usuario)
                             startActivity(intent)
                             finish()
 
+                        } else if (loginRespuesta.status == "error_verificacion") {
+
+                            Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
+
+                            // Lo mandamos a la pantalla de Verificar
+                            val intent = Intent(this@LoginActivity, VerifyActivity::class.java)
+                            // Le pasamos el correo que el PHP nos regresó
+                            intent.putExtra("CORREO_USUARIO", loginRespuesta.correo)
+                            startActivity(intent)
+
                         } else {
-                            // Si el PHP nos bateó (pass incorrecto, etc.)
+                            // Si nos trono por ootra cosa (pass incorrecto, etc.)
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
                         }
                     } else {
@@ -121,12 +140,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-
         tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
     }
-
 }

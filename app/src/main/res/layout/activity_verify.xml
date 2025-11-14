@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/foodtec_naranja"
+    tools:context=".ui.VerifyActivity">
+
+    <View
+        android:id="@+id/viewTopSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_top_blue_with_pattern"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.35" />
+
+    <ImageView
+        android:id="@+id/imgLogoFlotante"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTopSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewTopSection" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_white_card"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewTopSection"
+        android:layout_marginTop="-80dp"
+        app:layout_constraintHeight_percent="0.6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verificar Cuenta"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/lilita_one_regular"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/tvAyudaVerificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¡Revisa tu correo! Te mandamos un código de 6 dígitos."
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_alternates_semibold"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"/>
+
+            <EditText
+                android:id="@+id/etCodigo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="000000"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="28sp"
+                android:gravity="center"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:background="@drawable/shape_input_grey"
+                android:padding="16dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/btnVerificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="VERIFICAR"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="18sp"
+                android:background="@drawable/shape_tab_selected"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

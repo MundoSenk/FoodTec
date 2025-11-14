@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
 
             // SI EL CARTERO NI LLEGÓ
             override fun onFailure(call: Call<MenuResponse>, t: Throwable) {
-                Toast.makeText(this@HomeActivity, "No hay netWORK, pa: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@HomeActivity, "SIN CONEXIÓN AL SERVIDOR:: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("NETWORK_ERROR_MENU", "Falló Retrofit", t)
 
             }
