@@ -116,7 +116,10 @@ class RegisterActivity : AppCompatActivity() {
                             // ¡ÉXITO TOTAL! El PHP guardó en la BD
                             Toast.makeText(this@RegisterActivity, "¡Éxito! ${registroRespuesta.mensaje}", Toast.LENGTH_LONG).show()
 
-                            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                            val correoQueUso = etCorreo.text.toString()
+                            val intent = Intent(this@RegisterActivity, VerifyActivity::class.java) // ¡¡LA NUEVA!!
+                            // LE METEMOS EL CORREO A LA MOCHILA
+                            intent.putExtra("CORREO_USUARIO", correoQueUso)
                             startActivity(intent)
                             finish()
                         } else {

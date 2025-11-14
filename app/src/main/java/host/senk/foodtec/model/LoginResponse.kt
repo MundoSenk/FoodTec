@@ -9,5 +9,6 @@ data class LoginResponse(
     val status: String,
     val mensaje: String,
     val nombre: String?,
-    val usuario: String?
+    val usuario: String?,
+    val correo: String?
 )
