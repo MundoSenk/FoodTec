@@ -14,31 +14,73 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodtec"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui.VerifyActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.DetailsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".ui.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.PasswordResetActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- ACTIVITY QUE SE ABRE DESDE EL CORREO -->
+        <activity
+            android:name=".ui.NewPasswordActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
+
+            <!-- DEEP LINK VERIFICADO -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- URL REAL QUE VIENE EN EL CORREO -->
+                <data
+                    android:scheme="https"
+                    android:host="senk.host"
+                    android:pathPrefix="/reset_password"/>
+            </intent-filter>
+
+            <!-- OPCIONAL: SCHEME PROPIO foodtec://reset_password/... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="foodtec"
+                    android:host="reset_password" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

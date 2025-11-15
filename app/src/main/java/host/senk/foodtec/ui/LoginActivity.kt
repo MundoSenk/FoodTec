@@ -46,6 +46,9 @@ class LoginActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
+        // NUEVO: Enlace "¿Olvidaste tu contraseña?"
+        val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
+
         //
         // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
@@ -57,7 +60,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
+        // NUEVO: Lógica para el clic en "¿Olvidaste tu contraseña?"
+        tvOlvideContrasena.setOnClickListener {
+            // Navega a la Activity de restablecimiento de contraseña
+            val intent = Intent(this, PasswordResetActivity::class.java)
+            startActivity(intent)
+        }
 
         ///tablayoutttt
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -73,8 +81,6 @@ class LoginActivity : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-
-
 
 
         btnLogin.setOnClickListener {
