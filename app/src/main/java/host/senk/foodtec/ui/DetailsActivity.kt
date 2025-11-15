@@ -1,4 +1,6 @@
 package host.senk.foodtec.ui
+import host.senk.foodtec.manager.CartManager
+import host.senk.foodtec.model.ComidaItem
 
 import android.os.Build
 import android.os.Bundle
@@ -14,9 +16,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import host.senk.foodtec.R
-import host.senk.foodtec.model.ComidaItem
+
+
 
 class DetailsActivity : AppCompatActivity() {
+
+    // Jalamos el platillo pa' usarlo en el botón
+    private var comida: ComidaItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,46 +46,55 @@ class DetailsActivity : AppCompatActivity() {
         val btnAgregar: Button = findViewById(R.id.btnAgregarPedido)
 
        // Sacamos el ComidaItem que nos mandó HomeActivity
-        val comida: ComidaItem? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            //  jala un Parcelable!
+        comida = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("COMIDA_SELECCIONADA", ComidaItem::class.java)
         } else {
-            // jala pa' celulares viejos!
             @Suppress("DEPRECATION")
             intent.getParcelableExtra("COMIDA_SELECCIONADA")
         }
-
 
         if (comida != null) {
 
 
             // Pintamos los textos
-            tvNombre.text = comida.nombre
-            tvPrecio.text = "$${comida.precio}"
-            tvDescripcion.text = comida.descripcion
+            // ¡Usamos 'comida' (con !!) pa' decirle a Kotlin "¡confía, pa, no es nulo!")
+            tvNombre.text = comida!!.nombre
+            tvPrecio.text = "$${comida!!.precio}"
+            tvDescripcion.text = comida!!.descripcion
+            rbValoracion.rating = comida!!.valoracion.toFloatOrNull() ?: 0f
 
-            // Convertimos el String a Float pára valorar
-            rbValoracion.rating = comida.valoracion.toFloatOrNull() ?: 0f
-
-            // glide para la fotp
             Glide.with(this)
-                .load(comida.imagen_url)
+                .load(comida!!.imagen_url)
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(ivImagen)
 
             // Por ahora, un Toast
             btnAgregar.setOnClickListener {
+                //  Jalamos los "detalles" (el "sin salsa")
                 val extras = etExtras.text.toString().trim()
-                Toast.makeText(this, "¡Agregando ${comida.nombre} con extras: $extras!", Toast.LENGTH_LONG).show()
 
-                // CARRITOS
+                // Usamos el Singleton pa' meter el platillo
+                CartManager.addItem(comida!!, extras)
+
+                // Un Toast chido pa' que el vato sepa
+                Toast.makeText(this, "¡${comida!!.nombre} agregado al pedido!", Toast.LENGTH_SHORT).show()
+
+
+                // Creamos el Modal
+                val modal = CartModalFragment()
+
+
+                // Lo mostramos en la pantalla
+                modal.show(supportFragmentManager, "MODAL_CARRITO")
+
             }
 
-        } else {
 
-            Toast.makeText(this, "Error: No se pudo cargar el platillo.", Toast.LENGTH_LONG).show()
-            finish()
+        } else {
+            // si no llega
+            Toast.makeText(this, "Error: No se pudo cargar el producto.", Toast.LENGTH_LONG).show()
+            finish() // ¡Nos regresamos al Home!
         }
     }
 }

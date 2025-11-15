@@ -1,9 +1,12 @@
 package host.senk.foodtec.api
 
+import host.senk.foodtec.model.CrearPedidoResponse // ¡El sobre de respuesta!
+import host.senk.foodtec.model.PedidoRequest // ¡El "molde" mamalón!
 import host.senk.foodtec.model.LoginResponse
 import host.senk.foodtec.model.MenuResponse
 import host.senk.foodtec.model.RegistroResponse
 import retrofit2.Call
+import retrofit2.http.Body // ¡¡El "truco" pa' mandar JSON crudo!!
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -54,4 +57,13 @@ interface ApiService {
         @Field("correo") correo: String,
         @Field("codigo") codigo: String
     ): Call<RegistroResponse>
+
+
+
+    // ¡¡OJO!! ¡Esta no usa '@FormUrlEncoded'
+    // Usa @Body pa mandar el JSON crudo
+    @POST("crearPedido.php")
+    fun crearPedido(
+        @Body pedido: PedidoRequest
+    ): Call<CrearPedidoResponse>
 }

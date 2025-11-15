@@ -25,12 +25,35 @@ import com.google.android.material.tabs.TabLayout
 import android.widget.ScrollView
 import android.view.View
 
-class LoginActivity : AppCompatActivity() {
+////HERMANO EL SESSION
+import host.senk.foodtec.manager.SessionManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_login)
+
+
+    class LoginActivity : AppCompatActivity() {
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+
+            // archivero a ver si ya hay un vato
+            if (SessionManager.isLoggedIn(this)) {
+
+                // No le enseñes el Login Mándalo al Home
+                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                startActivity(intent)
+
+                // ¡Y matamos el Login ANTES de que se vea
+                finish()
+
+                // Nos salimos del 'onCreate' pa' que no cargue lo de abajo
+                return
+            }
+
+            //  SI EL 'if' DE ARRIBA NO JALÓ, SIGNIFICA QUE NO HAY NADIE ---
+            // Ahora sí, a pintar el Login
+            enableEdgeToEdge()
+            setContentView(R.layout.activity_login)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -101,17 +124,32 @@ class LoginActivity : AppCompatActivity() {
 
                         // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
-                            Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
-                            // ¡Nos vamos al Home!
-                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                            intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
-                            intent.putExtra("USER_NAME", loginRespuesta.usuario)
-                            startActivity(intent)
-                            finish()
+
+                            // Checamos que el PHP SÍ nos mandó los datos
+                            if (loginRespuesta.usuario != null && loginRespuesta.nombre != null) {
+
+                                // ¡'this@LoginActivity' es el "Contexto" (la llave del archivero)!
+                                SessionManager.saveUser(
+                                    this@LoginActivity,
+                                    loginRespuesta.usuario,  // ¡Ya no es nulo!
+                                    loginRespuesta.nombre   // ¡Este tampoco!
+                                )
+
+                                Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
+
+                                // ¡Nos vamos al Home! (¡Limpio, sin 'putExtra'!)
+                                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+
+                            } else {
+                                // ¡El PHP dijo "exito" pero no mandó los datos! ¡Qué pendejo!
+                                Toast.makeText(this@LoginActivity, "Error: El PHP dijo 'exito' pero no regresó los datos", Toast.LENGTH_LONG).show()
+                            }
 
                         } else if (loginRespuesta.status == "error_verificacion") {
-
+                            // ¡El vato no está verificado!
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
                             // Lo mandamos a la pantalla de Verificar
@@ -146,4 +184,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-}
+
+    }
+
