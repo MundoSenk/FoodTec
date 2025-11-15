@@ -25,10 +25,27 @@ import com.google.android.material.tabs.TabLayout
 import android.widget.ScrollView
 import android.view.View
 
+////HERMANO EL SESSION (¡¡VOLVIÓ!!)
+import host.senk.foodtec.manager.SessionManager
+
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // --- ¡¡EL "CADENERO" PA' MATAR LA AMNESIA!! ---
+        // (¡Este también se lo había chingado el Git!)
+        if (SessionManager.isLoggedIn(this)) {
+            // No le enseñes el Login Mándalo al Home
+            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+            startActivity(intent)
+            // ¡Y matamos el Login ANTES de que se vea
+            finish()
+            // Nos salimos del 'onCreate' pa' que no cargue lo de abajo
+            return
+        }
+
+        // --- SI NO HAY NADIE, A PINTAR EL LOGIN ---
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
@@ -46,10 +63,10 @@ class LoginActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
-        // NUEVO: Enlace "¿Olvidaste tu contraseña?"
+        // ¡¡EL JALE DE TU COMPA!! (¡Este se queda!)
         val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
 
-        //
+
         // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
@@ -60,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // NUEVO: Lógica para el clic en "¿Olvidaste tu contraseña?"
+        // ¡¡EL JALE DE TU COMPA!! (¡Este se queda!)
         tvOlvideContrasena.setOnClickListener {
             // Navega a la Activity de restablecimiento de contraseña
             val intent = Intent(this, PasswordResetActivity::class.java)
@@ -70,9 +87,7 @@ class LoginActivity : AppCompatActivity() {
         ///tablayoutttt
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                // Cuando el compa le pica a una pestaña
                 if (tab?.position == 1) {
-                    // Si le picó a Registrarse
                     val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -82,62 +97,60 @@ class LoginActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-
+        // --- ¡¡AQUÍ FUSIONAMOS EL JALE!! ---
         btnLogin.setOnClickListener {
-            // Jalamos el texto que puso el vato
             val usuario = etUsuario.text.toString().trim()
             val contra = etContra.text.toString()
 
-            // Checamos si no se pasó de listo y dejó todo vacío
             if (usuario.isEmpty() || contra.isEmpty()) {
                 Toast.makeText(this, "Ingresa usuario y contraseña, pa", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // mandar al cartero (Retrofit)
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
-            // Lo formamos pa' que no congele la app
             call.enqueue(object : Callback<LoginResponse> {
-
-                // SI EL CARTERO SÍ LLEGÓ
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
-                        // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
-                            Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
-                            // ¡Nos vamos al Home!
-                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                            intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
-                            intent.putExtra("USER_NAME", loginRespuesta.usuario)
-                            startActivity(intent)
-                            finish()
+                            // --- ¡¡AQUÍ ESTÁ EL JALE, PA!! ---
+                            // ¡Checamos que el PHP SÍ nos mandó los datos!
+                            if (loginRespuesta.usuario != null && loginRespuesta.nombre != null) {
+
+                                // ¡¡VOLVIMOS A METER AL "ARCHIVERO"!!
+                                SessionManager.saveUser(
+                                    this@LoginActivity,
+                                    loginRespuesta.usuario,
+                                    loginRespuesta.nombre
+                                )
+
+                                Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
+
+                                // ¡Nos vamos al Home! (¡Limpio, sin 'putExtra'!)
+                                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+
+                            } else {
+                                Toast.makeText(this@LoginActivity, "Error: El PHP dijo 'exito' pero no regresó los datos", Toast.LENGTH_LONG).show()
+                            }
 
                         } else if (loginRespuesta.status == "error_verificacion") {
-
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
-
-                            // Lo mandamos a la pantalla de Verificar
                             val intent = Intent(this@LoginActivity, VerifyActivity::class.java)
-                            // Le pasamos el correo que el PHP nos regresó
                             intent.putExtra("CORREO_USUARIO", loginRespuesta.correo)
                             startActivity(intent)
-
                         } else {
-                            // Si nos trono por ootra cosa (pass incorrecto, etc.)
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        // Si el servidor tronó (Error 500, 404)
                         Toast.makeText(this@LoginActivity, "Error del server: ${response.code()}", Toast.LENGTH_LONG).show()
                         Log.e("API_ERROR_LOGIN", "El server se fue a mimir: ${response.errorBody()?.string()}")
                     }
                 }
-
-                // SI EL CARTERO NI LLEGÓ
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "No hay net, pa: ${t.message}", Toast.LENGTH_LONG).show()
                     Log.e("NETWORK_ERROR_LOGIN", "Falló Retrofit", t)
@@ -145,11 +158,9 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-
         tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
-
     }
 }
