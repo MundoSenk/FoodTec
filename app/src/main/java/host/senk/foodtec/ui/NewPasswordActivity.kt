@@ -37,7 +37,7 @@ class NewPasswordActivity : AppCompatActivity() {
         val token = data?.getQueryParameter("token")
 
         if (token.isNullOrEmpty()) {
-            Toast.makeText(this, "Token inválido o ausente", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Token inválido", Toast.LENGTH_SHORT).show()
             return
         }
 
