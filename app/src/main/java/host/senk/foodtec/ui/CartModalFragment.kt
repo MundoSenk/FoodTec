@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import host.senk.foodtec.R
-import host.senk.foodtec.adapter.CartAdapter
-import host.senk.foodtec.manager.CartManager
+import host.senk.foodtec.adapter.CartAdapter // ¡¡IMPORTA EL ADAPTER NUEVO!!
+import host.senk.foodtec.manager.CartManager // ¡¡IMPORTA EL CARRITO!!
 
-
+// --- ¡¡IMPORTS PA'L JALE CHIDO!! ---
 import android.widget.ArrayAdapter // ¡Pal Spinner!
 import android.widget.RadioGroup // ¡Pal RadioGroup!
 import android.widget.Spinner // ¡Pal Spinner!
@@ -81,9 +81,9 @@ class CartModalFragment : BottomSheetDialogFragment() {
         spinnerLugar.adapter = spinnerAdapter
 
 
-        // El de Agregar más
+        // ¡El de Agregar más
         btnAgregarMas.setOnClickListener {
-            dismiss() // Cierra el modal
+            dismiss()
             activity?.finish()
         }
 
@@ -107,6 +107,10 @@ class CartModalFragment : BottomSheetDialogFragment() {
             }
             if (lugar == "Selecciona un lugar...") {
                 Toast.makeText(requireContext(), "¡Oye! Elige un lugar de entrega.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (itemsDelCarrito.isEmpty()) {
+                Toast.makeText(requireContext(), "¡Tu carrito está vacío, pa!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -142,7 +146,8 @@ class CartModalFragment : BottomSheetDialogFragment() {
                             CartManager.clearCart() // ¡Limpiamos el carrito!
                             dismiss() //
 
-
+                            // ¡¡AQUÍ IRÍA EL JALE PA' MANDAR AL VATO A LA PANTALLA DE "ESTATUS"!!
+                            // (¡Ese es el siguiente pedo!)
 
                         } else {
                             // Tronó el PHP (ej. "JSON inválido")
