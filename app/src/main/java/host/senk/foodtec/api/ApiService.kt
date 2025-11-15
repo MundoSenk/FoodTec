@@ -60,10 +60,10 @@ interface ApiService {
 
 
 
-    // ¡¡OJO!! ¡Esta no usa '@FormUrlEncoded'!
-    // ¡Usa '@Body' pa' mandar el JSON "crudo"!
+    // ¡¡OJO!! ¡Esta no usa '@FormUrlEncoded'
+    // Usa @Body pa mandar el JSON crudo
     @POST("crearPedido.php")
     fun crearPedido(
-        @Body pedido: PedidoRequest // ¡Le mandamos el "molde" mamalón!
-    ): Call<CrearPedidoResponse> // ¡Y esperamos el "sobre" de respuesta!
+        @Body pedido: PedidoRequest
+    ): Call<CrearPedidoResponse>
 }

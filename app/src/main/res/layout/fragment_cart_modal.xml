@@ -27,9 +27,11 @@
     <Button
         android:id="@+id/btnAgregarMas"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¡Agregar más!"
+        android:layout_height="40dp" android:text="¡Agregar más!"
         android:fontFamily="@font/lilita_one_regular"
+        android:background="@drawable/shape_button_blue" android:textColor="@color/white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -39,7 +41,8 @@
         android:id="@+id/rvModalItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="150dp" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:maxHeight="150dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
         android:layout_marginBottom="16dp"/>
 
@@ -80,8 +83,7 @@
         android:id="@+id/spinnerLugar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_input_grey"
-        android:padding="16dp"
+        android:background="@drawable/shape_input_grey" android:padding="16dp"
         android:layout_marginBottom="16dp"/>
 
     <TextView
@@ -97,17 +99,33 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="24dp">
+
         <RadioButton
             android:id="@+id/rbEfectivo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Efectivo"
+            android:fontFamily="@font/lilita_one_regular"
+            android:button="@android:color/transparent" android:background="@drawable/selector_payment_button" android:textColor="@drawable/selector_payment_text" android:gravity="center"
+            android:padding="12dp"
+            android:layout_marginEnd="8dp"
             android:checked="true"/>
+
         <RadioButton
             android:id="@+id/rbTarjeta"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Tarjeta"/>
+            android:text="Tarjeta"
+            android:fontFamily="@font/lilita_one_regular"
+            android:button="@android:color/transparent"
+            android:background="@drawable/selector_payment_button"
+            android:textColor="@drawable/selector_payment_text"
+            android:gravity="center"
+            android:padding="12dp"
+            android:layout_marginStart="8dp"
+            android:checked="false"/>
     </RadioGroup>
 
     <Button

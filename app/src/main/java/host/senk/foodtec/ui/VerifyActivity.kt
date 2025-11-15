@@ -21,7 +21,7 @@ import retrofit2.Response
 ////HERMANO EL SESSION
 import host.senk.foodtec.manager.SessionManager
 
-// ¡¡Este faltaba!! El del TabLayout
+// El del TabLayout
 import com.google.android.material.tabs.TabLayout
 
 
@@ -122,5 +122,5 @@ class VerifyActivity : AppCompatActivity() {
                 }
             })
         }
-    } // ¡¡AQUÍ CIERRA EL 'onCreate'!!
-} // ¡¡AQUÍ CIERRA LA 'VerifyActivity'!!
+    }
+}
