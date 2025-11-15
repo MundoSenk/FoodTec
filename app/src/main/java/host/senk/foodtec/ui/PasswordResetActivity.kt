@@ -77,6 +77,6 @@ class PasswordResetActivity : AppCompatActivity() {
                     Log.e("NETWORK_RESET_ERROR", "Fallo de Retrofit", t)
                 }
             })
-            }
         }
+    }
 }

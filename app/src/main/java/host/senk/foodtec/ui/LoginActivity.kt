@@ -25,35 +25,12 @@ import com.google.android.material.tabs.TabLayout
 import android.widget.ScrollView
 import android.view.View
 
-////HERMANO EL SESSION
-import host.senk.foodtec.manager.SessionManager
+class LoginActivity : AppCompatActivity() {
 
-
-
-    class LoginActivity : AppCompatActivity() {
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-
-
-            // archivero a ver si ya hay un vato
-            if (SessionManager.isLoggedIn(this)) {
-
-                // No le enseñes el Login Mándalo al Home
-                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                startActivity(intent)
-
-                // ¡Y matamos el Login ANTES de que se vea
-                finish()
-
-                // Nos salimos del 'onCreate' pa' que no cargue lo de abajo
-                return
-            }
-
-            //  SI EL 'if' DE ARRIBA NO JALÓ, SIGNIFICA QUE NO HAY NADIE ---
-            // Ahora sí, a pintar el Login
-            enableEdgeToEdge()
-            setContentView(R.layout.activity_login)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_login)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -69,19 +46,11 @@ import host.senk.foodtec.manager.SessionManager
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
-        // Enlace "¿Olvidaste tu contraseña?"
+        // NUEVO: Enlace "¿Olvidaste tu contraseña?"
         val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
 
-
-        tvOlvideContrasena.setOnClickListener {
-                // Navega a la Activity de restablecimiento de contraseña
-                val intent = Intent(this, PasswordResetActivity::class.java)
-                startActivity(intent)
-        }
-
-
-
-            // Este es el oído pa'l scroll
+        //
+        // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 // pa' mostrar el botón de "Iniciar Sesion"
@@ -91,7 +60,12 @@ import host.senk.foodtec.manager.SessionManager
             }
         }
 
-
+        // NUEVO: Lógica para el clic en "¿Olvidaste tu contraseña?"
+        tvOlvideContrasena.setOnClickListener {
+            // Navega a la Activity de restablecimiento de contraseña
+            val intent = Intent(this, PasswordResetActivity::class.java)
+            startActivity(intent)
+        }
 
         ///tablayoutttt
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -107,8 +81,6 @@ import host.senk.foodtec.manager.SessionManager
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-
-
 
 
         btnLogin.setOnClickListener {
@@ -135,32 +107,17 @@ import host.senk.foodtec.manager.SessionManager
 
                         // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
+                            Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
-
-                            // Checamos que el PHP SÍ nos mandó los datos
-                            if (loginRespuesta.usuario != null && loginRespuesta.nombre != null) {
-
-                                // ¡'this@LoginActivity' es el "Contexto" (la llave del archivero)!
-                                SessionManager.saveUser(
-                                    this@LoginActivity,
-                                    loginRespuesta.usuario,  // ¡Ya no es nulo!
-                                    loginRespuesta.nombre   // ¡Este tampoco!
-                                )
-
-                                Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
-
-                                // ¡Nos vamos al Home! (¡Limpio, sin 'putExtra'!)
-                                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                                startActivity(intent)
-                                finish()
-
-                            } else {
-                                // ¡El PHP dijo "exito" pero no mandó los datos! ¡Qué pendejo!
-                                Toast.makeText(this@LoginActivity, "Error: El PHP dijo 'exito' pero no regresó los datos", Toast.LENGTH_LONG).show()
-                            }
+                            // ¡Nos vamos al Home!
+                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            intent.putExtra("NOMBRE_USUARIO", loginRespuesta.nombre)
+                            intent.putExtra("USER_NAME", loginRespuesta.usuario)
+                            startActivity(intent)
+                            finish()
 
                         } else if (loginRespuesta.status == "error_verificacion") {
-                            // ¡El vato no está verificado!
+
                             Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
 
                             // Lo mandamos a la pantalla de Verificar
@@ -195,6 +152,4 @@ import host.senk.foodtec.manager.SessionManager
         }
 
     }
-
-    }
-
+}

@@ -106,6 +106,6 @@ class NewPasswordActivity : AppCompatActivity() {
                         Log.e("RESET_FAIL", "Error Retrofit", t)
                     }
                 })
-            }
         }
+    }
 }
