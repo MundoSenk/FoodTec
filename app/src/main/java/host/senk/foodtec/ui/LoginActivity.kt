@@ -69,8 +69,19 @@ import host.senk.foodtec.manager.SessionManager
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
-        //
-        // Este es el oído pa'l scroll
+        // Enlace "¿Olvidaste tu contraseña?"
+        val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
+
+
+        tvOlvideContrasena.setOnClickListener {
+                // Navega a la Activity de restablecimiento de contraseña
+                val intent = Intent(this, PasswordResetActivity::class.java)
+                startActivity(intent)
+        }
+
+
+
+            // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
                 // pa' mostrar el botón de "Iniciar Sesion"
