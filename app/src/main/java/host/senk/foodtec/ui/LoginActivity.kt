@@ -25,7 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import android.widget.ScrollView
 import android.view.View
 
-////HERMANO EL SESSION (¡¡VOLVIÓ!!)
+////HERMANO EL SESSION (¡¡EL REGRESO!!)
 import host.senk.foodtec.manager.SessionManager
 
 class LoginActivity : AppCompatActivity() {
@@ -34,13 +34,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // --- ¡¡EL "CADENERO" PA' MATAR LA AMNESIA!! ---
-        // (¡Este también se lo había chingado el Git!)
+        // (¡Este es el que nos mató el Git!)
         if (SessionManager.isLoggedIn(this)) {
+            // archivero a ver si ya hay un vato
             // No le enseñes el Login Mándalo al Home
             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
             startActivity(intent)
+
             // ¡Y matamos el Login ANTES de que se vea
             finish()
+
             // Nos salimos del 'onCreate' pa' que no cargue lo de abajo
             return
         }
@@ -63,10 +66,10 @@ class LoginActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
-        // ¡¡EL JALE DE TU COMPA!! (¡Este se queda!)
+        // ¡¡EL JALE DE TU COMPA!!
         val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
 
-
+        //
         // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
@@ -97,8 +100,10 @@ class LoginActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+
         // --- ¡¡AQUÍ FUSIONAMOS EL JALE!! ---
         btnLogin.setOnClickListener {
+            // Jalamos el texto que puso el vato
             val usuario = etUsuario.text.toString().trim()
             val contra = etContra.text.toString()
 
@@ -107,13 +112,18 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // mandar al cartero (Retrofit)
             val call = RetrofitClient.apiService.loginUsuario(usuario, contra)
 
+            // Lo formamos pa' que no congele la app
             call.enqueue(object : Callback<LoginResponse> {
+
+                // SI EL CARTERO SÍ LLEGÓ
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful && response.body() != null) {
                         val loginRespuesta = response.body()!!
 
+                        // ¡Leemos qué dijo el PHP!
                         if (loginRespuesta.status == "exito") {
 
                             // --- ¡¡AQUÍ ESTÁ EL JALE, PA!! ---
@@ -123,8 +133,8 @@ class LoginActivity : AppCompatActivity() {
                                 // ¡¡VOLVIMOS A METER AL "ARCHIVERO"!!
                                 SessionManager.saveUser(
                                     this@LoginActivity,
-                                    loginRespuesta.usuario,
-                                    loginRespuesta.nombre
+                                    loginRespuesta.usuario!!, // ¡El '!!' pa' que no chille!
+                                    loginRespuesta.nombre!!   // ¡El '!!' pa' que no chille!
                                 )
 
                                 Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()
@@ -158,9 +168,11 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
+
         tvRegistrate.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+
     }
 }
