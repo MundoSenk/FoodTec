@@ -60,5 +60,12 @@ object CartManager {
         items.clear()
     }
 
+
+    fun removeItem(item: CartItem) {
+        items.remove(item)
+    }
+
+
+
     // ¡Aquí podríamos meter 'removeItem(item)' o 'updateCantidad(item, nuevaCantidad)'!
 }

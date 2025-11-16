@@ -7,40 +7,32 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@drawable/shape_home_card"> <androidx.constraintlayout.widget.ConstraintLayout
+    android:background="@drawable/shape_home_card"> <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp">
-
-    <Button
-        android:id="@+id/btnAgregarMas"
-        android:layout_width="161dp"
-        android:layout_height="58dp"
-        android:background="@drawable/shape_button_blue"
-        android:fontFamily="@font/lilita_one_regular"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="¡Agregar más!"
-        android:textColor="@color/white"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:orientation="horizontal"
+    android:gravity="center_vertical" android:layout_marginBottom="16dp">
 
     <TextView
         android:id="@+id/tvTituloModal"
         android:layout_width="0dp" android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp" android:text="Confirmación de la Compra"
+        android:layout_weight="1" android:text="Confirmación de la Compra"
         android:fontFamily="@font/lilita_one_regular"
         android:textColor="@color/black"
         android:textSize="22sp"
+        android:layout_marginEnd="8dp"/> <com.google.android.material.button.MaterialButton
+    android:id="@+id/btnAgregarMas"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="¡Agregar más!"
+    android:fontFamily="@font/lilita_one_regular"
+    android:textColor="@color/white"
+    app:backgroundTint="@color/foodtec_azul" app:cornerRadius="20dp" android:insetTop="0dp"
+    android:insetBottom="0dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"/>
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAgregarMas"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
 
     <FrameLayout

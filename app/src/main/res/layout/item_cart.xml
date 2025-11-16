@@ -18,6 +18,19 @@
         tools:src="@drawable/logo"/>
 
     <TextView
+        android:id="@+id/tvCartCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="x1"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/foodtec_naranja"
+        android:textSize="18sp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintStart_toEndOf="@+id/ivCartImagen"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
         android:id="@+id/tvCartNombre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,8 +38,8 @@
         android:fontFamily="@font/montserrat_alternates_semibold"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@+id/ivCartImagen"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/tvCartCantidad"
         app:layout_constraintEnd_toStartOf="@+id/tvCartPrecio"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -39,6 +52,18 @@
         android:fontFamily="@font/lilita_one_regular"
         android:textColor="@color/black"
         android:textSize="18sp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnCartRemove"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btnCartRemove"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/foodtec_naranja"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

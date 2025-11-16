@@ -33,15 +33,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // --- ¡¡EL "CADENERO" PA' MATAR LA AMNESIA!! ---
-        // (¡Este es el que nos mató el Git!)
+        // SI YA ESTAS PREVIAMENTE, NO APAREERA ESTA PANTALLA
         if (SessionManager.isLoggedIn(this)) {
             // archivero a ver si ya hay un vato
             // No le enseñes el Login Mándalo al Home
             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
             startActivity(intent)
 
-            // ¡Y matamos el Login ANTES de que se vea
             finish()
 
             // Nos salimos del 'onCreate' pa' que no cargue lo de abajo
@@ -66,21 +64,20 @@ class LoginActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout) // El toggle chido
         val scrollView: ScrollView = findViewById(R.id.scrollView) // ¡El Scroll!
 
-        // ¡¡EL JALE DE TU COMPA!!
+
         val tvOlvideContrasena: TextView = findViewById(R.id.tvOlvideContrasena)
 
-        //
+
         // Este es el oído pa'l scroll
         etContra.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                // pa' mostrar el botón de "Iniciar Sesion"
                 scrollView.post {
                     scrollView.fullScroll(View.FOCUS_DOWN)
                 }
             }
         }
 
-        // ¡¡EL JALE DE TU COMPA!! (¡Este se queda!)
+
         tvOlvideContrasena.setOnClickListener {
             // Navega a la Activity de restablecimiento de contraseña
             val intent = Intent(this, PasswordResetActivity::class.java)
@@ -101,9 +98,9 @@ class LoginActivity : AppCompatActivity() {
         })
 
 
-        // --- ¡¡AQUÍ FUSIONAMOS EL JALE!! ---
+
         btnLogin.setOnClickListener {
-            // Jalamos el texto que puso el vato
+            // Jalamos el texto que puso el user
             val usuario = etUsuario.text.toString().trim()
             val contra = etContra.text.toString()
 
