@@ -17,9 +17,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// --- ¡¡AQUÍ ESTÁ EL "ARCHIVERO", PA!! ---
+import host.senk.foodtec.manager.SessionManager
+
 class NewPasswordActivity : AppCompatActivity() {
 
-    private var token: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,14 +37,13 @@ class NewPasswordActivity : AppCompatActivity() {
 
         // 1. OBTENER EL TOKEN DEL DEEP LINK
         val data = intent?.data
-        val token = data?.getQueryParameter("token")
+        val token = data?.getQueryParameter("token") // ¡Esta es la buena!
 
         if (token.isNullOrEmpty()) {
             Toast.makeText(this, "Token inválido", Toast.LENGTH_SHORT).show()
+            finish() // ¡Lo matamos si no hay token!
             return
         }
-
-
 
         // 2. REFERENCIAS UI
         val etNuevaPassword: EditText = findViewById(R.id.etNuevaPassword)
@@ -49,8 +51,7 @@ class NewPasswordActivity : AppCompatActivity() {
         val btnGuardar: Button = findViewById(R.id.btnGuardarPassword)
 
 
-        // 3. BOTÓN PRESIONADO
-
+        // BOTÓN PRESIONADO
         btnGuardar.setOnClickListener {
 
             val pass1 = etNuevaPassword.text.toString().trim()
@@ -66,25 +67,43 @@ class NewPasswordActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-            // 4. LLAMAR API PARA CAMBIAR CONTRASEÑA
-
+            // LLAMAR API PARA CAMBIAR CONTRASEÑA
             RetrofitClient.apiService.resetPassword(token, pass1)
                 .enqueue(object : Callback<LoginResponse> {
 
+                    // --- ¡¡AQUÍ ESTÁ EL ARREGLO, PA!! ---
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
                     ) {
                         if (response.isSuccessful && response.body() != null) {
                             val r = response.body()!!
-
                             Toast.makeText(this@NewPasswordActivity, r.mensaje, Toast.LENGTH_LONG).show()
 
                             if (r.status == "exito") {
-                                val intent = Intent(this@NewPasswordActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
+
+                                // ¡Checamos que el PHP SÍ nos mandó los datos!
+                                if (r.usuario != null && r.nombre != null) {
+
+
+                                    SessionManager.saveUser(
+                                        this@NewPasswordActivity,
+                                        r.usuario,
+                                        r.nombre
+                                    )
+
+
+                                    val intent = Intent(this@NewPasswordActivity, HomeActivity::class.java)
+                                    startActivity(intent)
+                                    finishAffinity() // ¡KILL A TODO!
+
+                                } else {
+                                   ///fue un exito pero no mando los datos
+                                    Toast.makeText(this@NewPasswordActivity, "¡Contraseña cambiada! Pero no pudimos iniciar sesión.", Toast.LENGTH_LONG).show()
+                                    val intent = Intent(this@NewPasswordActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
                             }
 
                         } else {
