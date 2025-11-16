@@ -96,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             // 3. ¡¡LLAMANDO AL CARTERO (RETROFIT)!!
-            // Borramos el Toast de "Registrando..." y lo cambiamos por esto:
+
 
             // Usamos el "cartero" que creamos (RetrofitClient) y su "menú" (apiService)
             val call = RetrofitClient.apiService.registrarUsuario(nombre, usuario, pass1, correo)

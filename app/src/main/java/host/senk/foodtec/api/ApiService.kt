@@ -5,6 +5,7 @@ import host.senk.foodtec.model.PedidoRequest
 import host.senk.foodtec.model.LoginResponse
 import host.senk.foodtec.model.MenuResponse
 import host.senk.foodtec.model.RegistroResponse
+import host.senk.foodtec.model.PedidosResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -72,4 +73,11 @@ interface ApiService {
     fun crearPedido(
         @Body pedido: PedidoRequest
     ): Call<CrearPedidoResponse>
+
+    @FormUrlEncoded
+    @POST("obtenerMisPedidos.php")
+    fun obtenerMisPedidos(
+        @Field("usuario_id") usuarioId: String // Le mandamos el "RENO"
+    ): Call<PedidosResponse> // Y esperamos el "sobre" nuevo!
+
 }

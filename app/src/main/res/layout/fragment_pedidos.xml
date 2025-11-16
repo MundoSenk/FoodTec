@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/shape_home_card"
+    tools:context=".ui.PedidosFragment"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PEDIDOS FOODTEC"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pedido actual"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/black"
+        android:textSize="20sp"/>
+
+    <FrameLayout
+        android:id="@+id/flPedidoActualContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_input_grey"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/tvPedidoActualStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pedido: #1001 (Pendiente)"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pedidos anteriores"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPedidosAnteriores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
+
+</LinearLayout>
+</ScrollView>
