@@ -1,5 +1,6 @@
 package host.senk.foodtec.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -112,13 +113,12 @@ class CartModalFragment : BottomSheetDialogFragment() {
     }
 
     /**
-     * ¡¡EL JALE CHIDO #3: LA "CONFIRMACIÓN"!!
-     * (¡Sacamos el cagadero del 'setOnClickListener'!)
+     * ¡¡EL JALE CHIDO  LA "CONFIRMACIÓN"!!
      */
     private fun confirmarPedido() {
         val itemsDelCarrito = CartManager.getItems() // ¡Jalamos los items otra vez!
 
-        // 1. ¡Jalamos los datos del formulario!
+        // Jalamos los datos del formulario
         val lugar = spinnerLugar.selectedItem.toString()
         val metodoPagoId = rgMetodoPago.checkedRadioButtonId
         val metodoPago = if (metodoPagoId == R.id.rbEfectivo) "Efectivo" else "Tarjeta"
@@ -169,7 +169,16 @@ class CartModalFragment : BottomSheetDialogFragment() {
                     if (resp.status == "exito") {
                         // SE ARMÓ EL PEDIDO
                         Toast.makeText(requireContext(), resp.mensaje, Toast.LENGTH_LONG).show()
-                        CartManager.clearCart() // ¡Limpiamos el carrito!
+                        CartManager.clearCart() // Limpiamos el carrito
+
+                        val intent = Intent(activity, PedidosActivity::class.java)
+
+                        // Esto mata HomeActivity y DetailsActivity para que no puedas "regresar" a ellas.
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                        startActivity(intent)
+
+
                         dismiss() //
 
                     } else {

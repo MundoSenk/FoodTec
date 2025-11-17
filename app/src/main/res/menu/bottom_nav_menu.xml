@@ -6,7 +6,10 @@
         android:icon="@android:drawable/ic_menu_compass"
         android:title="Inicio"/>
 
-
+    <item
+        android:id="@+id/nav_pedidos"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Pedidos"/>
 
 
     <item

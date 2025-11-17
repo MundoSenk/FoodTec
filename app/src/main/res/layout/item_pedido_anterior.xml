@@ -9,6 +9,10 @@
     android:padding="16dp"
     android:layout_marginBottom="12dp">
 
+    <!--
+    Todos los atributos aquí usan 'app:' que jala del 'xmlns:app' de arriba.
+    -->
+
     <TextView
         android:id="@+id/tvHistorialId"
         android:layout_width="wrap_content"
@@ -25,7 +29,7 @@
         android:id="@+id/tvHistorialResumen"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="(Resumen alimentos)"
+        android:text="(Entregado)"
         android:fontFamily="@font/montserrat_alternates_semibold"
         android:textSize="16sp"
         android:layout_marginStart="16dp"
@@ -42,7 +46,7 @@
         android:layout_height="wrap_content"
         android:numStars="5"
         android:stepSize="0.5"
-        android:rating="4.5"
+        android:rating="0"
         android:isIndicator="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

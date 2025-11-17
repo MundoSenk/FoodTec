@@ -35,8 +35,6 @@ class DetailsActivity : AppCompatActivity() {
         }
 
 
-
-
         val ivImagen: ImageView = findViewById(R.id.ivDetalleImagen)
         val tvNombre: TextView = findViewById(R.id.tvDetalleNombre)
         val tvPrecio: TextView = findViewById(R.id.tvDetallePrecio)
@@ -55,10 +53,8 @@ class DetailsActivity : AppCompatActivity() {
 
         if (comida != null) {
 
-
             // Pintamos los textos
-            // ¡Usamos 'comida' (con !!) pa' decirle a Kotlin "¡confía, pa, no es nulo!")
-            tvNombre.text = comida!!.nombre
+                     tvNombre.text = comida!!.nombre
             tvPrecio.text = "$${comida!!.precio}"
             tvDescripcion.text = comida!!.descripcion
             rbValoracion.rating = comida!!.valoracion.toFloatOrNull() ?: 0f

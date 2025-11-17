@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/ivItemImagen"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/logo"/> <LinearLayout
+    android:id="@+id/llItemNombre"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    app:layout_constraintStart_toEndOf="@+id/ivItemImagen"
+    app:layout_constraintEnd_toStartOf="@+id/tvItemPrecioTotal"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <TextView
+        android:id="@+id/tvItemNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        tools:text="Hamburguesa (Pechuga)" />
+
+    <TextView
+        android:id="@+id/tvItemCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold"
+        android:textColor="@color/foodtec_naranja"
+        android:textSize="14sp"
+        tools:text="Cantidad: x1" />
+
+    <TextView
+        android:id="@+id/tvItemDetallesUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold"
+        android:textColor="@color/dark_grey"
+        android:textSize="12sp"
+        android:visibility="gone" tools:visibility="visible"
+        tools:text="sin picante, 2 servilletas" />
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/tvItemPrecioTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold"
+        android:textColor="@color/foodtec_verde"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="$40.00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
