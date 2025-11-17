@@ -145,7 +145,9 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_perfil -> {
-                    // ¡Pa'l futuro!
+
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
                     true
                 }
 

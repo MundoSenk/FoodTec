@@ -5,7 +5,9 @@ import host.senk.foodtec.model.PedidoRequest
 import host.senk.foodtec.model.LoginResponse
 import host.senk.foodtec.model.MenuResponse
 import host.senk.foodtec.model.RegistroResponse
+import host.senk.foodtec.model.PedidoUnicoResponse
 import host.senk.foodtec.model.PedidosResponse
+
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -120,5 +122,20 @@ interface ApiService {
         @Field("pedido_id") pedidoId: Int,
         @Field("nuevo_estatus") nuevoEstatus: String // "En camino" o "Entregado"
     ): Call<CrearPedidoResponse>
+
+
+    @FormUrlEncoded
+    @POST("actualizarStatusFoodter.php")
+    fun actualizarStatusFoodter(
+        @Field("foodter_id") foodterId: String,
+        @Field("nuevo_status") nuevoStatus: String // "Activo" o "Inactivo"
+    ): Call<CrearPedidoResponse>
+
+
+    @FormUrlEncoded
+    @POST("obtenerMiPedidoActivo.php")
+    fun obtenerMiPedidoActivo(
+        @Field("foodter_id") foodterId: String
+    ): Call<PedidoUnicoResponse>
 
 }

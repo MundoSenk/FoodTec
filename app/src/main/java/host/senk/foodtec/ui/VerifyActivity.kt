@@ -80,12 +80,15 @@ class VerifyActivity : AppCompatActivity() {
                             // ¡Checamos que el PHP SÍ nos mandó los datos!
                             if (resp.usuario != null && resp.nombre != null) {
 
-                                // A "GUARDAR" AL VATO (La versión "gorda" )
+                                // --- ¡¡AQUÍ ESTÁ EL CAMBIO v3.0!! ---
+                                // A "GUARDAR" AL VATO (La versión "mamalona" v3.0)
                                 SessionManager.saveUser(
                                     this@VerifyActivity,
                                     resp.usuario,
                                     resp.nombre,
-                                    false // ¡Asumimos 'false' pq se acaba de registrar!
+                                    false, // ¡Asumimos 'false' pq se acaba de registrar!
+                                    3.0f,  // ¡Valoración Cliente (default)!
+                                    3.0f   // ¡Valoración Foodter (default)!
                                 )
 
                                 Toast.makeText(this@VerifyActivity, "¡Cuenta activada! ¡Bienvenido, ${resp.nombre}!", Toast.LENGTH_LONG).show()

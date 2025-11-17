@@ -7,5 +7,7 @@ data class LoginResponse(
     val nombre: String?,
     val usuario: String?,
     val correo: String?,
-    val es_foodter: Boolean?
+    val es_foodter: Boolean?,
+    val valoracion_cliente: Double?,
+    val valoracion_foodter: Double?
 )

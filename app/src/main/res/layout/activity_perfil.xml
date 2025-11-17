@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/foodtec_naranja"
+    tools:context=".ui.PerfilActivity"> <View
+    android:id="@+id/viewTopSection"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@drawable/shape_top_blue_with_pattern"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintHeight_percent="0.25" />
+
+    <TextView
+        android:id="@+id/tvTituloPerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Perfil de: reno" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:background="@drawable/shape_home_card"
+        android:elevation="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavViewPerfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mi Valoración (Cliente)"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textColor="@color/black"
+                android:textSize="22sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(Así te ven los Foodters)"
+                android:fontFamily="@font/montserrat_alternates_semibold"
+                android:textColor="@color/dark_grey"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+            <RatingBar
+                android:id="@+id/rbValoracionCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:isIndicator="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                tools:rating="4.5"/>
+
+            <LinearLayout
+                android:id="@+id/llValoracionFoodter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mi Valoración (Foodter)"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(Así te ven los Clientes)"
+                    android:fontFamily="@font/montserrat_alternates_semibold"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"/>
+                <RatingBar
+                    android:id="@+id/rbValoracionFoodter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="5"
+                    android:isIndicator="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    tools:rating="3.0"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="CERRAR SESIÓN"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="18sp"
+                app:cornerRadius="16dp"
+                android:textColor="@color/foodtec_naranja"
+                app:strokeColor="@color/foodtec_naranja"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavViewPerfil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

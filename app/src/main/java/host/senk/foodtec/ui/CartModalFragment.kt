@@ -154,7 +154,7 @@ class CartModalFragment : BottomSheetDialogFragment() {
         val pedidoRequest = PedidoRequest(
             usuario_id = usuarioId,
             lugar_entrega = lugar,
-            costo_final = (CartManager.getSubtotal() + comision), // ¡Lo recalculamos!
+            costo_final = (CartManager.getSubtotal() + comision), // Lo recalculamos
             metodo_pago = metodoPago,
             items = itemsRequest
         )
@@ -166,20 +166,21 @@ class CartModalFragment : BottomSheetDialogFragment() {
             override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     val resp = response.body()!!
+
                     if (resp.status == "exito") {
                         // SE ARMÓ EL PEDIDO
                         Toast.makeText(requireContext(), resp.mensaje, Toast.LENGTH_LONG).show()
-                        CartManager.clearCart() // Limpiamos el carrito
+                        CartManager.clearCart() // ¡Limpiamos el carrito!
 
+                        // Redireccionamos a PedidosActivity
                         val intent = Intent(activity, PedidosActivity::class.java)
-
-                        // Esto mata HomeActivity y DetailsActivity para que no puedas "regresar" a ellas.
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
                         startActivity(intent)
 
+                        dismiss() // Cerramos el modal
 
-                        dismiss() //
+                    } else if (resp.status == "error_limite") { // <-- ¡¡AQUÍ CACHAMOS EL ERROR NUEVO!!
+                        Toast.makeText(requireContext(), resp.mensaje, Toast.LENGTH_LONG).show()
 
                     } else {
                         // Tronó el PHP (ej. "JSON inválido")

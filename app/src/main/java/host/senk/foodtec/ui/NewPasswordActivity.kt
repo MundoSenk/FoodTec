@@ -85,16 +85,22 @@ class NewPasswordActivity : AppCompatActivity() {
                                 // ¡Checamos que el PHP SÍ nos mandó los datos!
                                 if (r.usuario != null && r.nombre != null) {
 
-                                    // --- ¡¡EL CAMBIO ESTÁ AQUÍ, HERMANO!! ---
+                                    // --- ¡¡EL CAMBIO v3.0 ESTÁ AQUÍ, HERMANO!! ---
 
-                                    // ¡Asumimos 'false' porque el PHP de reset no nos manda ese dato!
-                                    val esFoodter = r.es_foodter ?: false // <-- ¡ANTIBALA!
+                                    val esFoodter = r.es_foodter ?: false // ¡ANTIBALA!
+
+                                    // ¡Jalamos las valoraciones! (Si son nulas, default 3.0)
+                                    // (El PHP de 'resetPassword' no las manda, así que serán 3.0f)
+                                    val valCliente = (r.valoracion_cliente ?: 3.0).toFloat()
+                                    val valFoodter = (r.valoracion_foodter ?: 3.0).toFloat()
 
                                     SessionManager.saveUser(
                                         this@NewPasswordActivity,
                                         r.usuario,
                                         r.nombre,
-                                        esFoodter // ¡¡Y LE PASAMOS EL DATO!!
+                                        esFoodter,
+                                        valCliente, // ¡¡DATO NUEVO!!
+                                        valFoodter  // ¡¡DATO NUEVO!!
                                     )
 
 

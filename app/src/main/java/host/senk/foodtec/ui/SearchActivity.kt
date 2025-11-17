@@ -126,7 +126,8 @@ class SearchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_perfil -> {
-                    Toast.makeText(this, "¡Perfil próximamente!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

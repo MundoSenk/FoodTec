@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/foodtec_naranja"
+    android:background="@color/foodtec_azul"
     tools:context=".ui.PedidoEnCursoActivity">
 
     <View
         android:id="@+id/viewTopSection"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/shape_top_blue_with_pattern"
+        android:background="@drawable/shape_top_orange_with_pattern"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
