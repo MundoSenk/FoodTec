@@ -154,18 +154,12 @@ class SearchActivity : AppCompatActivity() {
         // EL LISTENER DEL TECLADO (con Debouncer)
         etBuscador.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
-
             // Este se activa CADA VEZ que el vato teclea
             override fun afterTextChanged(s: Editable?) {
-
                 // EL "ANTI-REBOTE"
-
                 // Cancelamos cualquier búsqueda anterior que estuviera en cola
                 // (Mata el cronómetro viejo)
                 debounceRunnable?.let { debounceHandler.removeCallbacks(it) }

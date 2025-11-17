@@ -127,11 +127,17 @@ class LoginActivity : AppCompatActivity() {
                             // ¡Checamos que el PHP SÍ nos mandó los datos!
                             if (loginRespuesta.usuario != null && loginRespuesta.nombre != null) {
 
-                                // ¡¡VOLVIMOS A METER AL "ARCHIVERO"!!
+                                // --- ¡¡AQUÍ ESTÁ EL CAMBIO, GALLOTE!! ---
+
+                                // ¡¡Sacamos el 'es_foodter', si es nulo, asumimos 'false' (antibala)!!
+                                val esFoodter = loginRespuesta.es_foodter ?: false
+
+                                // ¡¡VOLVIMOS A METER AL "ARCHIVERO"!! (¡¡La versión "gorda"!!)
                                 SessionManager.saveUser(
                                     this@LoginActivity,
-                                    loginRespuesta.usuario!!, // ¡El '!!' pa' que no chille!
-                                    loginRespuesta.nombre!!   // ¡El '!!' pa' que no chille!
+                                    loginRespuesta.usuario!!,   // ¡El '!!' pa' que no chille!
+                                    loginRespuesta.nombre!!,  // ¡El '!!' pa' que no chille!
+                                    esFoodter                 // ¡¡EL NUEVO DATO!!
                                 )
 
                                 Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()

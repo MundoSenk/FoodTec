@@ -35,7 +35,7 @@ class NewPasswordActivity : AppCompatActivity() {
             insets
         }
 
-        // 1. OBTENER EL TOKEN DEL DEEP LINK
+        //  OBTENER EL TOKEN DEL DEEP LINK
         val data = intent?.data
         val token = data?.getQueryParameter("token") // ¡Esta es la buena!
 
@@ -45,7 +45,7 @@ class NewPasswordActivity : AppCompatActivity() {
             return
         }
 
-        // 2. REFERENCIAS UI
+        //  REFERENCIAS UI
         val etNuevaPassword: EditText = findViewById(R.id.etNuevaPassword)
         val etConfirmarPassword: EditText = findViewById(R.id.etConfirmarPassword)
         val btnGuardar: Button = findViewById(R.id.btnGuardarPassword)
@@ -85,11 +85,16 @@ class NewPasswordActivity : AppCompatActivity() {
                                 // ¡Checamos que el PHP SÍ nos mandó los datos!
                                 if (r.usuario != null && r.nombre != null) {
 
+                                    // --- ¡¡EL CAMBIO ESTÁ AQUÍ, HERMANO!! ---
+
+                                    // ¡Asumimos 'false' porque el PHP de reset no nos manda ese dato!
+                                    val esFoodter = r.es_foodter ?: false // <-- ¡ANTIBALA!
 
                                     SessionManager.saveUser(
                                         this@NewPasswordActivity,
                                         r.usuario,
-                                        r.nombre
+                                        r.nombre,
+                                        esFoodter // ¡¡Y LE PASAMOS EL DATO!!
                                     )
 
 
@@ -98,7 +103,7 @@ class NewPasswordActivity : AppCompatActivity() {
                                     finishAffinity() // ¡KILL A TODO!
 
                                 } else {
-                                   ///fue un exito pero no mando los datos
+                                    ///fue un exito pero no mando los datos
                                     Toast.makeText(this@NewPasswordActivity, "¡Contraseña cambiada! Pero no pudimos iniciar sesión.", Toast.LENGTH_LONG).show()
                                     val intent = Intent(this@NewPasswordActivity, LoginActivity::class.java)
                                     startActivity(intent)

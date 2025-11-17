@@ -6,5 +6,6 @@ data class LoginResponse(
     val mensaje: String,
     val nombre: String?,
     val usuario: String?,
-    val correo: String?
+    val correo: String?,
+    val es_foodter: Boolean?
 )

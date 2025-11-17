@@ -87,4 +87,15 @@ interface ApiService {
         @Field("termino_busqueda") termino: String
     ): Call<MenuResponse> // REUTILIZAMOS EL 'MenuResponse'!!
 
+
+    @FormUrlEncoded
+    @POST("habilitarFoodter.php")
+    fun habilitarFoodter(
+        @Field("usuario_id") usuarioId: String,
+        @Field("amabilidad") amabilidad: Int,
+        @Field("interactuar") interactuar: Int,
+        @Field("acepta_propinas") aceptaPropinas: Int, // 1 para SÍ, 0 para NO
+        @Field("porque_texto") porqueTexto: String
+    ): Call<CrearPedidoResponse>
+
 }

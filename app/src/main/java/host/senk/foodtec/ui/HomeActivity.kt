@@ -8,6 +8,7 @@ import android.widget.Toast
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView // <-- ¡¡EL ÚNICO IMPORT NUEVO!!
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,29 +45,63 @@ class HomeActivity : AppCompatActivity() {
         usuarioLogueado = SessionManager.getUserId(this) ?: "invitado_error"
         nombreDelVato = SessionManager.getUserName(this) ?: "Usuario"
 
-        // 2. JALAMOS EL SALUDO
+        // JALAMOS EL SALUDO
         val tvBienvenido: TextView = findViewById(R.id.tvBienvenido)
         tvBienvenido.text = "Bienvenido, $nombreDelVato"
 
-        // 3. AMARRAMOS LOS RECYCLERVIEWS (¡Los "michis"!)
+        // AMARRAMOS LOS RECYCLERVIEWS (¡Los "michis"!)
         val rvComida: RecyclerView = findViewById(R.id.rvComida)
         val rvBebidas: RecyclerView = findViewById(R.id.rvBebidas)
         rvComida.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvBebidas.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        // 4. ¡JALAMOS LOS DATOS!
+        // ¡JALAMOS LOS DATOS!
         cargarMenu("Comida", rvComida)
         cargarMenu("Bebida", rvBebidas)
 
 
 
 
+        // AMARRAMOS LOS BOTONES DE MÓDULOS (Los cuadros de tu Figma)
+               val btnModuloFoodter: CardView = findViewById(R.id.btnOpcion1) // El naranja
+        val btnModuloObjetos: CardView = findViewById(R.id.btnOpcion2) // El azul
+
+        // EL OÍDO PA'L BOTÓN NARANJA (FOODTERS)
+        btnModuloFoodter.setOnClickListener {
+            // ¡Checamos el "archivero" pa' ver si ya es Foodter!
+            if (SessionManager.isFoodter(this)) {
+                // ¡YA ES FOODTER! ¡A la pantalla de chamba!
+                Log.d("HomeActivity", "El usuario SÍ es Foodter. Llevando a HomeFooterActivity.")
+
+                Toast.makeText(this, "¡Ya eres Foodter! (Abriendo HomeFooter...)", Toast.LENGTH_SHORT).show()
+                // val intent = Intent(this, HomeFooterActivity::class.java)
+                // startActivity(intent)
+            } else {
+                // ES NUEVO! ¡Al formulario de registro!
+                Log.d("HomeActivity", "El usuario NO es Foodter. Llevando a SignupFoodterActivity.")
+
+                Toast.makeText(this, "¡Aún no eres Foodter! (Abriendo Registro...)", Toast.LENGTH_SHORT).show()
+                 val intent = Intent(this, SignupFoodterActivity::class.java)
+                 startActivity(intent)
+            }
+        }
+
+        // El oído pa'l botón azul (Objetos Perdidos)
+        btnModuloObjetos.setOnClickListener {
+            // Pa'l futuro! (La 3/3 parte)
+            Toast.makeText(this, "¡Módulo de Objetos Perdidos próximamente!", Toast. LENGTH_SHORT).show()
+        }
+
+        //
+
+
+        // Este es tu código del buscador
         val etBuscadorFalso: EditText = findViewById(R.id.etBuscador)
         etBuscadorFalso.isFocusable = false
         etBuscadorFalso.isClickable = true
 
         etBuscadorFalso.setOnClickListener {
-            // ¡¡Abrimos la Activity de Búsqueda!!
+            // Abrimos la Activity de Búsqueda
             val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
@@ -76,6 +111,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Le decimos que "Inicio" está seleccionado
         bottomNavView.selectedItemId = R.id.nav_home
+
 
         bottomNavView.setOnItemSelectedListener {
             when (it.itemId) {
@@ -116,10 +152,10 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
-    } // ¡Fin del onCreate!
+    }
 
 
-
+    // función cargarMenu i
     private fun cargarMenu(categoria: String, recyclerView: RecyclerView) {
         val call = RetrofitClient.apiService.obtenerMenu(categoria)
         call.enqueue(object : Callback<MenuResponse> {
@@ -131,11 +167,11 @@ class HomeActivity : AppCompatActivity() {
                         menuRespuesta.menu?.let { listaDeMenu ->
 
 
-                            // (Aquí es donde le volvemos a pasar el chisme al DetailsActivity)
+                            // Aquí es donde le volvemos a pasar el chisme al DetailsActivity
                             val listenerDelClick = { comidaItem: ComidaItem ->
                                 val intent = Intent(this@HomeActivity, DetailsActivity::class.java)
 
-                                // ¡Le mandamos el productp!
+                                // Le mandamos el productp
                                 intent.putExtra("COMIDA_SELECCIONADA", comidaItem)
 
 
@@ -145,7 +181,7 @@ class HomeActivity : AppCompatActivity() {
                                 startActivity(intent)
                             }
 
-                            // ¡Armamos el Adapter con la lista Y el listener!
+                            // Armamos el Adapter con la lista Y el listener
                             val adapter = MenuAdapter(listaDeMenu, listenerDelClick)
                             recyclerView.adapter = adapter
 
@@ -172,6 +208,4 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
-
-
 }

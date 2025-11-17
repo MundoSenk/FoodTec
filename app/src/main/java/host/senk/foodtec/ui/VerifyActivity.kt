@@ -80,22 +80,23 @@ class VerifyActivity : AppCompatActivity() {
                             // ¡Checamos que el PHP SÍ nos mandó los datos!
                             if (resp.usuario != null && resp.nombre != null) {
 
-                                // ¡A "GUARDAR" AL VATO!
+                                // A "GUARDAR" AL VATO (La versión "gorda" )
                                 SessionManager.saveUser(
                                     this@VerifyActivity,
                                     resp.usuario,
-                                    resp.nombre
+                                    resp.nombre,
+                                    false // ¡Asumimos 'false' pq se acaba de registrar!
                                 )
 
                                 Toast.makeText(this@VerifyActivity, "¡Cuenta activada! ¡Bienvenido, ${resp.nombre}!", Toast.LENGTH_LONG).show()
 
-                                // ¡Ahora sí, al Home!
+                                // Ahora sí, al Home
                                 val intent = Intent(this@VerifyActivity, HomeActivity::class.java)
                                 startActivity(intent)
                                 finishAffinity() // KILL A LOGIN Y REGISTRO
 
                             } else {
-                                // ¡El PHP dijo "exito" pero no mandó los datos! ¡Qué pendejo!
+                                // El PHP dijo "exito" pero no mandó los datos!
                                 Toast.makeText(this@VerifyActivity, "¡Verificado! Pero hubo un error al jalar tus datos.", Toast.LENGTH_LONG).show()
                                 val intent = Intent(this@VerifyActivity, LoginActivity::class.java)
                                 startActivity(intent)
@@ -103,17 +104,17 @@ class VerifyActivity : AppCompatActivity() {
                             }
 
                         } else {
-                            // SI ESTABA MAL (Código incorrecto, etc.)
+
                             Toast.makeText(this@VerifyActivity, "Error: ${resp.mensaje}", Toast.LENGTH_LONG).show()
                         }
 
-                    } else { // <-- ¡¡ESTA LLAVE CIERRA el 'if (response.isSuccessful...)'!!
+                    } else {
 
                         // COMO PUEDE PASAR SIEMPRE Y MUERE EL SERVER
                         Toast.makeText(this@VerifyActivity, "Error del server: ${response.code()}", Toast.LENGTH_LONG).show()
                         Log.e("API_ERROR_VERIFY", "El server se murió: ${response.errorBody()?.string()}")
                     }
-                } // ¡¡AQUÍ CIERRA EL 'onResponse'!!
+                }
 
                 override fun onFailure(call: Call<RegistroResponse>, t: Throwable) {
                     // S NO HAY CONEXION JJA
