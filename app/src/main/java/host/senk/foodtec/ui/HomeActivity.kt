@@ -84,6 +84,12 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.nav_search -> {
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
                 R.id.nav_pedidos -> {
                     // ¡¡EL "BOTÓN INTELIGENTE"!!
                     if (CartManager.getItems().isNotEmpty()) {

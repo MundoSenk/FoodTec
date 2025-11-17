@@ -1,5 +1,8 @@
 package host.senk.foodtec.ui
 
+import android.os.Handler
+import android.os.Looper
+
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,8 +14,10 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import host.senk.foodtec.R
 import host.senk.foodtec.adapter.MenuAdapter // ¡¡REUTILIZAMOS EL ADAPTER!!
 import host.senk.foodtec.api.ApiService
@@ -24,6 +29,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+
 class SearchActivity : AppCompatActivity() {
 
     // --- Vistas ---
@@ -32,10 +39,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var rvResultados: RecyclerView
     private lateinit var tvNoResultados: TextView
 
+    private lateinit var bottomNavView: BottomNavigationView
+
     // --- Lógica ---
     private lateinit var menuAdapter: MenuAdapter
     private val listaDeResultados = mutableListOf<ComidaItem>()
     private var usuarioLogueado: String = "invitado" // Pa'l Details
+
+    private val debounceHandler: Handler = Handler(Looper.getMainLooper())
+    private var debounceRunnable: Runnable? = null
+    private val DEBOUNCE_DELAY_MS: Long = 350
 
     // API
     private val apiService: ApiService by lazy {
@@ -56,6 +69,8 @@ class SearchActivity : AppCompatActivity() {
         // Configuramos el RecyclerView (¡REUTILIZANDO!)
         setupRecyclerView()
 
+        setupBottomNav()
+
         // Configuramos los Listeners (¡El del "tache" y el del "teclado"!)
         setupListeners()
     }
@@ -65,6 +80,7 @@ class SearchActivity : AppCompatActivity() {
         etBuscador = findViewById(R.id.etBuscadorReal)
         rvResultados = findViewById(R.id.rvResultadosBusqueda)
         tvNoResultados = findViewById(R.id.tvNoResultados)
+        bottomNavView = findViewById(R.id.bottomNavViewSearch)
     }
 
     private fun setupRecyclerView() {
@@ -83,17 +99,59 @@ class SearchActivity : AppCompatActivity() {
         menuAdapter = MenuAdapter(listaDeResultados, listenerDelClick)
 
         // Lo conectamos al RecyclerView
-        rvResultados.layoutManager = LinearLayoutManager(this) // ¡Vertical!
+        rvResultados.layoutManager = GridLayoutManager(this, 2) // ¡Vertical!
         rvResultados.adapter = menuAdapter
     }
 
+
+
+    private fun setupBottomNav() {
+        // ¡Le decimos que "Buscar" está seleccionado!
+        bottomNavView.selectedItemId = R.id.nav_search
+
+        bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_search -> true
+
+                R.id.nav_pedidos -> {
+                    val intent = Intent(this, PedidosActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_perfil -> {
+                    Toast.makeText(this, "¡Perfil próximamente!", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun setupListeners() {
-        // Botón de Regresar
+        // Botón de Regresar Tache
         btnRegresar.setOnClickListener {
-            finish()
+            finish() // Cierra esta pantalla
         }
 
-        // EL LISTENER DEL TECLADO
+        //  Definimos la tarea
+        // Esto es lo que se ejecutará DESPUÉS de que el vato deje de teclear
+        debounceRunnable = Runnable {
+            // Sacamos el texto MÁS RECIENTE del EditText
+            val termino = etBuscador.text.toString().trim()
+
+            if (termino.length > 1) {
+                ejecutarBusqueda(termino)
+            }
+        }
+
+        // EL LISTENER DEL TECLADO (con Debouncer)
         etBuscador.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -103,18 +161,27 @@ class SearchActivity : AppCompatActivity() {
 
             }
 
-            //Este es el bueno! Se activa DESPUÉS de que el vato escribió
+            // Este se activa CADA VEZ que el vato teclea
             override fun afterTextChanged(s: Editable?) {
+
+                // EL "ANTI-REBOTE"
+
+                // Cancelamos cualquier búsqueda anterior que estuviera en cola
+                // (Mata el cronómetro viejo)
+                debounceRunnable?.let { debounceHandler.removeCallbacks(it) }
+
+                // (ógica para limpiar la lista si borra todo
                 val termino = s.toString().trim()
-
-                // ¡Para no spamear al server si está vacío o muy corto!
-                if (termino.length > 1) {
-                    ejecutarBusqueda(termino)
-                } else if (termino.isEmpty()) {
-
+                if (termino.isEmpty()) {
                     listaDeResultados.clear()
                     menuAdapter.notifyDataSetChanged()
                     tvNoResultados.visibility = View.GONE
+                }
+                // Ponemos la NUEVA búsqueda en la cola con un retraso
+                // (Inicia un cronómetro nuevo)
+                // Usamos el 'runnable' que definimos arriba
+                else if (termino.length > 1) {
+                    debounceRunnable?.let { debounceHandler.postDelayed(it, DEBOUNCE_DELAY_MS) }
                 }
             }
         })

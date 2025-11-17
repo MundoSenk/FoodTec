@@ -102,13 +102,13 @@ class CartModalFragment : BottomSheetDialogFragment() {
 
         // ---  EL "LISTENER" PA' BORRAR
         val listenerPaBorrar = { item: CartItem ->
-            CartManager.removeItem(item) // ¡Lo borramos del "archivero"!
-            refreshCartUI() // ¡¡Y "repintamos" todo de putazo!!
+            CartManager.removeItem(item) // Lo borramos del "archivero"
+            refreshCartUI() // Y "repintamos" todo de putazo
         }
 
         // CONECTAMOS EL RECYCLERVIEW
         rvItems.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = CartAdapter(itemsDelCarrito, listenerPaBorrar) // ¡Le pasamos los items Y el listener!
+        val adapter = CartAdapter(itemsDelCarrito, listenerPaBorrar) // Le pasamos los items Y el listener
         rvItems.adapter = adapter // ¡Pum!
     }
 

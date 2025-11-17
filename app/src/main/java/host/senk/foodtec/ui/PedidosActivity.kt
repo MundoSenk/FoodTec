@@ -125,7 +125,7 @@ class PedidosActivity : AppCompatActivity() {
         }
     }
 
-    // Esta función ya estaba del paso anterior
+
     private fun setupBottomNav() {
         bottomNavView.selectedItemId = R.id.nav_pedidos
         bottomNavView.setOnItemSelectedListener { item ->
@@ -136,6 +136,14 @@ class PedidosActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+
+                R.id.nav_search -> {
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+
                 R.id.nav_pedidos -> true // Ya estamos aquí
                 R.id.nav_perfil -> {
                     Toast.makeText(this, "¡Perfil próximamente!", Toast.LENGTH_SHORT).show()

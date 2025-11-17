@@ -7,10 +7,13 @@
         android:title="Inicio"/>
 
     <item
+        android:id="@+id/nav_search"
+        android:icon="@android:drawable/ic_menu_search" android:title="Buscar"/>
+
+    <item
         android:id="@+id/nav_pedidos"
         android:icon="@android:drawable/ic_menu_agenda"
         android:title="Pedidos"/>
-
 
     <item
         android:id="@+id/nav_perfil"
