@@ -40,25 +40,32 @@ class PedidosDisponiblesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pedido = listaDePedidos[position]
 
-        // Pintamos los datos (con "antibala" por si las moscas)
+        // ¡Pintamos los datos!
         holder.tvPedidoId.text = "Pedido: #${pedido.id_pedido}"
         holder.tvCliente.text = "Para: ${pedido.nombre_cliente ?: "N/A"}"
         holder.tvLugar.text = "Lugar: ${pedido.lugar_entrega ?: "N/A"}"
         holder.tvTotal.text = "$${pedido.costo_final ?: "0.00"}"
-
         holder.rbValoracion.rating = (pedido.valoracion_cliente ?: 3.0).toFloat()
 
-        //Armamos el resumen de los detalles -
-        val resumen = pedido.detalles?.joinToString(", ") { detalle ->
-            // ej. "2x Hamburguesa"
-            "${detalle?.cantidad ?: 0}x ${detalle?.nombre_alimento ?: "?"}"
-        } ?: "Sin detalles"
+        // Usamos 'filterNotNull Y los nombres nuevos!
+        val resumen = pedido.detalles
+            ?.filterNotNull() // Filtramos los "fantasmas" (por si acaso)
+            ?.joinToString(", ") { detalle ->
+                // Usamos 'detalle.nombre' en lugar de detalle.nombre_alimento
+                "${detalle.cantidad ?: 0}x ${detalle.nombre ?: "?"}"
+            } ?: "Sin detalles"
 
-        holder.tvResumen.text = resumen
+        //Validamos que el resumen no esté vacío
+        if (resumen.isEmpty()) {
+            holder.tvResumen.text = "Error al cargar detalles"
+        } else {
+            holder.tvResumen.text = resumen
+        }
 
-        // ¡¡"Alambramos" el botón de Aceptar!!
+        // Alambramos" el botón de Aceptar
         holder.btnAceptar.setOnClickListener {
-            onAceptarClicked(pedido) // ¡Le "gritamos" a la Activity!
+            onAceptarClicked(pedido)
         }
     }
+
 }

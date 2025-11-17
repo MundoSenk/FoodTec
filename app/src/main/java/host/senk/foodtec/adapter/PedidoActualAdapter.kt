@@ -48,7 +48,7 @@ class PedidoActualAdapter(
 
         // ¡Pintamos los datos (con null checks!)
         // Si el nombre es nulo, ponemos un placeholder
-        holder.tvNombre.text = detalle.nombre_alimento ?: "Producto no disponible"
+        holder.tvNombre.text = detalle.nombre ?: "Producto no disponible"
         holder.tvCantidad.text = "Cantidad: x${cantidad}"
         holder.tvPrecioTotal.text = "$${String.format("%.2f", precioTotalRenglon)}"
 
@@ -62,7 +62,7 @@ class PedidoActualAdapter(
 
         // ¡Usamos Glide (con null check!)
         Glide.with(holder.itemView.context)
-            .load(detalle.imagen ?: "") // Si la imagen es null, carga un string vacío (mostrará el 'error')
+            .load(detalle.imagen_url ?: "") // Si la imagen es null, carga un string vacío (mostrará el 'error')
             .placeholder(R.drawable.logo) // Imagen mientras carga
             .error(R.drawable.logo) // Imagen si truena
             .into(holder.ivImagen)
