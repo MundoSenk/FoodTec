@@ -14,7 +14,8 @@ object SessionManager {
     private const val KEY_IS_LOGGED_IN = "is_logged_in"
     private const val KEY_IS_FOODTER = "is_foodter"
     private const val KEY_VAL_CLIENTE = "valoracion_cliente"
-    private const val KEY_VAL_FOODTER = "valoracion_foodter" 
+    private const val KEY_VAL_FOODTER = "valoracion_foodter"
+    private const val KEY_AVATAR_ID = "avatar_id"
 
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -23,7 +24,8 @@ object SessionManager {
     /**
      * ¡Función "gorda" v3.0!
      */
-    fun saveUser(context: Context, usuarioId: String, nombre: String, esFoodter: Boolean, valCliente: Float, valFoodter: Float) {
+    fun saveUser(context: Context, usuarioId: String, nombre: String, esFoodter: Boolean, valCliente: Float, valFoodter: Float,
+                 avatarId: String) {
         val editor = getPrefs(context).edit()
         editor.putString(KEY_USER_ID, usuarioId)
         editor.putString(KEY_USER_NAME, nombre)
@@ -31,6 +33,7 @@ object SessionManager {
         editor.putBoolean(KEY_IS_FOODTER, esFoodter)
         editor.putFloat(KEY_VAL_CLIENTE, valCliente)
         editor.putFloat(KEY_VAL_FOODTER, valFoodter)
+        editor.putString(KEY_AVATAR_ID, avatarId)
         editor.apply()
     }
 
@@ -55,6 +58,16 @@ object SessionManager {
     }
     fun getUserName(context: Context): String? {
         return getPrefs(context).getString(KEY_USER_NAME, null)
+    }
+
+    fun getAvatarId(context: Context): String {
+        return getPrefs(context).getString(KEY_AVATAR_ID, "avatar_default") ?: "avatar_default"
+    }
+
+    fun setAvatarId(context: Context, avatarId: String) {
+        val editor = getPrefs(context).edit()
+        editor.putString(KEY_AVATAR_ID, avatarId)
+        editor.apply()
     }
 
     /**

@@ -9,5 +9,6 @@ data class LoginResponse(
     val correo: String?,
     val es_foodter: Boolean?,
     val valoracion_cliente: Double?,
-    val valoracion_foodter: Double?
+    val valoracion_foodter: Double?,
+    val avatar_id: String?
 )

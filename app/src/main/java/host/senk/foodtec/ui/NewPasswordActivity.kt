@@ -94,13 +94,16 @@ class NewPasswordActivity : AppCompatActivity() {
                                     val valCliente = (r.valoracion_cliente ?: 3.0).toFloat()
                                     val valFoodter = (r.valoracion_foodter ?: 3.0).toFloat()
 
+                                    val avatarId = r.avatar_id ?: "avatar_default"
+
                                     SessionManager.saveUser(
                                         this@NewPasswordActivity,
                                         r.usuario,
                                         r.nombre,
                                         esFoodter,
                                         valCliente, // ¡¡DATO NUEVO!!
-                                        valFoodter  // ¡¡DATO NUEVO!!
+                                        valFoodter,  // ¡¡DATO NUEVO!!
+                                        avatarId
                                     )
 
 

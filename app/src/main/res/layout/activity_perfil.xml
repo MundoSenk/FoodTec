@@ -7,15 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/foodtec_naranja"
-    tools:context=".ui.PerfilActivity"> <View
-    android:id="@+id/viewTopSection"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:background="@drawable/shape_top_blue_with_pattern"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintHeight_percent="0.25" />
+    tools:context=".ui.PerfilActivity">
+
+    <View
+        android:id="@+id/viewTopSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_top_blue_with_pattern"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.25" />
 
     <TextView
         android:id="@+id/tvTituloPerfil"
@@ -50,15 +52,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:gravity="center_horizontal" android:padding="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mi Valoración (Cliente)"
-                android:fontFamily="@font/lilita_one_regular"
-                android:textColor="@color/black"
-                android:textSize="22sp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/ivAvatar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="8dp"
+                android:scaleType="centerCrop"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@color/foodtec_naranja"
+                tools:src="@drawable/avatar_default" /> <Button
+            android:id="@+id/btnCambiarAvatar"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cambiar Avatar"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/foodtec_naranja" /> <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mi Valoración (Cliente)"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/black"
+            android:textSize="22sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package host.senk.foodtec.api
 
+import host.senk.foodtec.model.AvatarRequest
 import host.senk.foodtec.model.CrearPedidoResponse
 import host.senk.foodtec.model.PedidoRequest
 import host.senk.foodtec.model.LoginResponse
@@ -137,5 +138,11 @@ interface ApiService {
     fun obtenerMiPedidoActivo(
         @Field("foodter_id") foodterId: String
     ): Call<PedidoUnicoResponse>
+
+
+    @POST("actualizarAvatar.php")
+    fun actualizarAvatar(
+        @Body request: AvatarRequest
+    ): Call<CrearPedidoResponse>
 
 }

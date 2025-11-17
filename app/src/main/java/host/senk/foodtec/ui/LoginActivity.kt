@@ -136,6 +136,8 @@ class LoginActivity : AppCompatActivity() {
                                 val valCliente = (loginRespuesta.valoracion_cliente ?: 3.0).toFloat()
                                 val valFoodter = (loginRespuesta.valoracion_foodter ?: 3.0).toFloat()
 
+                                val avatarId = loginRespuesta.avatar_id ?: "avatar_default"
+
                                 // ¡¡VOLVIMOS A METER AL "ARCHIVERO"!! (¡¡La versión "MAMALONA" v3.0!!)
                                 SessionManager.saveUser(
                                     this@LoginActivity,
@@ -143,7 +145,9 @@ class LoginActivity : AppCompatActivity() {
                                     loginRespuesta.nombre!!,  // ¡El '!!' pa' que no chille!
                                     esFoodter,                // ¡El dato v2.0!
                                     valCliente,               // ¡¡LA VALORACIÓN 1!!
-                                    valFoodter                // ¡¡LA VALORACIÓN 2!!
+                                    valFoodter,
+                                    avatarId                 // ¡¡LA VALORACIÓN 2!!
+
                                 )
 
                                 Toast.makeText(this@LoginActivity, loginRespuesta.mensaje, Toast.LENGTH_LONG).show()

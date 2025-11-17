@@ -88,7 +88,8 @@ class VerifyActivity : AppCompatActivity() {
                                     resp.nombre,
                                     false, // ¡Asumimos 'false' pq se acaba de registrar!
                                     3.0f,  // ¡Valoración Cliente (default)!
-                                    3.0f   // ¡Valoración Foodter (default)!
+                                    3.0f,   // ¡Valoración Foodter (default)!
+                                    "avatar_default"
                                 )
 
                                 Toast.makeText(this@VerifyActivity, "¡Cuenta activada! ¡Bienvenido, ${resp.nombre}!", Toast.LENGTH_LONG).show()

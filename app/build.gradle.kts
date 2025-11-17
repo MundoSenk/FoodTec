@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
+
 }
 
 android {
@@ -58,6 +59,9 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     ///// GLIDE para las imagenes en la nube
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     ksp("com.github.bumptech.glide:ksp:4.16.0")
 
