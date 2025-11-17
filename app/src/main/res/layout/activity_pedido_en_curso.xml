@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/foodtec_naranja"
+    tools:context=".ui.PedidoEnCursoActivity">
+
+    <View
+        android:id="@+id/viewTopSection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_top_blue_with_pattern"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.25" />
+
+    <TextView
+        android:id="@+id/tvTituloPedidoCurso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        android:fontFamily="@font/lilita_one_regular"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pedido #37" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:background="@drawable/shape_home_card"
+        android:elevation="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Entregar a:"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/black"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/tvClienteNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:text="Leo Ortiz"/>
+
+        <TextView
+            android:id="@+id/tvClienteLugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"
+            tools:text="Lugar: Edificio A"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resumen del Pedido:"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:layout_marginBottom="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/llDetallesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actualizar Estatus:"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnMarcarEnCamino"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="¡EN CAMINO!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="18sp"
+            app:cornerRadius="16dp" android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnMarcarEntregado"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="MARCAR COMO ENTREGADO"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="18sp"
+            app:cornerRadius="16dp"
+            android:textColor="?attr/colorPrimary"/>
+    </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

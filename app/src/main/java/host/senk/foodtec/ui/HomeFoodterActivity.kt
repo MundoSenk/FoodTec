@@ -21,6 +21,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 import host.senk.foodtec.manager.SessionManager
+import host.senk.foodtec.model.CrearPedidoResponse
+
+
 
 class HomeFoodterActivity : AppCompatActivity() {
 
@@ -61,23 +64,73 @@ class HomeFoodterActivity : AppCompatActivity() {
         tvNoPedidos = findViewById(R.id.tvNoPedidosDisponibles)
     }
 
+    /**
+     * ¡¡LA FUNCIÓN "ANTI-RETURN" (v3.0)!!
+     */
     private fun setupRecyclerView() {
-        // ¡El "oído" del botón Aceptar!
+        // El "oído" del botón Aceptar
         val listenerAceptar = { pedido: Pedido ->
-            // ¡Aquí irá la lógica mamalona de aceptar el pedido!
-            // (Por ahora, un Toast)
-            Toast.makeText(this, "¡Aceptando pedido #${pedido.id_pedido}!", Toast.LENGTH_SHORT).show()
 
-            // (Futuro: Llamar a un PHP 'aceptarPedido.php(pedido.id_pedido, foodter_id)')
-            // (Futuro: Quitar el item de la lista y refrescar)
+            // Jalamos el ID del Foodter (de nosotros mismos)
+            val foodterId = SessionManager.getUserId(this)
+
+            // AQUÍ ESTÁ EL ARREGLO (IF/ELSE)
+            if (foodterId == null) {
+                //  Si el Foodter ID es nulo, mostramos error y NO HACEMOS NADA MÁS
+                Toast.makeText(this, "Error fatal: No se te pudo identificar", Toast.LENGTH_LONG).show()
+            } else {
+                //  El Foodter ID SÍ existe. ¡Checamos el Pedido ID!
+                val pedidoId = pedido.id_pedido // ¡El logcat dice que esto es Int? (nulable)!
+
+                if (pedidoId == null) {
+                    // Si el Pedido ID es nulo, mostramos error y NO HACEMOS NADA MÁS
+                    Toast.makeText(this, "Error: Este pedido tiene un ID inválido", Toast.LENGTH_SHORT).show()
+                } else {
+
+                    // -ÉXITO!! ¡LOS DOS IDs EXISTEN! ¡A LA API!
+
+                    apiService.aceptarPedido(foodterId, pedidoId).enqueue(object: Callback<CrearPedidoResponse> {
+                        override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
+                            val resp = response.body()
+                            if (response.isSuccessful && resp?.status == "exito") {
+
+                                // ÉXITO YA ES NUESTRO
+                                Toast.makeText(this@HomeFoodterActivity, "¡Pedido #${pedido.id_pedido} aceptado!", Toast.LENGTH_SHORT).show()
+
+                                // Abrimos la nueva pantalla "Pedido en Curso"
+                                val intent = Intent(this@HomeFoodterActivity, PedidoEnCursoActivity::class.java)
+
+                                // 2. Le aventamos el pedido completo
+                                intent.putExtra("PEDIDO_ACEPTADO", pedido)
+                                startActivity(intent)
+
+                                // Refrescamos la lista de chamba
+                                cargarPedidosDisponibles()
+
+                            } else {
+                                // El PHP tronó o más probable nos lo ganaron
+                                val errorMsg = resp?.mensaje ?: "Error del servidor"
+                                Toast.makeText(this@HomeFoodterActivity, errorMsg, Toast.LENGTH_LONG).show()
+
+                                // Refrescamos la lista pa' que desaparezca el que nos ganaron!
+                                cargarPedidosDisponibles()
+                            }
+                        }
+
+                        override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
+                            Toast.makeText(this@HomeFoodterActivity, "Error de Red: ${t.message}", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                }
+            }
         }
 
-        // Creamos el nuevo adapter
+        // Creamos el nuevo adapter! (Esta parte es igual
         pedidosAdapter = PedidosDisponiblesAdapter(listaDePedidos, listenerAceptar)
-
         rvPedidosDisponibles.layoutManager = LinearLayoutManager(this)
         rvPedidosDisponibles.adapter = pedidosAdapter
     }
+
 
     private fun setupBottomNav() {
 

@@ -104,4 +104,21 @@ interface ApiService {
         @Field("foodter_id") foodterId: String //
     ): Call<PedidosResponse>
 
+
+    @FormUrlEncoded
+    @POST("aceptarPedido.php")
+    fun aceptarPedido(
+        @Field("foodter_id") foodterId: String,
+        @Field("pedido_id") pedidoId: Int
+    ): Call<CrearPedidoResponse>
+
+
+    @FormUrlEncoded
+    @POST("actualizarEstatusPedido.php")
+    fun actualizarEstatusPedido(
+        @Field("foodter_id") foodterId: String,
+        @Field("pedido_id") pedidoId: Int,
+        @Field("nuevo_estatus") nuevoEstatus: String // "En camino" o "Entregado"
+    ): Call<CrearPedidoResponse>
+
 }
