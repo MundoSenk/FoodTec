@@ -63,20 +63,45 @@
             app:tint="@color/foodtec_naranja"
             android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvFoodterPedidoId"/> <TextView
-        android:id="@+id/tvFoodterLugar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_alternates_semibold"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@+id/iconLugar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iconLugar"
-        app:layout_constraintBottom_toBottomOf="@+id/iconLugar"
-        tools:text="Lugar: Rectoría" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFoodterPedidoId"/>
 
+        <TextView
+            android:id="@+id/tvFoodterLugar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iconLugar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iconLugar"
+            app:layout_constraintBottom_toBottomOf="@+id/iconLugar"
+            tools:text="Lugar: Rectoría" />
+
+        <ImageView
+            android:id="@+id/iconPago"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_gallery"
+            app:tint="@color/foodtec_naranja"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iconLugar"/>
+
+        <TextView
+            android:id="@+id/tvFoodterMetodo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iconPago"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iconPago"
+            app:layout_constraintBottom_toBottomOf="@+id/iconPago"
+            tools:text="Pago: Efectivo" />
         <ImageView
             android:id="@+id/iconItems"
             android:layout_width="20dp"
@@ -85,20 +110,18 @@
             app:tint="@color/foodtec_naranja"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iconLugar"/>
-
-        <TextView
-            android:id="@+id/tvFoodterResumen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_alternates_semibold"
-            android:textColor="@color/dark_grey"
-            android:textSize="14sp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@+id/iconItems"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iconItems"
-            tools:text="Tacos dorados (Mixtos), COCA-COLA LATA, ..." />
+            app:layout_constraintTop_toBottomOf="@+id/iconPago"/> <TextView
+        android:id="@+id/tvFoodterResumen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_alternates_semibold"
+        android:textColor="@color/dark_grey"
+        android:textSize="14sp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/iconItems"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iconItems"
+        tools:text="1x HAMBURGUESA, 1x COCA-COLA LATA" />
 
         <TextView
             android:id="@+id/tvFoodterTotal"

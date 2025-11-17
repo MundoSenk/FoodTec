@@ -22,6 +22,7 @@ class PedidosDisponiblesAdapter(
         val tvCliente: TextView = view.findViewById(R.id.tvFoodterCliente)
         val rbValoracion: RatingBar = view.findViewById(R.id.rbValoracionCliente)
         val tvLugar: TextView = view.findViewById(R.id.tvFoodterLugar)
+        val tvMetodo: TextView = view.findViewById(R.id.tvFoodterMetodo)
         val tvResumen: TextView = view.findViewById(R.id.tvFoodterResumen)
         val tvTotal: TextView = view.findViewById(R.id.tvFoodterTotal)
         val btnAceptar: Button = view.findViewById(R.id.btnAceptarPedido)
@@ -46,6 +47,7 @@ class PedidosDisponiblesAdapter(
         holder.tvLugar.text = "Lugar: ${pedido.lugar_entrega ?: "N/A"}"
         holder.tvTotal.text = "$${pedido.costo_final ?: "0.00"}"
         holder.rbValoracion.rating = (pedido.valoracion_cliente ?: 3.0).toFloat()
+        holder.tvMetodo.text = "Pago: ${pedido.metodo_pago ?: "N/A"}"
 
         // Usamos 'filterNotNull Y los nombres nuevos!
         val resumen = pedido.detalles
