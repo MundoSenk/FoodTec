@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import host.senk.foodtec.R
@@ -19,6 +20,7 @@ class PedidosDisponiblesAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvPedidoId: TextView = view.findViewById(R.id.tvFoodterPedidoId)
         val tvCliente: TextView = view.findViewById(R.id.tvFoodterCliente)
+        val rbValoracion: RatingBar = view.findViewById(R.id.rbValoracionCliente)
         val tvLugar: TextView = view.findViewById(R.id.tvFoodterLugar)
         val tvResumen: TextView = view.findViewById(R.id.tvFoodterResumen)
         val tvTotal: TextView = view.findViewById(R.id.tvFoodterTotal)
@@ -43,6 +45,8 @@ class PedidosDisponiblesAdapter(
         holder.tvCliente.text = "Para: ${pedido.nombre_cliente ?: "N/A"}"
         holder.tvLugar.text = "Lugar: ${pedido.lugar_entrega ?: "N/A"}"
         holder.tvTotal.text = "$${pedido.costo_final ?: "0.00"}"
+
+        holder.rbValoracion.rating = (pedido.valoracion_cliente ?: 3.0).toFloat()
 
         //Armamos el resumen de los detalles -
         val resumen = pedido.detalles?.joinToString(", ") { detalle ->
