@@ -13,5 +13,6 @@ data class Pedido(
     val metodo_pago: String?,
     val estatus: String?,
     val fecha_pedido: String?,
-    val detalles: List<PedidoDetalle?>
+    val detalles: List<PedidoDetalle?>,
+    val nombre_cliente: String?
 ) : Parcelable

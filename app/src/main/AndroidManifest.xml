@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Foodtec"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.HomeFoodterActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SignupFoodterActivity"
             android:exported="false" />
         <activity

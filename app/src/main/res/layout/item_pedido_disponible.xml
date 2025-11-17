@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="12dp"
+    app:strokeColor="@color/foodtec_naranja"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvFoodterPedidoId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Pedido: #38" />
+
+        <TextView
+            android:id="@+id/tvFoodterCliente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:gravity="end"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvFoodterPedidoId"
+            app:layout_constraintTop_toTopOf="@+id/tvFoodterPedidoId"
+            app:layout_constraintBottom_toBottomOf="@+id/tvFoodterPedidoId"
+            tools:text="Para: Harold Reno" />
+
+        <ImageView
+            android:id="@+id/iconLugar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            app:tint="@color/foodtec_naranja"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFoodterPedidoId"/>
+
+        <TextView
+            android:id="@+id/tvFoodterLugar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iconLugar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iconLugar"
+            app:layout_constraintBottom_toBottomOf="@+id/iconLugar"
+            tools:text="Lugar: Rectoría" />
+
+        <ImageView
+            android:id="@+id/iconItems"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_agenda"
+            app:tint="@color/foodtec_naranja"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iconLugar"/>
+
+        <TextView
+            android:id="@+id/tvFoodterResumen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textColor="@color/dark_grey"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iconItems"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iconItems"
+            tools:text="Tacos dorados (Mixtos), COCA-COLA LATA, ..." />
+
+        <TextView
+            android:id="@+id/tvFoodterTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:fontFamily="@font/lilita_one_regular"
+            android:gravity="center_vertical"
+            android:textColor="@color/foodtec_verde"
+            android:textSize="22sp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFoodterResumen"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAceptarPedido"
+            tools:text="$85.00" />
+
+        <Button
+            android:id="@+id/btnAceptarPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Aceptar Pedido!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvFoodterResumen"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

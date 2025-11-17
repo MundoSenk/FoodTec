@@ -98,4 +98,10 @@ interface ApiService {
         @Field("porque_texto") porqueTexto: String
     ): Call<CrearPedidoResponse>
 
+    @FormUrlEncoded
+    @POST("obtenerPedidosDisponibles.php")
+    fun obtenerPedidosDisponibles(
+        @Field("foodter_id") foodterId: String //
+    ): Call<PedidosResponse>
+
 }

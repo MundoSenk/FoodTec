@@ -74,8 +74,8 @@ class HomeActivity : AppCompatActivity() {
                 Log.d("HomeActivity", "El usuario SÍ es Foodter. Llevando a HomeFooterActivity.")
 
                 Toast.makeText(this, "¡Ya eres Foodter! (Abriendo HomeFooter...)", Toast.LENGTH_SHORT).show()
-                // val intent = Intent(this, HomeFooterActivity::class.java)
-                // startActivity(intent)
+                val intent = Intent(this, HomeFoodterActivity::class.java)
+                startActivity(intent)
             } else {
                 // ES NUEVO! ¡Al formulario de registro!
                 Log.d("HomeActivity", "El usuario NO es Foodter. Llevando a SignupFoodterActivity.")
