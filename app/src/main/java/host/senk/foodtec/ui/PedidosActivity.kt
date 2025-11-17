@@ -163,7 +163,7 @@ class PedidosActivity : AppCompatActivity() {
         apiService.obtenerMisPedidos(usuarioId).enqueue(object : Callback<PedidosResponse> {
             override fun onResponse(call: Call<PedidosResponse>, response: Response<PedidosResponse>) {
                 if (response.isSuccessful) {
-                    val respuesta = response.body() 
+                    val respuesta = response.body()
 
                     // Validamos que el parseo funcionó Y que el PHP dijo "exito"
                     if (respuesta?.status == "exito" && respuesta.pedidos != null) {
@@ -203,54 +203,56 @@ class PedidosActivity : AppCompatActivity() {
 
         // BUSCAR EL PEDIDO ACTUAL
         val pedidoActual = todosLosPedidos.find {
+            // ¡¡Null check aquí también!!
             it.estatus.equals("Pendiente", ignoreCase = true) ||
                     it.estatus.equals("En preparacion", ignoreCase = true) ||
                     it.estatus.equals("En camino", ignoreCase = true)
         }
 
         if (pedidoActual != null) {
-            // SÍ HAY PEDIDO ACTUAL!
+            // SÍ HAY PEDIDO ACTUAL
             Log.d("PedidosActivity", "Pedido actual encontrado: #${pedidoActual.id_pedido}")
 
-            // Ocultamos el "No hay pedidos" y mostramos el contenedor mamalón
+            //  Ocultamos el "No hay pedidos" y mostramos el contenedor mamalón
             tvNoPedidoActual.visibility = View.GONE
             llPedidoActualContainer.visibility = View.VISIBLE
 
-            // Llenamos los TextViews de arriba y abajo
+            // Llenamos los TextViews (con null checks usando '?:' !!)
             tvPedidoActualId.text = "Pedido: #${pedidoActual.id_pedido}"
-            tvPedidoActualEstatus.text = pedidoActual.estatus.uppercase() // ¡PENDIENTE!
-            tvPedidoActualTotal.text = "$${pedidoActual.costo_final}"
-            tvPedidoActualMetodo.text = "Pago: ${pedidoActual.metodo_pago}"
-            tvPedidoActualLugar.text = "Lugar entrega: ${pedidoActual.lugar_entrega}"
+            // Si el estatus es nulo, pone "DESCONOCIDO"
+            tvPedidoActualEstatus.text = (pedidoActual.estatus ?: "Desconocido").uppercase()
+            tvPedidoActualTotal.text = "$${pedidoActual.costo_final ?: "0.00"}"
+            tvPedidoActualMetodo.text = "Pago: ${pedidoActual.metodo_pago ?: "N/A"}"
+            tvPedidoActualLugar.text = "Lugar entrega: ${pedidoActual.lugar_entrega ?: "N/A"}"
 
-            // Llenamos el RecyclerView de detalles
+            // Llenamos el RecyclerView de detalles con null check
             listaPedidoActualDetalles.clear()
-            listaPedidoActualDetalles.addAll(pedidoActual.detalles)
-            pedidoActualAdapter.notifyDataSetChanged() // ¡El adapter nuevo chambeando!
+            pedidoActual.detalles?.let { detalles -> // ¡¡Solo añade si la lista 'detalles' NO es nula!!
+                listaPedidoActualDetalles.addAll(detalles.filterNotNull())
+            }
+            pedidoActualAdapter.notifyDataSetChanged()
 
         } else {
-            // NO HAY PEDIDO ACTUAL
+            // --- NO HAY PEDIDO ACTUAL ---
             Log.d("PedidosActivity", "No se encontraron pedidos activos.")
 
-            // Ocultamos el contenedor mamalón y mostramos el "No hay pedidos"
             llPedidoActualContainer.visibility = View.GONE
-            tvNoPedidoActual.visibility = View.VISIBLE
+            tvNoPedidoActual.visibility = View.VISIBLE // ¡Mostramos el "No tienes..."!
         }
 
-        //  FILTRAR LOS PEDIDOS ANTERIORES -
+        // FILTRAR LOS PEDIDOS ANTERIORES (Null check aquí) ---
         val pedidosAnteriores = todosLosPedidos.filter {
             it.estatus.equals("Entregado", ignoreCase = true) ||
                     it.estatus.equals("Cancelado", ignoreCase = true)
         }.sortedByDescending { it.id_pedido }
 
-        //  ACTUALIZAR EL RECYCLERVIEW DE ANTERIORES
+        // ACTUALIZAR EL RECYCLERVIEW DE ANTERIORES (Esta lógica es igual) ---
         listaPedidosAnteriores.clear()
         listaPedidosAnteriores.addAll(pedidosAnteriores)
-        pedidosAdapter.notifyDataSetChanged() // El adapter viejo chambeando
+        pedidosAdapter.notifyDataSetChanged()
 
         if (pedidosAnteriores.isEmpty()) {
             Log.d("PedidosActivity", "No hay pedidos anteriores para mostrar.")
-
         }
     }
 }

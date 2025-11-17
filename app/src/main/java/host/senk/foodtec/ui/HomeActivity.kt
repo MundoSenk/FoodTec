@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -57,6 +58,19 @@ class HomeActivity : AppCompatActivity() {
         cargarMenu("Comida", rvComida)
         cargarMenu("Bebida", rvBebidas)
 
+
+
+
+        val etBuscadorFalso: EditText = findViewById(R.id.etBuscador)
+        etBuscadorFalso.isFocusable = false
+        etBuscadorFalso.isClickable = true
+
+        etBuscadorFalso.setOnClickListener {
+            // ¡¡Abrimos la Activity de Búsqueda!!
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
+        }
+
         // AQUÍ ESTÁ EL JALE DE USABILIDAD
         val bottomNavView: BottomNavigationView = findViewById(R.id.bottomNavView)
 
@@ -107,22 +121,51 @@ class HomeActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val menuRespuesta = response.body()!!
                     if (menuRespuesta.status == "exito") {
+
                         menuRespuesta.menu?.let { listaDeMenu ->
+
+
+                            // (Aquí es donde le volvemos a pasar el chisme al DetailsActivity)
                             val listenerDelClick = { comidaItem: ComidaItem ->
                                 val intent = Intent(this@HomeActivity, DetailsActivity::class.java)
+
+                                // ¡Le mandamos el productp!
                                 intent.putExtra("COMIDA_SELECCIONADA", comidaItem)
+
+
+                                // Le mandamos QUIÉN ES EL VATO
                                 intent.putExtra("USER_NAME", usuarioLogueado)
+
                                 startActivity(intent)
                             }
+
+                            // ¡Armamos el Adapter con la lista Y el listener!
                             val adapter = MenuAdapter(listaDeMenu, listenerDelClick)
                             recyclerView.adapter = adapter
+
+                        } ?: run {
+                            Toast.makeText(this@HomeActivity, "Error: El PHP dijo 'exito' pero no mandó menú", Toast.LENGTH_LONG).show()
                         }
+
+                    } else {
+                        // Si el PHP nos bateó
+                        val errorMsg = menuRespuesta.mensaje ?: "Error desconocido del PHP"
+                        Toast.makeText(this@HomeActivity, "Error del PHP: $errorMsg", Toast.LENGTH_LONG).show()
                     }
+                } else {
+                    // Si el servidor tronó
+                    Toast.makeText(this@HomeActivity, "Error del server: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    Log.e("API_ERROR_MENU", "El server se murió: ${response.errorBody()?.string()}")
                 }
             }
+
             override fun onFailure(call: Call<MenuResponse>, t: Throwable) {
+                Toast.makeText(this@HomeActivity, "No hay net, pa: ${t.message}", Toast.LENGTH_SHORT).show()
+                Log.e("NETWORK_ERROR_MENU", "Falló Retrofit", t)
                 // ¡El Toast de "No hay net"!)
             }
         })
     }
+
+
 }

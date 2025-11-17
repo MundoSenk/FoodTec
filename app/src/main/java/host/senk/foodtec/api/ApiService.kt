@@ -80,4 +80,11 @@ interface ApiService {
         @Field("usuario_id") usuarioId: String // Le mandamos el "RENO"
     ): Call<PedidosResponse> // Y esperamos el "sobre" nuevo!
 
+
+    @FormUrlEncoded
+    @POST("buscarMenu.php") //
+    fun buscarMenu(
+        @Field("termino_busqueda") termino: String
+    ): Call<MenuResponse> // REUTILIZAMOS EL 'MenuResponse'!!
+
 }
