@@ -8,15 +8,13 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import host.senk.foodtec.R
-import host.senk.foodtec.model.Pedido // ¡El molde "gordo"!
+import host.senk.foodtec.model.Pedido
 
 class PedidosDisponiblesAdapter(
     private val listaDePedidos: List<Pedido>,
-    // EL "OÍDO" PA'L BOTÓN DE ACEPTAR
     private val onAceptarClicked: (Pedido) -> Unit
 ) : RecyclerView.Adapter<PedidosDisponiblesAdapter.ViewHolder>() {
 
-    // Amarramos" las vistas del item_pedido_disponible
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvPedidoId: TextView = view.findViewById(R.id.tvFoodterPedidoId)
         val tvCliente: TextView = view.findViewById(R.id.tvFoodterCliente)
@@ -41,33 +39,37 @@ class PedidosDisponiblesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pedido = listaDePedidos[position]
 
-        // ¡Pintamos los datos!
         holder.tvPedidoId.text = "Pedido: #${pedido.id_pedido}"
         holder.tvCliente.text = "Para: ${pedido.nombre_cliente ?: "N/A"}"
         holder.tvLugar.text = "Lugar: ${pedido.lugar_entrega ?: "N/A"}"
         holder.tvTotal.text = "$${pedido.costo_final ?: "0.00"}"
-        holder.rbValoracion.rating = (pedido.valoracion_cliente ?: 3.0).toFloat()
         holder.tvMetodo.text = "Pago: ${pedido.metodo_pago ?: "N/A"}"
 
-        // Usamos 'filterNotNull Y los nombres nuevos!
+        // AQUÍ ESTÁ EL PARSEO, JEFE
+
+        // Intenta "parsear" (convertir) el String? ("0.0") a un Double? (0.0)
+        val valoracionNumerica = pedido.valoracion_cliente?.toDoubleOrNull()
+
+        //  Si el Double? es 'null', usa 3.0
+        holder.rbValoracion.rating = (valoracionNumerica ?: 3.0).toFloat()
+
+
+
+        // (El resto de tu código del resumen queda igual)
         val resumen = pedido.detalles
-            ?.filterNotNull() // Filtramos los "fantasmas" (por si acaso)
+            ?.filterNotNull()
             ?.joinToString(", ") { detalle ->
-                // Usamos 'detalle.nombre' en lugar de detalle.nombre_alimento
                 "${detalle.cantidad ?: 0}x ${detalle.nombre ?: "?"}"
             } ?: "Sin detalles"
 
-        //Validamos que el resumen no esté vacío
         if (resumen.isEmpty()) {
             holder.tvResumen.text = "Error al cargar detalles"
         } else {
             holder.tvResumen.text = resumen
         }
 
-        // Alambramos" el botón de Aceptar
         holder.btnAceptar.setOnClickListener {
             onAceptarClicked(pedido)
         }
     }
-
 }

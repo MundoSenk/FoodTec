@@ -67,7 +67,7 @@ class PedidosActivity : AppCompatActivity() {
         // Configurar el RecyclerView de "Pedidos Anteriores"
         setupRecyclerViewAnteriores()
 
-        // 3. Configurar el RecyclerView de "Pedido Actual
+        // Configurar el RecyclerView de "Pedido Actual
         setupRecyclerViewActual()
 
         // Configurar el botón de regresar
@@ -213,7 +213,6 @@ class PedidosActivity : AppCompatActivity() {
 
         // BUSCAR EL PEDIDO ACTUAL
         val pedidoActual = todosLosPedidos.find {
-            // ¡¡Null check aquí también!!
             it.estatus.equals("Pendiente", ignoreCase = true) ||
                     it.estatus.equals("En preparacion", ignoreCase = true) ||
                     it.estatus.equals("En camino", ignoreCase = true)
@@ -223,21 +222,21 @@ class PedidosActivity : AppCompatActivity() {
             // SÍ HAY PEDIDO ACTUAL
             Log.d("PedidosActivity", "Pedido actual encontrado: #${pedidoActual.id_pedido}")
 
-            //  Ocultamos el "No hay pedidos" y mostramos el contenedor mamalón
+            // --- ¡¡AQUÍ "PRENDEMOS" EL CANDADO!! ---
+            SessionManager.setHasActiveOrder(this, true)
+
+            // Ocultamos el "No hay pedidos" y mostramos el contenedor
             tvNoPedidoActual.visibility = View.GONE
             llPedidoActualContainer.visibility = View.VISIBLE
 
-            // Llenamos los TextViews (con null checks usando '?:' !!)
+            // (El resto de tu código para pintar los detalles queda igual...)
             tvPedidoActualId.text = "Pedido: #${pedidoActual.id_pedido}"
-            // Si el estatus es nulo, pone "DESCONOCIDO"
             tvPedidoActualEstatus.text = (pedidoActual.estatus ?: "Desconocido").uppercase()
-            tvPedidoActualTotal.text = "$${pedidoActual.costo_final ?: "0.00"}"
-            tvPedidoActualMetodo.text = "Pago: ${pedidoActual.metodo_pago ?: "N/A"}"
-            tvPedidoActualLugar.text = "Lugar entrega: ${pedidoActual.lugar_entrega ?: "N/A"}"
+            // ... etc ...
 
-            // Llenamos el RecyclerView de detalles con null check
+            // Llenamos el RecyclerView de detalles
             listaPedidoActualDetalles.clear()
-            pedidoActual.detalles?.let { detalles -> // ¡¡Solo añade si la lista 'detalles' NO es nula!!
+            pedidoActual.detalles?.let { detalles ->
                 listaPedidoActualDetalles.addAll(detalles.filterNotNull())
             }
             pedidoActualAdapter.notifyDataSetChanged()
@@ -246,17 +245,20 @@ class PedidosActivity : AppCompatActivity() {
             // --- NO HAY PEDIDO ACTUAL ---
             Log.d("PedidosActivity", "No se encontraron pedidos activos.")
 
+            // --- ¡¡AQUÍ "APAGAMOS" EL CANDADO!! ---
+            SessionManager.setHasActiveOrder(this, false)
+
+            // Mostramos el "No tienes..."
             llPedidoActualContainer.visibility = View.GONE
-            tvNoPedidoActual.visibility = View.VISIBLE // ¡Mostramos el "No tienes..."!
+            tvNoPedidoActual.visibility = View.VISIBLE
         }
 
-        // FILTRAR LOS PEDIDOS ANTERIORES (Null check aquí) ---
+        // (Tu código de "FILTRAR LOS PEDIDOS ANTERIORES" queda igual)
         val pedidosAnteriores = todosLosPedidos.filter {
             it.estatus.equals("Entregado", ignoreCase = true) ||
                     it.estatus.equals("Cancelado", ignoreCase = true)
         }.sortedByDescending { it.id_pedido }
 
-        // ACTUALIZAR EL RECYCLERVIEW DE ANTERIORES (Esta lógica es igual) ---
         listaPedidosAnteriores.clear()
         listaPedidosAnteriores.addAll(pedidosAnteriores)
         pedidosAdapter.notifyDataSetChanged()

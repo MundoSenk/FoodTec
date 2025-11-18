@@ -1,4 +1,5 @@
 package host.senk.foodtec.ui
+import android.content.Intent
 import host.senk.foodtec.manager.CartManager
 import host.senk.foodtec.model.ComidaItem
 
@@ -16,7 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import host.senk.foodtec.R
-
+import host.senk.foodtec.manager.SessionManager
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -67,22 +68,25 @@ class DetailsActivity : AppCompatActivity() {
 
             // Por ahora, un Toast
             btnAgregar.setOnClickListener {
-                //  Jalamos los "detalles" (el "sin salsa")
-                val extras = etExtras.text.toString().trim()
+                if (SessionManager.getHasActiveOrder(this)) {
 
-                // Usamos el Singleton pa' meter el platillo
-                CartManager.addItem(comida!!, extras)
+                    // 1. Si SÍ tiene pedido, le avisamos
+                    Toast.makeText(this, "¡Ya tienes un pedido en curso!", Toast.LENGTH_LONG).show()
 
-                // Un Toast chido pa' que el vato sepa
-                Toast.makeText(this, "¡${comida!!.nombre} agregado al pedido!", Toast.LENGTH_SHORT).show()
+                    // Lo mandamos a la pantalla de Pedidos
+                    val intent = Intent(this, PedidosActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
 
+                } else {
 
-                // Creamos el Modal
-                val modal = CartModalFragment()
-
-
-                // Lo mostramos en la pantalla
-                modal.show(supportFragmentManager, "MODAL_CARRITO")
+                    // 3. Si NO tiene pedido, jala la lógica de siempre
+                    val extras = etExtras.text.toString().trim()
+                    CartManager.addItem(comida!!, extras) // ¡Ojo con el '!!' si hiciste el ComidaItem nulable!
+                    Toast.makeText(this, "¡${comida!!.nombre} agregado al pedido!", Toast.LENGTH_SHORT).show()
+                    val modal = CartModalFragment()
+                    modal.show(supportFragmentManager, "MODAL_CARRITO")
+                }
 
             }
 

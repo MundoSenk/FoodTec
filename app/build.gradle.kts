@@ -66,4 +66,7 @@ dependencies {
     ksp("com.github.bumptech.glide:ksp:4.16.0")
 
 
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+
 }

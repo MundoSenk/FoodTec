@@ -168,6 +168,10 @@ class CartModalFragment : BottomSheetDialogFragment() {
                     val resp = response.body()!!
 
                     if (resp.status == "exito") {
+
+                        //SE ACTIVA LA BANDERA PARA EVITAR MAS MODALES
+                        SessionManager.setHasActiveOrder(requireContext(), true)
+
                         // SE ARMÓ EL PEDIDO
                         Toast.makeText(requireContext(), resp.mensaje, Toast.LENGTH_LONG).show()
                         CartManager.clearCart() // ¡Limpiamos el carrito!

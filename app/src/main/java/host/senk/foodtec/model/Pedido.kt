@@ -1,19 +1,38 @@
 package host.senk.foodtec.model
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 
-// El "molde" pa' un solo pedido (comanda)!
-// a los que pusimos en el 'SELECT' del PHP!
 @Parcelize
 data class Pedido(
+
+    @SerializedName("id_pedido")
     val id_pedido: Int?,
+
+    @SerializedName("lugar_entrega")
     val lugar_entrega: String?,
-    val costo_final: String?, // ¡Lo jalamos como String, es más fácil!
+
+    @SerializedName("costo_final")
+    val costo_final: String?, // <-- ¡El que nos duele!
+
+    @SerializedName("metodo_pago")
     val metodo_pago: String?,
+
+    @SerializedName("estatus")
     val estatus: String?,
+
+    @SerializedName("fecha_pedido")
     val fecha_pedido: String?,
-    val detalles: List<PedidoDetalle?>,
+
+    @SerializedName("detalles")
+    val detalles: List<PedidoDetalle?>?,
+
+    @SerializedName("nombre_cliente")
     val nombre_cliente: String?,
-    val valoracion_cliente: Double?
+
+
+    @SerializedName("valoracion_cliente")
+    val valoracion_cliente: String?
+
 ) : Parcelable

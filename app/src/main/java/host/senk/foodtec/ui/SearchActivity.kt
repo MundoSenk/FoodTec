@@ -189,39 +189,46 @@ class SearchActivity : AppCompatActivity() {
         Log.d("SearchActivity", "Buscando término: $termino")
 
         apiService.buscarMenu(termino).enqueue(object : Callback<MenuResponse> {
+
+            // ESTE ES EL ARREGLO Todo va dentro de runOnUiThread
             override fun onResponse(call: Call<MenuResponse>, response: Response<MenuResponse>) {
-                if (response.isSuccessful && response.body() != null) {
-                    val resp = response.body()!!
-                    if (resp.status == "exito" && resp.menu != null) {
+                runOnUiThread {
+                    if (response.isSuccessful && response.body() != null) {
+                        val resp = response.body()!!
+                        if (resp.status == "exito" && resp.menu != null) {
 
-                       //ÉXITO! Limpiamos la lista vieja
-                        listaDeResultados.clear()
+                            // ÉXITO! Limpiamos la lista vieja
+                            listaDeResultados.clear()
 
-                        if (resp.menu.isEmpty()) {
-                            // No se encontró nada
-                            Log.d("SearchActivity", "El PHP no regresó resultados.")
-                            tvNoResultados.visibility = View.VISIBLE
+                            if (resp.menu.isEmpty()) {
+                                // No se encontró nada
+                                Log.d("SearchActivity", "El PHP no regresó resultados.")
+                                tvNoResultados.visibility = View.VISIBLE
+                            } else {
+                                // Encontramos Llenamos la lista nueva
+                                Log.d("SearchActivity", "Se encontraron ${resp.menu.size} resultados")
+                                tvNoResultados.visibility = View.GONE
+                                listaDeResultados.addAll(resp.menu)
+                            }
+
+                            // Avisamos al adapter que se repinte (¡Ahora es 100% seguro!)
+                            menuAdapter.notifyDataSetChanged()
+
                         } else {
-                            // Encontramos Llenamos la lista nueva
-                            Log.d("SearchActivity", "Se encontraron ${resp.menu.size} resultados")
-                            tvNoResultados.visibility = View.GONE
-                            listaDeResultados.addAll(resp.menu)
+                            Toast.makeText(this@SearchActivity, resp.mensaje ?: "Error del PHP", Toast.LENGTH_SHORT).show()
                         }
-
-                        // Avisamos al adapter que se repinte
-                        menuAdapter.notifyDataSetChanged()
-
                     } else {
-                        Toast.makeText(this@SearchActivity, resp.mensaje ?: "Error del PHP", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@SearchActivity, "Error del server: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    Toast.makeText(this@SearchActivity, "Error del server: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
+            // TAMBIÉN ARREGLAMOS EL onFailure
             override fun onFailure(call: Call<MenuResponse>, t: Throwable) {
-                Toast.makeText(this@SearchActivity, "Error de Red: ${t.message}", Toast.LENGTH_SHORT).show()
-                Log.e("SearchActivity", "Fallo de Retrofit", t)
+                runOnUiThread {
+                    Toast.makeText(this@SearchActivity, "Error de Red: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("SearchActivity", "Fallo de Retrofit", t)
+                }
             }
         })
     }

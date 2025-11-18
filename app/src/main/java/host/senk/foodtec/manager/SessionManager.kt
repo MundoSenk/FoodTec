@@ -17,6 +17,8 @@ object SessionManager {
     private const val KEY_VAL_FOODTER = "valoracion_foodter"
     private const val KEY_AVATAR_ID = "avatar_id"
 
+    private const val KEY_HAS_ACTIVE_ORDER = "has_active_order"
+
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
@@ -36,6 +38,9 @@ object SessionManager {
         editor.putString(KEY_AVATAR_ID, avatarId)
         editor.apply()
     }
+
+
+
 
     // (isLoggedIn queda igual)
     fun isLoggedIn(context: Context): Boolean {
@@ -82,6 +87,26 @@ object SessionManager {
      */
     fun getValoracionFoodter(context: Context): Float {
         return getPrefs(context).getFloat(KEY_VAL_FOODTER, 3.0f)
+    }
+
+
+    /**
+    *NUEVA FUNCIÓN!!
+    * La llamamos 'true' cuando se crea un pedido
+    * La llamamos 'false' cuando se entrega o cancela
+    */
+    fun setHasActiveOrder(context: Context, hasActive: Boolean) {
+        val editor = getPrefs(context).edit()
+        editor.putBoolean(KEY_HAS_ACTIVE_ORDER, hasActive)
+        editor.apply()
+    }
+
+    /**
+     * ¡¡NUEVA FUNCIÓN!!
+     * Pa' checar el "candado" antes de abrir el modal.
+     */
+    fun getHasActiveOrder(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_HAS_ACTIVE_ORDER, false)
     }
 
 
