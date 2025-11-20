@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="host.senk.foodtec" />
+                  <option name="mobileSdkAppId" value="1:882760132726:android:d070132b3a427827c01757" />
+                  <option name="projectId" value="foodtec-58572" />
+                  <option name="projectNumber" value="882760132726" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

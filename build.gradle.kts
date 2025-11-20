@@ -6,4 +6,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     //  PARA PODER USAR EL GLIDE
     alias(libs.plugins.kotlin.parcelize) apply false
+
+
+    id("com.google.gms.google-services") version "4.4.1" apply false
 }

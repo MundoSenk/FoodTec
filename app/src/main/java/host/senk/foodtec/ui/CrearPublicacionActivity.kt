@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -158,7 +159,9 @@ class CrearPublicacionActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
-                    Toast.makeText(this@CrearPublicacionActivity, "Error red", Toast.LENGTH_LONG).show()
+                    // ¡Imprime el error completo en el Logcat!
+                    Log.e("API_ERROR", "Tronó la subida", t)
+                    Toast.makeText(this@CrearPublicacionActivity, "Fallo: ${t.message}", Toast.LENGTH_LONG).show()
                     btnPublicar.isEnabled = true
                     btnPublicar.text = "PUBLICAR AHORA"
                 }

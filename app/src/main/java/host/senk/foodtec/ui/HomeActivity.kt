@@ -38,6 +38,44 @@ class HomeActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_home)
 
+        pedirPermisoNotificaciones()
+
+        // OBTENER TOKEN DE FIREBASE (Solo para probar ahorita)
+        com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM", "Falló al obtener token local", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // 1. Tenemos el token
+            val token = task.result
+            Log.d("FCM", "Token Local: $token")
+
+            // 2. ¿Hay un usuario logueado?
+            val userId = SessionManager.getUserId(this)
+
+            if (userId != null) {
+                // 3. ¡MANDARLO AL PHP!
+                Log.d("FCM", "Enviando token al servidor para el usuario: $userId")
+
+                RetrofitClient.apiService.actualizarToken(userId, token)
+                    .enqueue(object : Callback<CrearPedidoResponse> {
+                        override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
+                            if (response.isSuccessful && response.body()?.status == "exito") {
+                                Log.d("FCM", "¡ÉXITO! Token guardado en BD.")
+                            } else {
+                                Log.e("FCM", "Error del PHP al guardar token: ${response.body()?.mensaje}")
+                            }
+                        }
+                        override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
+                            Log.e("FCM", "Fallo de red al guardar token", t)
+                        }
+                    })
+            } else {
+                Log.e("FCM", "No se envió el token porque no hay usuario logueado (userId es null)")
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
@@ -85,16 +123,23 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // --- AQUÍ ESTÁ LA LÓGICA NUEVA DEL BOTÓN AZUL ---
+        ///NOTIFICACIONES
+        val btnNoti = findViewById<android.view.View>(R.id.btnNotificaciones)
+        btnNoti.setOnClickListener {
+            Toast.makeText(this, "Sin notificaciones nuevas", Toast.LENGTH_SHORT).show()
+
+        }
+
+
         btnModuloObjetos.setOnClickListener {
-            // 1. Checamos si ya tenemos el whats en el archivero
+            // Checamos si ya tenemos el whats en el archivero
             val telefonoGuardado = SessionManager.getPhone(this)
 
             if (telefonoGuardado.isNullOrEmpty()) {
-                // 2. NO TIENE -> ¡Pedirselo!
+                // NO TIENE -> ¡Pedirselo!
                 mostrarDialogoPedirWhats()
             } else {
-                // 3. YA TIENE -> ¡Pásele al Módulo Azul!
+                //  YA TIENE -> ¡Pásele al Módulo Azul!
                 abrirModuloObjetos()
             }
         }
@@ -231,6 +276,21 @@ class HomeActivity : AppCompatActivity() {
                     Toast.makeText(this@HomeActivity, "Fallo de red", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
+
+
+    private fun pedirPermisoNotificaciones() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (androidx.core.content.ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                // Si no tenemos permiso, lo pedimos
+                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
+
     }
 
 } // <--- ¡ESTA LLAVE CIERRA LA CLASE!

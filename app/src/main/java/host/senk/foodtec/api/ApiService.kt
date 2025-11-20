@@ -188,7 +188,16 @@ interface ApiService {
         @Part("descripcion") descripcion: RequestBody,
         @Part("contacto") contacto: RequestBody,
         @Part("tipo") tipo: RequestBody,
-        @Part imagen: MultipartBody.Part // <-- ¡El archivo!
+        @Part imagen: MultipartBody.Part //
+    ): Call<CrearPedidoResponse>
+
+
+    // GUARDAR TOKEN (Para que el servidor sepa dónde vive este cel)
+    @FormUrlEncoded
+    @POST("actualizarToken.php")
+    fun actualizarToken(
+        @Field("usuario_id") usuarioId: String,
+        @Field("token") token: String
     ): Call<CrearPedidoResponse>
 
 
