@@ -1,11 +1,14 @@
 package host.senk.foodtec.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.yalantis.ucrop.UCrop // <-- IMPORTANTE
 import host.senk.foodtec.R
 import host.senk.foodtec.api.RetrofitClient
 import host.senk.foodtec.manager.SessionManager
@@ -18,7 +21,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.FileOutputStream
 
 class CrearPublicacionActivity : AppCompatActivity() {
 
@@ -27,15 +29,32 @@ class CrearPublicacionActivity : AppCompatActivity() {
     private lateinit var etDesc: EditText
     private lateinit var rgTipo: RadioGroup
     private lateinit var btnPublicar: Button
+    private lateinit var tvInstruccion: TextView
 
-    private var imageUri: Uri? = null // Aquí guardamos la uri temporal
+    // Uri final (ya recortada) lista para subir
+    private var uriFinalRecortada: Uri? = null
 
-    // El "lanzador" de la galería
+    // 1. LANZADOR DE GALERÍA
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            imageUri = uri
-            ivFoto.setImageURI(uri) // Mostramos la previsualización
-            findViewById<TextView>(R.id.tvInstruccionFoto).visibility = android.view.View.GONE
+            // En lugar de mostrarla directo, la mandamos al "Quirófano" (Recorte)
+            iniciarRecorte(uri)
+        }
+    }
+
+    // 2. LANZADOR DEL RECORTE (uCrop)
+    private val cropImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            val resultUri = UCrop.getOutput(result.data!!)
+            if (resultUri != null) {
+                // ¡ÉXITO! Tenemos la foto recortada
+                uriFinalRecortada = resultUri
+                ivFoto.setImageURI(resultUri)
+                tvInstruccion.visibility = android.view.View.GONE
+            }
+        } else if (result.resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(result.data!!)
+            Toast.makeText(this, "Error al recortar: ${cropError?.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -44,20 +63,47 @@ class CrearPublicacionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_crear_publicacion)
 
         ivFoto = findViewById(R.id.ivFotoPreview)
+        tvInstruccion = findViewById(R.id.tvInstruccionFoto)
         etTitulo = findViewById(R.id.etTituloPub)
         etDesc = findViewById(R.id.etDescPub)
         rgTipo = findViewById(R.id.rgTipoPub)
         btnPublicar = findViewById(R.id.btnPublicar)
 
-        // Al picarle a la imagen -> Abrir Galería
         ivFoto.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
 
-        // Al picarle a Publicar
         btnPublicar.setOnClickListener {
             validarYSubir()
         }
+    }
+
+    /**
+     * Configura uCrop con colores FoodTec y lanza la actividad
+     */
+    private fun iniciarRecorte(sourceUri: Uri) {
+        // Creamos un archivo temporal donde se guardará el recorte
+        val destinoFileName = "recorte_${System.currentTimeMillis()}.jpg"
+        val destinationUri = Uri.fromFile(File(cacheDir, destinoFileName))
+
+        // Opciones visuales (¡AZULADO!)
+        val options = UCrop.Options()
+        options.setToolbarColor(ContextCompat.getColor(this, R.color.foodtec_azul))
+        options.setStatusBarColor(ContextCompat.getColor(this, R.color.foodtec_azul))
+        options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.foodtec_azul))
+        options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.white))
+        options.setToolbarTitle("Recortar Objeto")
+
+        // Configuración: Formato cuadrado o libre
+        // options.withAspectRatio(1f, 1f) // Descomenta si quieres forzar cuadrado
+        options.setFreeStyleCropEnabled(true) // Permite cualquier forma
+
+        // Lanzamos uCrop
+        val intent = UCrop.of(sourceUri, destinationUri)
+            .withOptions(options)
+            .getIntent(this)
+
+        cropImageLauncher.launch(intent)
     }
 
     private fun validarYSubir() {
@@ -66,10 +112,10 @@ class CrearPublicacionActivity : AppCompatActivity() {
         val tipo = if (rgTipo.checkedRadioButtonId == R.id.rbPerdido) "Perdido" else "Encontrado"
 
         if (titulo.isEmpty() || desc.isEmpty()) {
-            Toast.makeText(this, "Llena el título y la descripción", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Faltan datos", Toast.LENGTH_SHORT).show()
             return
         }
-        if (imageUri == null) {
+        if (uriFinalRecortada == null) {
             Toast.makeText(this, "¡La foto es obligatoria!", Toast.LENGTH_SHORT).show()
             return
         }
@@ -78,80 +124,44 @@ class CrearPublicacionActivity : AppCompatActivity() {
     }
 
     private fun subirAlServidor(titulo: String, desc: String, tipo: String) {
-        // Datos de sesión
         val userId = SessionManager.getUserId(this) ?: return
         val telefono = SessionManager.getPhone(this) ?: return
 
         btnPublicar.isEnabled = false
         btnPublicar.text = "SUBIENDO..."
 
-        // Convertimos Textos a RequestBody
         val rbUser = userId.toRequestBody("text/plain".toMediaTypeOrNull())
         val rbTitulo = titulo.toRequestBody("text/plain".toMediaTypeOrNull())
         val rbDesc = desc.toRequestBody("text/plain".toMediaTypeOrNull())
         val rbContacto = telefono.toRequestBody("text/plain".toMediaTypeOrNull())
         val rbTipo = tipo.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        // Convertimos Imagen a Multipart (LA PARTE DIFÍCIL)
-        val file = getFileFromUri(imageUri!!)
+        // Aquí ya usamos la URI RECORTADA que apunta a un archivo real
+        // No necesitamos la función compleja de antes porque uCrop ya crea un File real
+        val file = File(uriFinalRecortada!!.path!!)
+
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val bodyImagen = MultipartBody.Part.createFormData("imagen", file.name, requestFile)
 
-        // Llamada Retrofit
         RetrofitClient.apiService.crearPublicacion(rbUser, rbTitulo, rbDesc, rbContacto, rbTipo, bodyImagen)
             .enqueue(object : Callback<CrearPedidoResponse> {
                 override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                     if (response.isSuccessful && response.body()?.status == "exito") {
                         Toast.makeText(this@CrearPublicacionActivity, "¡Publicado!", Toast.LENGTH_LONG).show()
-                        finish() // Regresamos a la lista
+                        finish()
                     } else {
-                        val msg = response.body()?.mensaje ?: "Error del servidor"
-                        Toast.makeText(this@CrearPublicacionActivity, "Error: $msg", Toast.LENGTH_LONG).show()
+                        val msg = response.body()?.mensaje ?: "Error"
+                        Toast.makeText(this@CrearPublicacionActivity, msg, Toast.LENGTH_LONG).show()
                         btnPublicar.isEnabled = true
                         btnPublicar.text = "PUBLICAR AHORA"
                     }
                 }
 
                 override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
-                    Toast.makeText(this@CrearPublicacionActivity, "Fallo de red: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@CrearPublicacionActivity, "Error red", Toast.LENGTH_LONG).show()
                     btnPublicar.isEnabled = true
                     btnPublicar.text = "PUBLICAR AHORA"
                 }
             })
-    }
-
-    // FUNCIÓN MÁGICA: Convierte URI (content://) a File real
-    private fun getFileFromUri(uri: Uri): File {
-        val contentResolver = applicationContext.contentResolver
-        val fileName = getFileName(uri)
-
-        // Creamos un archivo temporal en la caché de la app
-        val tempFile = File(applicationContext.cacheDir, fileName)
-        tempFile.createNewFile()
-
-        try {
-            val inputStream = contentResolver.openInputStream(uri)
-            val outputStream = FileOutputStream(tempFile)
-            inputStream?.copyTo(outputStream)
-            inputStream?.close()
-            outputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return tempFile
-    }
-
-    private fun getFileName(uri: Uri): String {
-        var name = "temp_image.jpg"
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val index = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (index != -1) {
-                    name = it.getString(index)
-                }
-            }
-        }
-        return name
     }
 }

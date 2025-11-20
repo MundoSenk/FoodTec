@@ -68,5 +68,8 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
+    // uCrop - El Rey del Recorte
+    implementation("com.github.yalantis:ucrop:2.2.8")
+
 
 }
