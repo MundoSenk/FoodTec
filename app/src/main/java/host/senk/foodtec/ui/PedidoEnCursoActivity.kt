@@ -3,28 +3,28 @@ package host.senk.foodtec.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log // <-- ¡AÑADIDO!
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import host.senk.foodtec.R
 import host.senk.foodtec.api.ApiService
 import host.senk.foodtec.api.RetrofitClient
 import host.senk.foodtec.manager.SessionManager
 import host.senk.foodtec.model.CrearPedidoResponse
-import host.senk.foodtec.model.Pedido // ¡El molde "gordo"!
-import host.senk.foodtec.model.PedidoDetalle
-import retrofit2.Call //
-import retrofit2.Callback //
-import retrofit2.Response //
+import host.senk.foodtec.model.Pedido
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PedidoEnCursoActivity : AppCompatActivity() {
 
-    // --- Vistas ---
+    // XML
     private lateinit var tvTitulo: TextView
     private lateinit var tvClienteNombre: TextView
     private lateinit var tvClienteLugar: TextView
@@ -33,18 +33,15 @@ class PedidoEnCursoActivity : AppCompatActivity() {
     private lateinit var btnEntregado: Button
 
     private var pedidoActual: Pedido? = null
-    private lateinit var foodterId: String // ¡Guardaremos el ID del Foodter aquí!
+    private lateinit var foodterId: String
 
-    // --- API ---
-    private val apiService: ApiService by lazy {
-        RetrofitClient.apiService
-    }
+    // API
+    private val apiService: ApiService by lazy { RetrofitClient.apiService }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pedido_en_curso)
 
-        // 1. ¡"Cachamos" el pedido que nos aventó la Activity anterior!
         pedidoActual = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("PEDIDO_ACEPTADO", Pedido::class.java)
         } else {
@@ -52,24 +49,16 @@ class PedidoEnCursoActivity : AppCompatActivity() {
             intent.getParcelableExtra("PEDIDO_ACEPTADO")
         }
 
-        // 2. ¡"Cachamos" al Foodter!
         val id = SessionManager.getUserId(this)
-
-        // ¡Si no hay pedido O no hay foodter, nos vamos!
         if (pedidoActual == null || id == null) {
-            Toast.makeText(this, "Error: No se pudo cargar el pedido o el Foodter", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Error de datos", Toast.LENGTH_LONG).show()
             finish()
             return
         }
-        foodterId = id // Guardamos el ID del Foodter
+        foodterId = id
 
-        // 3. Amarramos Vistas
         bindViews()
-
-        // 4. ¡Pintamos la info!
         pintarInfoPedido()
-
-        // 5. "Alambramos" los botones
         setupListeners()
     }
 
@@ -82,9 +71,6 @@ class PedidoEnCursoActivity : AppCompatActivity() {
         btnEntregado = findViewById(R.id.btnMarcarEntregado)
     }
 
-    /**
-     * ¡La "carnita"! ¡Pinta los datos del Pedido!
-     */
     private fun pintarInfoPedido() {
         pedidoActual?.let { pedido ->
             tvTitulo.text = "Pedido: #${pedido.id_pedido}"
@@ -96,8 +82,7 @@ class PedidoEnCursoActivity : AppCompatActivity() {
 
             pedido.detalles?.filterNotNull()?.forEach { detalle ->
                 val itemVista = inflater.inflate(R.layout.item_pedido_actual, llDetallesContainer, false)
-
-                itemVista.findViewById<View>(R.id.ivItemImagen).visibility = View.GONE
+                itemVista.findViewById<View>(R.id.ivItemImagen).visibility = View.GONE // Ocultamos foto pa ahorrar espacio
 
                 val tvNombre: TextView = itemVista.findViewById(R.id.tvItemNombre)
                 val tvCantidad: TextView = itemVista.findViewById(R.id.tvItemCantidad)
@@ -105,8 +90,8 @@ class PedidoEnCursoActivity : AppCompatActivity() {
                 val tvPrecio: TextView = itemVista.findViewById(R.id.tvItemPrecioTotal)
 
                 tvNombre.text = detalle.nombre ?: "?"
-                tvCantidad.text = "Cantidad: x${detalle.cantidad ?: 0}"
-                tvPrecio.visibility = View.GONE
+                tvCantidad.text = "x${detalle.cantidad ?: 0}"
+                tvPrecio.visibility = View.GONE // Foodter no necesita ver precios individuales aquí
 
                 if (!detalle.detalles_usuario.isNullOrEmpty()) {
                     tvDetallesUser.visibility = View.VISIBLE
@@ -114,84 +99,96 @@ class PedidoEnCursoActivity : AppCompatActivity() {
                 } else {
                     tvDetallesUser.visibility = View.GONE
                 }
-
                 llDetallesContainer.addView(itemVista)
             }
         }
     }
 
-    /**
-     * ¡¡LA FUNCIÓN "ALAMBRADA"!!
-     */
     private fun setupListeners() {
-
-        btnEnCamino.setOnClickListener {
-            // ¡Llamamos a la función mágica!
-            llamarApiEstatus("En camino")
-        }
-
-        btnEntregado.setOnClickListener {
-            // ¡Llamamos a la función mágica!
-            llamarApiEstatus("Entregado")
-        }
+        btnEnCamino.setOnClickListener { llamarApiEstatus("En camino") }
+        btnEntregado.setOnClickListener { llamarApiEstatus("Entregado") }
     }
 
-    /**
-     * ¡¡LA FUNCIÓN "MÁGICA" QUE LLAMA AL PHP!!
-     */
     private fun llamarApiEstatus(nuevoEstatus: String) {
-        val pedidoId = pedidoActual?.id_pedido
-        if (pedidoId == null) {
-            Toast.makeText(this, "Error: ID de pedido perdido", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // ¡Desactivamos botones pa' que no piquen doble!
+        val pedidoId = pedidoActual?.id_pedido ?: return
         btnEnCamino.isEnabled = false
         btnEntregado.isEnabled = false
-        btnEntregado.text = "ACTUALIZANDO..."
-
-        Log.d("PedidoEnCurso", "Actualizando Pedido #$pedidoId a '$nuevoEstatus' por Foodter '$foodterId'")
 
         apiService.actualizarEstatusPedido(foodterId, pedidoId, nuevoEstatus)
             .enqueue(object: Callback<CrearPedidoResponse> {
                 override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                     val resp = response.body()
+
                     if (response.isSuccessful && resp?.status == "exito") {
-                        // --- ¡¡ÉXITO!! ---
-                        Toast.makeText(this@PedidoEnCursoActivity, "¡Pedido actualizado a: $nuevoEstatus!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@PedidoEnCursoActivity, "Estatus: $nuevoEstatus", Toast.LENGTH_SHORT).show()
 
                         if (nuevoEstatus == "Entregado") {
-                            // ¡Si ya lo entregó, cerramos esta pantalla!
-                            // (Y regresamos al HomeFoodter, que se refrescará solo)
-                            finish()
+                            // --- AQUÍ CAMBIA LA COSA ---
+                            // NO cerramos. Abrimos el modal para calificar al cliente.
+                            mostrarDialogoCalificarCliente(pedidoId)
+
                         } else {
-                            // Si solo fue "En Camino", dejamos la pantalla abierta
-                            // y ocultamos el botón de "En Camino"
+                            // Si es "En camino", seguimos normal
                             btnEnCamino.visibility = View.GONE
-                            // Reactivamos el de "Entregado"
                             btnEntregado.isEnabled = true
                             btnEntregado.text = "MARCAR COMO ENTREGADO"
                         }
-
                     } else {
-                        // El PHP tronó (ej. "Error de autorización")
-                        val errorMsg = resp?.mensaje ?: "Error del servidor"
-                        Toast.makeText(this@PedidoEnCursoActivity, "Error: $errorMsg", Toast.LENGTH_SHORT).show()
-                        // Reactivamos botones
+                        Toast.makeText(this@PedidoEnCursoActivity, resp?.mensaje ?: "Error", Toast.LENGTH_SHORT).show()
                         btnEnCamino.isEnabled = true
                         btnEntregado.isEnabled = true
-                        btnEntregado.text = "MARCAR COMO ENTREGADO"
                     }
                 }
 
                 override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
-                    Log.e("PedidoEnCurso", "Fallo de red", t)
-                    Toast.makeText(this@PedidoEnCursoActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
-                    // Reactivamos botones
+                    Toast.makeText(this@PedidoEnCursoActivity, "Error de red", Toast.LENGTH_SHORT).show()
                     btnEnCamino.isEnabled = true
                     btnEntregado.isEnabled = true
-                    btnEntregado.text = "MARCAR COMO ENTREGADO"
+                }
+            })
+    }
+
+    // NUEVAS FUNCIONES DE CALIFICACIÓN
+
+    private fun mostrarDialogoCalificarCliente(pedidoId: Int) {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.dialog_valorar_cliente, null)
+        builder.setView(view)
+        // Evitamos que lo cierren picando afuera, ¡que califiquen a wiwi!
+        builder.setCancelable(false)
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val rb = view.findViewById<android.widget.RatingBar>(R.id.rbDialogValoracionCliente)
+        val btn = view.findViewById<Button>(R.id.btnEnviarCalificacionCliente)
+
+        btn.setOnClickListener {
+            val estrellas = rb.rating
+            if (estrellas == 0f) {
+                Toast.makeText(this, "¡Califícalo, no seas gacho!", Toast.LENGTH_SHORT).show()
+            } else {
+                enviarCalificacionFoodter(pedidoId, estrellas, dialog)
+            }
+        }
+        dialog.show()
+    }
+
+    private fun enviarCalificacionFoodter(pedidoId: Int, estrellas: Float, dialog: AlertDialog) {
+        // Rol = "foodter" porque NOSOTROS (el foodter) estamos calificando
+        apiService.calificarPedido(pedidoId, foodterId, estrellas, "foodter")
+            .enqueue(object : Callback<CrearPedidoResponse> {
+                override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
+                    dialog.dismiss()
+                    // AHORA SÍ, MATAMOS LA ACTIVITY
+                    Toast.makeText(this@PedidoEnCursoActivity, "¡Chamba terminada!", Toast.LENGTH_LONG).show()
+                    finish()
+                }
+
+                override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
+                    // Si falla la red, igual cerramos pa' no trabar al foodter, ya se entregó el pedido
+                    Toast.makeText(this@PedidoEnCursoActivity, "Se guardó localmente (error red)", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    finish()
                 }
             })
     }
