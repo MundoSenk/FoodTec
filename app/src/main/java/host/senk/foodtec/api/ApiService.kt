@@ -8,12 +8,19 @@ import host.senk.foodtec.model.MenuResponse
 import host.senk.foodtec.model.RegistroResponse
 import host.senk.foodtec.model.PedidoUnicoResponse
 import host.senk.foodtec.model.PedidosResponse
+import host.senk.foodtec.model.PublicacionesResponse
+
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Multipart
+import retrofit2.http.Part
 
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.GET
 
 interface ApiService {
 
@@ -152,9 +159,36 @@ interface ApiService {
     @POST("calificar_pedido.php")
     fun calificarPedido(
         @Field("pedido_id") pedidoId: Int,
-        @Field("usuario_id") usuarioId: String, // Quién califica
+        @Field("usuario_id") usuarioId: String,
         @Field("calificacion") calificacion: Float,
-        @Field("rol_calificador") rol: String // "cliente" o "foodter"
+        @Field("rol_calificador") rol: String,
+        @Field("items_json") itemsJson: String? = null
+    ): Call<CrearPedidoResponse>
+
+
+    @FormUrlEncoded
+    @POST("actualizarTelefono.php")
+    fun actualizarTelefono(
+        @Field("usuario_id") usuarioId: String,
+        @Field("telefono") telefono: String
+    ): Call<CrearPedidoResponse>
+
+
+    // OBJETOS PERDIDOS
+    @GET("obtenerPublicaciones.php")
+    fun obtenerPublicaciones(): Call<PublicacionesResponse>
+
+
+    // SUBIR PUBLICACIÓN (Multipart)
+    @Multipart
+    @POST("crearPublicacion.php")
+    fun crearPublicacion(
+        @Part("usuario_id") usuarioId: RequestBody,
+        @Part("titulo") titulo: RequestBody,
+        @Part("descripcion") descripcion: RequestBody,
+        @Part("contacto") contacto: RequestBody,
+        @Part("tipo") tipo: RequestBody,
+        @Part imagen: MultipartBody.Part // <-- ¡El archivo!
     ): Call<CrearPedidoResponse>
 
 

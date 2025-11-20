@@ -18,6 +18,7 @@ object SessionManager {
     private const val KEY_AVATAR_ID = "avatar_id"
 
     private const val KEY_HAS_ACTIVE_ORDER = "has_active_order"
+    private const val KEY_PHONE = "user_phone"
 
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -51,6 +52,15 @@ object SessionManager {
     fun isFoodter(context: Context): Boolean {
         return getPrefs(context).getBoolean(KEY_IS_FOODTER, false)
     }
+
+
+    // Función para guardar el teléfono
+    fun setPhone(context: Context, phone: String) {
+        val editor = getPrefs(context).edit()
+        editor.putString(KEY_PHONE, phone)
+        editor.apply()
+    }
+
     fun setFoodterStatus(context: Context, status: Boolean) {
         val editor = getPrefs(context).edit()
         editor.putBoolean(KEY_IS_FOODTER, status)
@@ -107,6 +117,11 @@ object SessionManager {
      */
     fun getHasActiveOrder(context: Context): Boolean {
         return getPrefs(context).getBoolean(KEY_HAS_ACTIVE_ORDER, false)
+    }
+
+    // Función para leer el teléfono
+    fun getPhone(context: Context): String? {
+        return getPrefs(context).getString(KEY_PHONE, null)
     }
 
 

@@ -15,6 +15,14 @@
         android:theme="@style/Theme.Foodtec"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.CrearPublicacionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.ObjetosPerdidosActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
             android:name=".ui.PerfilActivity"
             android:exported="false" />
         <activity

@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
@@ -18,20 +18,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¡Pedido Entregado!"
+            android:text="¡Califica tu Pedido!"
             android:fontFamily="@font/lilita_one_regular"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textColor="@color/foodtec_naranja"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¿Qué tal estuvo el servicio del Foodter?"
+            android:text="Servicio del Foodter:"
             android:fontFamily="@font/montserrat_alternates_semibold"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp"/>
 
         <RatingBar
             android:id="@+id/rbDialogValoracion"
@@ -39,14 +38,35 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize="1.0"
-            android:progressTint="@color/foodtec_naranja"
-            android:layout_marginBottom="24dp"/>
+            android:progressTint="@color/foodtec_azul"
+            android:layout_marginBottom="16dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_grey"
+            android:alpha="0.2"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Qué tal la comida?"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvValorarItems"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="16dp"/>
 
         <Button
             android:id="@+id/btnEnviarCalificacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ENVIAR CALIFICACIÓN"
+            android:text="ENVIAR TODO"
             android:fontFamily="@font/lilita_one_regular"
             android:background="@drawable/shape_tab_selected"
             android:textColor="@color/black"/>

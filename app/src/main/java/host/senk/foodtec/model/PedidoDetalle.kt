@@ -14,9 +14,11 @@ data class PedidoDetalle(
     val precio_unitario: String?,
 
     //Y AQUÍ TAMBIÉN
-    @SerializedName("imagen") // <-- Le dice a Gson cómo se llama en el PHP
+    @SerializedName("imagen_url") //
     val imagen_url: String?,
 
-    val detalles_usuario: String?
+    val detalles_usuario: String?,
+
+    val alimento_id: Int?
 
 ) : Parcelable

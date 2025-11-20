@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NUEVA PUBLICACIÓN"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textColor="@color/foodtec_azul"
+            android:textSize="28sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/ivFotoPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/shape_input_grey"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tvInstruccionFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toca para agregar foto"
+                android:layout_gravity="center"
+                android:textColor="@color/dark_grey"/>
+        </androidx.cardview.widget.CardView>
+
+        <EditText
+            android:id="@+id/etTituloPub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Título (Ej. Llaves de casa)"
+            android:background="@drawable/shape_input_grey"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etDescPub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción y lugar..."
+            android:background="@drawable/shape_input_grey"
+            android:padding="16dp"
+            android:minLines="3"
+            android:layout_marginBottom="16dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgTipoPub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/rbPerdido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¡Lo perdí!"
+                android:checked="true"
+                android:layout_marginEnd="16dp"/>
+
+            <RadioButton
+                android:id="@+id/rbEncontrado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¡Lo encontré!"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnPublicar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="PUBLICAR AHORA"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="18sp"
+            android:background="@drawable/shape_tab_selected"
+            app:backgroundTint="@color/foodtec_azul"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</ScrollView>

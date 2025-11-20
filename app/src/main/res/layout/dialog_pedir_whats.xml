@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@android:drawable/sym_action_chat"
+            app:tint="@color/foodtec_azul"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Conecta tu WhatsApp!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="22sp"
+            android:textColor="@color/foodtec_azul"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Para entrar a Objetos Perdidos, necesitamos un medio de contacto."
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/etWhatsInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="55 1234 5678"
+            android:inputType="phone"
+            android:background="@drawable/shape_input_grey"
+            android:padding="12dp"
+            android:gravity="center"
+            android:maxLength="10"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnGuardarWhats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GUARDAR Y ENTRAR"
+            android:fontFamily="@font/lilita_one_regular"
+            android:background="@drawable/shape_tab_selected"
+            app:backgroundTint="@color/foodtec_azul"
+            android:textColor="@color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnCancelarWhats"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:textColor="@color/dark_grey"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

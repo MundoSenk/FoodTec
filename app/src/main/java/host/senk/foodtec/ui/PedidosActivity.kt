@@ -25,6 +25,7 @@ import host.senk.foodtec.model.PedidosResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import host.senk.foodtec.adapter.ValoracionItemsAdapter
 
 class PedidosActivity : AppCompatActivity() {
 
@@ -42,7 +43,7 @@ class PedidosActivity : AppCompatActivity() {
     private lateinit var tvPedidoActualLugar: TextView
     private lateinit var rvPedidosAnteriores: RecyclerView
 
-    // --- Adapters y Listas ---
+   ///Adapters
     private lateinit var pedidosAdapter: PedidosAdapter
     private lateinit var pedidoActualAdapter: PedidoActualAdapter
     private val listaPedidosAnteriores = mutableListOf<Pedido>()
@@ -208,26 +209,59 @@ class PedidosActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        val rvItems = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvValorarItems)
+
+        // Configuramos el adapter nuevo con los detalles del pedido
+        // OJO: Asegúrate que 'pedido.detalles' no sea nulo
+        val listaDetalles = pedido.detalles?.filterNotNull() ?: emptyList()
+        val adapterItems = ValoracionItemsAdapter(listaDetalles)
+        rvItems.layoutManager = LinearLayoutManager(this)
+        rvItems.adapter = adapterItems
+
         val rb = view.findViewById<android.widget.RatingBar>(R.id.rbDialogValoracion)
         val btn = view.findViewById<android.widget.Button>(R.id.btnEnviarCalificacion)
 
         btn.setOnClickListener {
-            val estrellas = rb.rating
-            if (estrellas == 0f) {
-                Toast.makeText(this, "¡Ponle calificación, gallo!", Toast.LENGTH_SHORT).show()
+            val estrellasFoodter = rb.rating
+
+
+            val mapaCalificaciones = adapterItems.calificaciones
+            val jsonBuilder = StringBuilder("[")
+            var primero = true
+
+            // --- CAMBIA ESTO (Sintaxis de desestructuración) ---
+            mapaCalificaciones.forEach { (pos, rating) ->
+
+                // Validamos que la posición exista en la lista (por seguridad)
+                if (pos < listaDetalles.size) {
+                    val item = listaDetalles[pos]
+                    // OJO: Aquí usamos el alimento_id que agregamos al modelo
+                    val idAlimento = item.alimento_id ?: 0
+
+                    if (idAlimento > 0) {
+                        if (!primero) jsonBuilder.append(",")
+                        jsonBuilder.append("{\"id\":$idAlimento, \"puntos\":$rating}")
+                        primero = false
+                    }
+                }
+            }
+            jsonBuilder.append("]")
+            val itemsJson = jsonBuilder.toString()
+
+            if (estrellasFoodter == 0f) {
+                Toast.makeText(this, "¡Califica al Foodter porfa!", Toast.LENGTH_SHORT).show()
             } else {
-                // Llamamos a la API
-                enviarCalificacionAPI(pedido.id_pedido ?: 0, estrellas, dialog)
+                // 3. Enviamos todo
+                enviarCalificacionAPI(pedido.id_pedido ?: 0, estrellasFoodter, itemsJson, dialog)
             }
         }
         dialog.show()
     }
 
-    private fun enviarCalificacionAPI(pedidoId: Int, estrellas: Float, dialog: androidx.appcompat.app.AlertDialog) {
+    private fun enviarCalificacionAPI(pedidoId: Int, estrellas: Float, itemsJson: String, dialog: androidx.appcompat.app.AlertDialog) {
         val usuarioId = SessionManager.getUserId(this) ?: return
 
-        // cliente es el rol fijo aquí porque estamos en la app del cliente
-        apiService.calificarPedido(pedidoId, usuarioId, estrellas, "cliente")
+        apiService.calificarPedido(pedidoId, usuarioId, estrellas, "cliente", itemsJson)
             .enqueue(object : Callback<CrearPedidoResponse> {
                 override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                     if (response.isSuccessful && response.body()?.status == "exito") {
