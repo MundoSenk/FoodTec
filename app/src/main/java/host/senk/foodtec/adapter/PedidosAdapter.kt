@@ -7,11 +7,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import host.senk.foodtec.R
-import host.senk.foodtec.model.Pedido // ¡¡Usa el "molde" de Pedido!!
+import host.senk.foodtec.model.Pedido
 
 class PedidosAdapter(
     private val listaDePedidos: List<Pedido>,
-    private val onItemClicked: (Pedido) -> Unit // ¡Un "oído" pa'l clic!
+    private val onItemClicked: (Pedido) -> Unit // La función lambda que recibe el clic
 ) : RecyclerView.Adapter<PedidosAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,11 +32,17 @@ class PedidosAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pedido = listaDePedidos[position]
+
         holder.tvId.text = "#${pedido.id_pedido}"
         holder.tvResumen.text = "(${pedido.estatus})"
-        holder.rbValoracion.rating = 0f // ¡Aquí jalaríamos la valoración!
+
+        val calificacion = pedido.valoracion_cliente?.toFloatOrNull() ?: 0f
+        holder.rbValoracion.rating = calificacion
+
 
         holder.itemView.setOnClickListener {
+
+
             onItemClicked(pedido)
         }
     }

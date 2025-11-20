@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Pedido Entregado!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="22sp"
+            android:textColor="@color/foodtec_naranja"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Qué tal estuvo el servicio del Foodter?"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <RatingBar
+            android:id="@+id/rbDialogValoracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:progressTint="@color/foodtec_naranja"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnEnviarCalificacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ENVIAR CALIFICACIÓN"
+            android:fontFamily="@font/lilita_one_regular"
+            android:background="@drawable/shape_tab_selected"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

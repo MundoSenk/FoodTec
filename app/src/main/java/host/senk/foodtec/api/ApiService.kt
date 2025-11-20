@@ -145,4 +145,18 @@ interface ApiService {
         @Body request: AvatarRequest
     ): Call<CrearPedidoResponse>
 
+
+
+    // CALIFICAR PEDIDO (Sirve para Cliente -> Foodter Y Foodter -> Cliente)
+    @FormUrlEncoded
+    @POST("calificar_pedido.php")
+    fun calificarPedido(
+        @Field("pedido_id") pedidoId: Int,
+        @Field("usuario_id") usuarioId: String, // Quién califica
+        @Field("calificacion") calificacion: Float,
+        @Field("rol_calificador") rol: String // "cliente" o "foodter"
+    ): Call<CrearPedidoResponse>
+
+
+
 }
