@@ -30,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
     private var usuarioLogueado: String = "invitado"
     private var nombreDelVato: String = "Usuario"
 
+    private lateinit var rvSnacks: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,13 +54,15 @@ class HomeActivity : AppCompatActivity() {
         // AMARRAMOS LOS RECYCLERVIEWS (¡Los "michis"!)
         val rvComida: RecyclerView = findViewById(R.id.rvComida)
         val rvBebidas: RecyclerView = findViewById(R.id.rvBebidas)
+        rvSnacks = findViewById(R.id.rvSnacks)
         rvComida.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvBebidas.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvSnacks.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // ¡JALAMOS LOS DATOS!
         cargarMenu("Comida", rvComida)
         cargarMenu("Bebida", rvBebidas)
-
+        cargarMenu("Snack", rvSnacks)
 
 
 

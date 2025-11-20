@@ -69,10 +69,18 @@ class MenuAdapter(
             .into(holder.ivImagen)
 
         // (Tu código de los bordes de color queda igual)
-        if (item.categoria == "Bebida") {
-            holder.contentLayout.setBackgroundResource(R.drawable.border_outline_bebida)
-        } else {
-            holder.contentLayout.setBackgroundResource(R.drawable.border_outline_comida)
+        when (item.categoria) {
+            "Bebida" -> {
+                holder.contentLayout.setBackgroundResource(R.drawable.border_outline_bebida)
+            }
+            "Snack" -> {
+                // ¡Aquí entra el nuevo rosa!
+                holder.contentLayout.setBackgroundResource(R.drawable.border_outline_snack)
+            }
+            else -> {
+                // Comida (default)
+                holder.contentLayout.setBackgroundResource(R.drawable.border_outline_comida)
+            }
         }
 
         // --- ¡¡AQUÍ ESTÁ LA LÓGICA DEL CANDADO!! ---
