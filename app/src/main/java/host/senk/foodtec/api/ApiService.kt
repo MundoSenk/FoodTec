@@ -191,6 +191,14 @@ interface ApiService {
         @Part imagen: MultipartBody.Part //
     ): Call<CrearPedidoResponse>
 
+    ////ELIMINAR PUBLICACIONES
+    @FormUrlEncoded
+    @POST("borrarPublicacion.php")
+    fun borrarPublicacion(
+        @Field("id_publicacion") idPub: Int,
+        @Field("usuario_id") usuarioId: String
+    ): Call<CrearPedidoResponse>
+
 
     // GUARDAR TOKEN (Para que el servidor sepa dónde vive este cel)
     @FormUrlEncoded

@@ -15,7 +15,9 @@ import host.senk.foodtec.R
 import host.senk.foodtec.model.Publicacion
 
 class PublicacionesAdapter(
-    private val lista: List<Publicacion>
+    private val lista: List<Publicacion>,
+    private val currentUserId: String, //
+    private val onBorrarClick: (Publicacion) -> Unit
 ) : RecyclerView.Adapter<PublicacionesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,6 +29,7 @@ class PublicacionesAdapter(
         val tvDesc: TextView = view.findViewById(R.id.tvDescPub)
         val ivFoto: ImageView = view.findViewById(R.id.ivFotoPub)
         val btnContactar: Button = view.findViewById(R.id.btnContactar)
+        val btnBorrar: android.widget.ImageButton = view.findViewById(R.id.btnBorrarPub)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,6 +41,16 @@ class PublicacionesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = lista[position]
+
+
+        if (item.usuario_id == currentUserId) {
+            holder.btnBorrar.visibility = View.VISIBLE
+            holder.btnBorrar.setOnClickListener {
+                onBorrarClick(item)
+            }
+        } else {
+            holder.btnBorrar.visibility = View.GONE
+        }
 
         holder.tvUsuario.text = item.nombre_usuario
         holder.tvFecha.text = item.fecha_publicacion // Podrías usar una función "Hace X min"

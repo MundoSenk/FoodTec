@@ -65,6 +65,18 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="4dp"
                 android:textSize="12sp"/>
+
+
+            <ImageButton
+                android:id="@+id/btnBorrarPub"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="#F44336"
+                android:visibility="gone"
+                android:contentDescription="Borrar publicación"/>
+
         </LinearLayout>
 
         <LinearLayout

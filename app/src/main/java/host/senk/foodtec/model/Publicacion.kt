@@ -13,7 +13,8 @@ data class Publicacion(
     val tipo: String, // "Perdido" o "Encontrado"
     val fecha_publicacion: String,
     val nombre_usuario: String,
-    val avatar_id: String
+    val avatar_id: String,
+    val usuario_id: String
 ) : Parcelable
 
 // Y el sobre para la respuesta

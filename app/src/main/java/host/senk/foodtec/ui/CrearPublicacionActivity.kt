@@ -149,6 +149,8 @@ class CrearPublicacionActivity : AppCompatActivity() {
             .enqueue(object : Callback<CrearPedidoResponse> {
                 override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                     if (response.isSuccessful && response.body()?.status == "exito") {
+
+                        ///eliminamos el cache de la foto que cortamos con el uCrop
                         try { file.delete() } catch (e: Exception) { e.printStackTrace() }
                         Toast.makeText(this@CrearPublicacionActivity, "¡Publicado!", Toast.LENGTH_LONG).show()
                         finish()
