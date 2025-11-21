@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import host.senk.foodtec.R
 import host.senk.foodtec.model.Notificacion
+import host.senk.foodtec.ui.HomeFoodterActivity
 import host.senk.foodtec.ui.ObjetosPerdidosActivity
 import host.senk.foodtec.ui.PedidosActivity
 
@@ -47,16 +49,32 @@ class NotificacionesAdapter(
             holder.ivIcono.setColorFilter(holder.itemView.context.getColor(R.color.foodtec_naranja))
         }
 
+        // ... en onBindViewHolder ...
+
         // CLIC INTELIGENTE
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            if (item.tipo == "objeto") {
-                // Vamos a objetos perdidos
-                context.startActivity(Intent(context, ObjetosPerdidosActivity::class.java))
-            } else if (item.tipo == "pedido") {
-                // Vamos a mis pedidos
-                context.startActivity(Intent(context, PedidosActivity::class.java))
+
+            when (item.tipo) {
+                "objeto", "alerta_general" -> {
+                    // Vamos a objetos perdidos
+                    context.startActivity(Intent(context, ObjetosPerdidosActivity::class.java))
+                }
+                "pedido_estado", "pedido_aceptado" -> {
+                    // Vamos a mis pedidos (Cliente)
+                    context.startActivity(Intent(context, PedidosActivity::class.java))
+                }
+                "pedido_disponible" -> {
+                    // Vamos a la pantalla de Foodter (Chamba)
+                    context.startActivity(Intent(context, HomeFoodterActivity::class.java))
+                }
+                else -> {
+
+                    Toast.makeText(context, "Información: ${item.mensaje}", Toast.LENGTH_SHORT).show()
+                }
             }
+
         }
+
     }
 }
