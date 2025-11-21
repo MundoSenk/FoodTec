@@ -40,6 +40,9 @@ class HomeActivity : AppCompatActivity() {
 
         pedirPermisoNotificaciones()
 
+        com.google.firebase.messaging.FirebaseMessaging.getInstance().subscribeToTopic("objetos_perdidos")
+
+
         // OBTENER TOKEN DE FIREBASE (Solo para probar ahorita)
         com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -47,15 +50,15 @@ class HomeActivity : AppCompatActivity() {
                 return@addOnCompleteListener
             }
 
-            // 1. Tenemos el token
+            //  Tenemos el token
             val token = task.result
             Log.d("FCM", "Token Local: $token")
 
-            // 2. ¿Hay un usuario logueado?
+            //  Hay un usuario logueado
             val userId = SessionManager.getUserId(this)
 
             if (userId != null) {
-                // 3. ¡MANDARLO AL PHP!
+                //  MANDARLO AL PHP
                 Log.d("FCM", "Enviando token al servidor para el usuario: $userId")
 
                 RetrofitClient.apiService.actualizarToken(userId, token)
@@ -293,4 +296,4 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-} // <--- ¡ESTA LLAVE CIERRA LA CLASE!
+}
