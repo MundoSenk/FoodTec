@@ -5,6 +5,7 @@ import host.senk.foodtec.model.CrearPedidoResponse
 import host.senk.foodtec.model.PedidoRequest
 import host.senk.foodtec.model.LoginResponse
 import host.senk.foodtec.model.MenuResponse
+import host.senk.foodtec.model.NotificacionesResponse
 import host.senk.foodtec.model.RegistroResponse
 import host.senk.foodtec.model.PedidoUnicoResponse
 import host.senk.foodtec.model.PedidosResponse
@@ -207,6 +208,14 @@ interface ApiService {
         @Field("usuario_id") usuarioId: String,
         @Field("token") token: String
     ): Call<CrearPedidoResponse>
+
+
+    // NOTIFICACIONES: Historial
+    @FormUrlEncoded
+    @POST("obtenerMisNotificaciones.php")
+    fun obtenerMisNotificaciones(
+        @Field("usuario_id") usuarioId: String
+    ): Call<NotificacionesResponse>
 
 
 

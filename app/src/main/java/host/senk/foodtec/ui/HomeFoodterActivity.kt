@@ -237,6 +237,20 @@ class HomeFoodterActivity : AppCompatActivity() {
         switchModoChamba.setOnCheckedChangeListener { _, isChecked ->
             val nuevoStatus = if (isChecked) "Activo" else "Inactivo"
             val toastMsg = if (isChecked) "¡A chambear!" else "¡A mimir!"
+            // --- LÓGICA DE SUSCRIPCIÓN ---
+            if (isChecked) {
+                // Se suscribe para recibir alertas de pedidos
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().subscribeToTopic("foodters_activos")
+                Toast.makeText(this, "¡Modo Activo! Recibirás alertas.", Toast.LENGTH_SHORT).show()
+            } else {
+                // Se sale para que no lo molesten
+                com.google.firebase.messaging.FirebaseMessaging.getInstance().unsubscribeFromTopic("foodters_activos")
+                Toast.makeText(this, "Modo Inactivo. Descansa.", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+
             switchModoChamba.isEnabled = false
             Log.d("HomeFoodterActivity", "Cambiando status a: $nuevoStatus")
 

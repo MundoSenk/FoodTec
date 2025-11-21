@@ -129,8 +129,9 @@ class HomeActivity : AppCompatActivity() {
         ///NOTIFICACIONES
         val btnNoti = findViewById<android.view.View>(R.id.btnNotificaciones)
         btnNoti.setOnClickListener {
-            Toast.makeText(this, "Sin notificaciones nuevas", Toast.LENGTH_SHORT).show()
-
+            // ¡ABRIR EL CENTRO DE COMANDO!
+            val intent = Intent(this, NotificacionesActivity::class.java)
+            startActivity(intent)
         }
 
 

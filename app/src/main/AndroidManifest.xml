@@ -15,19 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodtec"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".ui.NotificacionesActivity"
+            android:exported="false" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.CrearPublicacionActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.ObjetosPerdidosActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.PerfilActivity"
             android:exported="false" />
@@ -75,37 +77,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.NewPasswordActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="senk.host"
                     android:pathPrefix="/reset_password"
                     android:scheme="https" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="reset_password"
                     android:scheme="foodtec" />
             </intent-filter>
         </activity>
-        <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/logo" /> <meta-data
-        android:name="com.google.firebase.messaging.default_notification_color"
-        android:resource="@color/foodtec_naranja" />
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/foodtec_naranja" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="CanalFoodTec" />
@@ -117,7 +121,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
