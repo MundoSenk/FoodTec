@@ -145,7 +145,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Tarjeta"
+                    android:text="Tarjeta (No disponible)"
                     android:fontFamily="@font/lilita_one_regular"
                     android:background="@drawable/selector_payment_button"
                     android:button="@android:color/transparent"
