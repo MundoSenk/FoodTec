@@ -79,7 +79,7 @@ class PedidosActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewAnteriores() {
-        // AQUI DEFINIMOS QUÉ PASA CUANDO TOCAN UN PEDIDO VIEJO
+        // AQUI DEFINIMOS QUÉ PASA CUANDO TOCAN UN PEDIDO VIEJ
         pedidosAdapter = PedidosAdapter(listaPedidosAnteriores) { pedido ->
 
             // Solo dejamos calificar si ya está entregado
