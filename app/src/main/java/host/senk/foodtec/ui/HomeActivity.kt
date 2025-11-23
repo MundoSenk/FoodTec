@@ -140,10 +140,10 @@ class HomeActivity : AppCompatActivity() {
             val telefonoGuardado = SessionManager.getPhone(this)
 
             if (telefonoGuardado.isNullOrEmpty()) {
-                // NO TIENE -> ¡Pedirselo!
+
                 mostrarDialogoPedirWhats()
             } else {
-                //  YA TIENE -> ¡Pásele al Módulo Azul!
+
                 abrirModuloObjetos()
             }
         }
