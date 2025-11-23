@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -49,6 +50,8 @@ class PedidosActivity : AppCompatActivity() {
     private val listaPedidosAnteriores = mutableListOf<Pedido>()
     private val listaPedidoActualDetalles = mutableListOf<PedidoDetalle>()
 
+    private lateinit var btnCancelar: Button
+
     // API
     private val apiService: ApiService by lazy { RetrofitClient.apiService }
 
@@ -76,6 +79,7 @@ class PedidosActivity : AppCompatActivity() {
         tvPedidoActualMetodo = findViewById(R.id.tvPedidoActualMetodo)
         tvPedidoActualLugar = findViewById(R.id.tvPedidoActualLugar)
         rvPedidosAnteriores = findViewById(R.id.rvPedidosAnteriores)
+        btnCancelar = findViewById(R.id.btnCancelarPedido)
     }
 
     private fun setupRecyclerViewAnteriores() {
@@ -192,6 +196,16 @@ class PedidosActivity : AppCompatActivity() {
             pedidoActual.detalles?.let { listaPedidoActualDetalles.addAll(it.filterNotNull()) }
             pedidoActualAdapter.notifyDataSetChanged()
 
+            if (pedidoActual.estatus.equals("Pendiente", ignoreCase = true)) {
+                btnCancelar.visibility = View.VISIBLE
+                btnCancelar.setOnClickListener {
+                    confirmarCancelacion(pedidoActual.id_pedido ?: 0)
+                }
+
+            } else {
+                btnCancelar.visibility = View.GONE
+            }
+
         } else {
             SessionManager.setHasActiveOrder(this, false)
             llPedidoActualContainer.visibility = View.GONE
@@ -208,6 +222,29 @@ class PedidosActivity : AppCompatActivity() {
         listaPedidosAnteriores.addAll(pedidosAnteriores)
         pedidosAdapter.notifyDataSetChanged()
     }
+
+
+        private fun confirmarCancelacion(pedidoId: Int) {
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("¿Cancelar Pedido?")
+                .setMessage("Si cancelas, tendrás que pedir de nuevo.")
+                .setPositiveButton("Sí, cancelar") { _, _ ->
+                    val userId = SessionManager.getUserId(this) ?: return@setPositiveButton
+                    RetrofitClient.apiService.cancelarPedido(pedidoId, userId).enqueue(object : Callback<CrearPedidoResponse> {
+                        override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
+                            if (response.isSuccessful && response.body()?.status == "exito") {
+                                Toast.makeText(this@PedidosActivity, "Pedido cancelado", Toast.LENGTH_SHORT).show()
+                                cargarPedidosDelUsuario() // Recargar para ver cambios
+                            } else {
+                                Toast.makeText(this@PedidosActivity, "No se pudo cancelar", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {}
+                    })
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
 
     // FUNCIONES PARA EL MODAL
 

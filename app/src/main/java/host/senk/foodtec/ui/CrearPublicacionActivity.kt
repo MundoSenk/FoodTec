@@ -89,7 +89,8 @@ class CrearPublicacionActivity : AppCompatActivity() {
         val options = UCrop.Options()
 
         options.setToolbarColor(ContextCompat.getColor(this, R.color.foodtec_azul))
-        options.setStatusBarColor(ContextCompat.getColor(this, android.R.color.black))
+        options.setStatusBarColor(android.graphics.Color.BLACK)
+        options.setNavigationBarColor(android.graphics.Color.BLACK)
         options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.white))
         options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.foodtec_azul))
 
@@ -167,3 +168,6 @@ class CrearPublicacionActivity : AppCompatActivity() {
             })
     }
 }
+
+private fun UCrop.Options.setNavigationBarColor(black: Int) {}
+
