@@ -103,7 +103,9 @@ class PedidosActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        btnRegresar.setOnClickListener { finish() }
+        btnRegresar.setOnClickListener { val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()}
     }
 
     private fun setupBottomNav() {

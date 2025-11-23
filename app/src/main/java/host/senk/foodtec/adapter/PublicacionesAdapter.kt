@@ -70,7 +70,7 @@ class PublicacionesAdapter(
             "avatar_1" -> R.drawable.avatar_1
             "avatar_2" -> R.drawable.avatar_2
             "avatar_3" -> R.drawable.avatar_3
-            else -> R.drawable.avatar_default
+            else -> R.drawable.avatar_defaut
         }
         holder.ivAvatar.setImageResource(avatarRes)
 

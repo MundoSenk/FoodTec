@@ -112,7 +112,7 @@ class PerfilActivity : AppCompatActivity() {
             "avatar_2" -> R.drawable.avatar_2
             "avatar_3" -> R.drawable.avatar_3
             // (Si agregas más, ponlos aquí)
-            else -> R.drawable.avatar_default // ¡Recuerda tener avatar_default.png!
+            else -> R.drawable.avatar_defaut // ¡Recuerda tener avatar_default.png!
         }
     }
 

@@ -62,7 +62,7 @@
                 android:scaleType="centerCrop"
                 app:civ_border_width="4dp"
                 app:civ_border_color="@color/foodtec_naranja"
-                tools:src="@drawable/avatar_default" /> <Button
+                tools:src="@drawable/avatar_defaut" /> <Button
             android:id="@+id/btnCambiarAvatar"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
