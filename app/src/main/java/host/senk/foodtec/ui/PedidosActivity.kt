@@ -79,12 +79,20 @@ class PedidosActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerViewAnteriores() {
-        // AQUI DEFINIMOS QUÉ PASA CUANDO TOCAN UN PEDIDO VIEJO
+        // AQUI DEFINIMOS QUÉ PASA CUANDO TOCAN UN PEDIDO VIEJ
         pedidosAdapter = PedidosAdapter(listaPedidosAnteriores) { pedido ->
 
             // Solo dejamos calificar si ya está entregado
             if (pedido.estatus.equals("Entregado", ignoreCase = true)) {
-                mostrarDialogoCalificacion(pedido)
+                val calificacionYaDada = pedido.valoracion_cliente?.toFloatOrNull() ?: 0f
+
+                if (calificacionYaDada > 0) {
+                    // SI YA TIENE PUNTOS
+                    Toast.makeText(this, "¡Ya calificaste este pedido! Gracias.", Toast.LENGTH_SHORT).show()
+                } else {
+                    // SI ES 0 VOTA
+                    mostrarDialogoCalificacion(pedido)
+                }
             } else {
                 Toast.makeText(this, "Solo puedes calificar pedidos entregados", Toast.LENGTH_SHORT).show()
             }
@@ -269,7 +277,7 @@ class PedidosActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body()?.status == "exito") {
                         Toast.makeText(this@PedidosActivity, "¡Calificación enviada!", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
-                        //  Recargar lista
+                        cargarPedidosDelUsuario()
                     } else {
                         val msg = response.body()?.mensaje ?: "Error al calificar"
                         Toast.makeText(this@PedidosActivity, msg, Toast.LENGTH_SHORT).show()
