@@ -84,7 +84,15 @@ class PedidosActivity : AppCompatActivity() {
 
             // Solo dejamos calificar si ya está entregado
             if (pedido.estatus.equals("Entregado", ignoreCase = true)) {
-                mostrarDialogoCalificacion(pedido)
+                val calificacionYaDada = pedido.valoracion_cliente?.toFloatOrNull() ?: 0f
+
+                if (calificacionYaDada > 0) {
+                    // SI YA TIENE PUNTOS
+                    Toast.makeText(this, "¡Ya calificaste este pedido! Gracias.", Toast.LENGTH_SHORT).show()
+                } else {
+                    // SI ES 0 VOTA
+                    mostrarDialogoCalificacion(pedido)
+                }
             } else {
                 Toast.makeText(this, "Solo puedes calificar pedidos entregados", Toast.LENGTH_SHORT).show()
             }
