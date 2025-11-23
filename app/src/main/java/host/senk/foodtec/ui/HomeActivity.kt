@@ -42,6 +42,8 @@ class HomeActivity : AppCompatActivity() {
 
         com.google.firebase.messaging.FirebaseMessaging.getInstance().subscribeToTopic("objetos_perdidos")
 
+        checkPatchNotes()
+
 
         // OBTENER TOKEN DE FIREBASE (Solo para probar ahorita)
         com.google.firebase.messaging.FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
@@ -296,5 +298,41 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun checkPatchNotes() {
+        val currentVersion = "1.0.1"
+
+        // Usamos las preferencias directas para algo rápido
+        val prefs = getSharedPreferences("FoodTecPrefs", MODE_PRIVATE)
+        val lastVersionSeen = prefs.getString("patch_notes_version", "")
+
+        // Si la versión actual es diferente a la última que vio...
+        if (currentVersion != lastVersionSeen) {
+            mostrarDialogoPatchNotes(currentVersion, prefs)
+        }
+    }
+
+    private fun mostrarDialogoPatchNotes(version: String, prefs: android.content.SharedPreferences) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.dialog_patch_notes, null)
+        builder.setView(view)
+        builder.setCancelable(false) // Que lo lean a fuerza jaja
+
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        val btnEntendido = view.findViewById<android.widget.Button>(R.id.btnEntendidoPatch)
+
+        btnEntendido.setOnClickListener {
+            // Guardamos que YA VIO esta versión
+            prefs.edit().putString("patch_notes_version", version).apply()
+            dialog.dismiss()
+
+            Toast.makeText(this, "¡A disfrutar FoodTec v$version!", Toast.LENGTH_SHORT).show()
+        }
+
+        dialog.show()
+    }
+
 
 }
