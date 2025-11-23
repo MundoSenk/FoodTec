@@ -4,149 +4,170 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@drawable/shape_home_card"> <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical" android:layout_marginBottom="16dp">
+    android:background="@drawable/shape_home_card"
+    android:paddingTop="16dp">
 
-    <TextView
-        android:id="@+id/tvTituloModal"
-        android:layout_width="0dp" android:layout_height="wrap_content"
-        android:layout_weight="1" android:text="Confirmación de la Compra"
-        android:fontFamily="@font/lilita_one_regular"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:layout_marginEnd="8dp"/> <com.google.android.material.button.MaterialButton
-    android:id="@+id/btnAgregarMas"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="¡Agregar más!"
-    android:fontFamily="@font/lilita_one_regular"
-    android:textColor="@color/white"
-    app:backgroundTint="@color/foodtec_azul" app:cornerRadius="20dp" android:insetTop="0dp"
-    android:insetBottom="0dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"/>
-
-</LinearLayout>
-
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="150dp"
-        android:background="@drawable/shape_input_grey"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvModalItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"/>
-
-    </FrameLayout>
-
-
-    <TextView
-        android:id="@+id/tvSubtotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Subtotal: $40.00"
-        android:fontFamily="@font/montserrat_alternates_semibold"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/tvComision"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Comisión de entrega: $5.00"
-        android:fontFamily="@font/montserrat_alternates_semibold"
-        android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/tvTotalPagar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TOTAL A PAGAR: $45.00"
-        android:fontFamily="@font/lilita_one_regular"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LUGAR DE ENTREGA:"
-        android:fontFamily="@font/lilita_one_regular"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
-    <Spinner
-        android:id="@+id/spinnerLugar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_input_grey"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MÉTODO DE PAGO:"
-        android:fontFamily="@font/lilita_one_regular"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
-    <RadioGroup
-        android:id="@+id/rgMetodoPago"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
+        android:gravity="center_vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingBottom="8dp">
 
-        <RadioButton
-            android:id="@+id/rbEfectivo"
+        <TextView
+            android:id="@+id/tvTituloModal"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Efectivo"
+            android:layout_weight="1"
+            android:text="Confirmación de la Compra"
             android:fontFamily="@font/lilita_one_regular"
-            android:button="@android:color/transparent"
-            android:background="@drawable/selector_payment_button"
-            android:textColor="@drawable/selector_payment_text"
-            android:gravity="center"
-            android:padding="12dp"
-            android:layout_marginEnd="8dp"
-            android:checked="true"/>
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginEnd="8dp"/>
 
-        <RadioButton
-            android:id="@+id/rbTarjeta"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgregarMas"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tarjeta"
+            android:text="¡AGREGA MÁS!"
             android:fontFamily="@font/lilita_one_regular"
-            android:button="@android:color/transparent"
-            android:background="@drawable/selector_payment_button"
-            android:textColor="@drawable/selector_payment_text"
-            android:gravity="center"
-            android:padding="12dp"
-            android:layout_marginStart="8dp"
-            android:checked="false"/>
-    </RadioGroup>
+            android:textColor="@color/white"
+            app:backgroundTint="@color/foodtec_azul"
+            app:cornerRadius="20dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"/>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvModalItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:background="@drawable/shape_input_grey"
+                android:padding="8dp"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/tvSubtotal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Subtotal: $40.00"
+                    android:fontFamily="@font/montserrat_alternates_semibold"/>
+
+                <TextView
+                    android:id="@+id/tvComision"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Comisión: $5.00"
+                    android:fontFamily="@font/montserrat_alternates_semibold"/>
+
+                <TextView
+                    android:id="@+id/tvTotalPagar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="TOTAL: $45.00"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LUGAR DE ENTREGA:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerLugar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_input_grey"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MÉTODO DE PAGO:"
+                android:fontFamily="@font/lilita_one_regular"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgMetodoPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <RadioButton
+                    android:id="@+id/rbEfectivo"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Efectivo"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:background="@drawable/selector_payment_button"
+                    android:button="@android:color/transparent"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/rbTarjeta"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Tarjeta"
+                    android:fontFamily="@font/lilita_one_regular"
+                    android:background="@drawable/selector_payment_button"
+                    android:button="@android:color/transparent"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:layout_marginStart="8dp"/>
+            </RadioGroup>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/btnConfirmarCompra"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="¡CONFIRMAR COMPRA!"
         android:fontFamily="@font/lilita_one_regular"
         android:textSize="18sp"
         android:background="@drawable/shape_tab_selected"
-        android:textColor="@color/black"/>
+        app:backgroundTint="@null"
+        android:textColor="@color/black"
+        android:layout_margin="24dp"/>
 
 </LinearLayout>
