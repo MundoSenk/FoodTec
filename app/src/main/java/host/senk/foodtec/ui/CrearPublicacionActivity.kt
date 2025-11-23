@@ -83,29 +83,24 @@ class CrearPublicacionActivity : AppCompatActivity() {
      * Configura uCrop con colores FoodTec y lanza la actividad
      */
     private fun iniciarRecorte(sourceUri: Uri) {
-        // Creamos un archivo temporal donde se guardará el recorte
         val destinoFileName = "recorte_${System.currentTimeMillis()}.jpg"
         val destinationUri = Uri.fromFile(File(cacheDir, destinoFileName))
 
-        // Opciones visuales (¡AZULADO!)
         val options = UCrop.Options()
+
         options.setToolbarColor(ContextCompat.getColor(this, R.color.foodtec_azul))
-        options.setStatusBarColor(ContextCompat.getColor(this, R.color.foodtec_azul))
-        options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.foodtec_azul))
+        options.setStatusBarColor(ContextCompat.getColor(this, android.R.color.black))
         options.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.white))
-        options.setToolbarTitle("Recortar Objeto")
+        options.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.foodtec_azul))
 
-        // Configuración: Formato cuadrado o libre
-        // options.withAspectRatio(1f, 1f) // Descomenta si quieres forzar cuadrado
-        options.setFreeStyleCropEnabled(true) // Permite cualquier forma
+        options.setToolbarTitle("Ajustar Imagen")
+        options.setFreeStyleCropEnabled(true)
 
-        // Lanzamos uCrop
         val intent = UCrop.of(sourceUri, destinationUri)
             .withOptions(options)
             .getIntent(this)
 
         cropImageLauncher.launch(intent)
-
     }
 
     private fun validarYSubir() {
