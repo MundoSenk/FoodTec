@@ -269,7 +269,7 @@ class PedidosActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body()?.status == "exito") {
                         Toast.makeText(this@PedidosActivity, "¡Calificación enviada!", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
-                        //  Recargar lista
+                        cargarPedidosDelUsuario()
                     } else {
                         val msg = response.body()?.mensaje ?: "Error al calificar"
                         Toast.makeText(this@PedidosActivity, msg, Toast.LENGTH_SHORT).show()
