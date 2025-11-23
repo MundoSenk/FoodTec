@@ -85,7 +85,7 @@
                 android:id="@+id/etNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ej. Harold Mundo"
+                android:hint="ej. Harold Mundo"
                 android:inputType="textPersonName"
                 android:layout_marginBottom="16dp"
 
@@ -104,7 +104,7 @@
                 android:id="@+id/etUsuarioRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ej. RENOSENK14 (4 a 12 caract.)"
+                android:hint="ej. renosenk (4 a 12 caract.)"
                 android:inputType="text"
                 android:layout_marginBottom="16dp"
 
@@ -160,7 +160,7 @@
                 android:id="@+id/etCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mínimo 6 caracteres"
+                android:hint="ej. correofuncional@gmail.com"
                 android:inputType="textEmailAddress"
                 android:layout_marginBottom="16dp"
 

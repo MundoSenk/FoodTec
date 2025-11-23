@@ -89,7 +89,14 @@ interface ApiService {
     @POST("obtenerMisPedidos.php")
     fun obtenerMisPedidos(
         @Field("usuario_id") usuarioId: String // Le mandamos el "RENO"
-    ): Call<PedidosResponse> // Y esperamos el "sobre" nuevo!
+    ): Call<PedidosResponse> //
+
+    @FormUrlEncoded
+    @POST("cancelarPedido.php")
+    fun cancelarPedido(
+        @Field("pedido_id") pedidoId: Int,
+        @Field("usuario_id") usuarioId: String
+    ): Call<CrearPedidoResponse>
 
 
     @FormUrlEncoded

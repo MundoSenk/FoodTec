@@ -83,8 +83,8 @@ class CartModalFragment : BottomSheetDialogFragment() {
 
         // ¡El de CONFIRMAR
         btnConfirmar.setOnClickListener {
-            // (¡El código de 'crearPedido' va aquí!)
-            confirmarPedido()
+
+            mostrarDialogoConfirmacion()
         }
     }
 
@@ -112,8 +112,22 @@ class CartModalFragment : BottomSheetDialogFragment() {
         rvItems.adapter = adapter // ¡Pum!
     }
 
+
+
+    private fun mostrarDialogoConfirmacion() {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("¿Todo listo?")
+            .setMessage("¿Estás seguro de que quieres realizar este pedido por $${String.format("%.2f", CartManager.getSubtotal() + comision)}?")
+            .setPositiveButton("¡SÍ, TENGO HAMBRE!") { _, _ ->
+                // AHORA SÍ llamamos a la función real
+                confirmarPedido()
+            }
+            .setNegativeButton("Revisar más", null)
+            .show()
+    }
+
     /**
-     * ¡¡EL JALE CHIDO  LA "CONFIRMACIÓN"!!
+     CONFIRMACIÓN
      */
     private fun confirmarPedido() {
         val itemsDelCarrito = CartManager.getItems() // ¡Jalamos los items otra vez!

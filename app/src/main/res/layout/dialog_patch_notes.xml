@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡ACTUALIZACIÓN 1.0.1!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="24sp"
+            android:textColor="@color/foodtec_azul"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"/>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@android:drawable/ic_dialog_info"
+            app:tint="@color/foodtec_naranja"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Hola Foodter! Hemos mejorado la app para ti:"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• 🔔 Notificaciones en tiempo real.\n• ⭐ Califica a tus Foodters y la comida.\n• 🗑️ Opción para cancelar pedidos pendientes. \n•📞 Correción de bugs"
+            android:fontFamily="@font/montserrat_alternates_semibold"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp"/>
+
+        <Button
+            android:id="@+id/btnEntendidoPatch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡ENTENDIDO, VÁMONOS!"
+            android:fontFamily="@font/lilita_one_regular"
+            android:background="@drawable/shape_tab_selected"
+            app:backgroundTint="@color/foodtec_azul"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

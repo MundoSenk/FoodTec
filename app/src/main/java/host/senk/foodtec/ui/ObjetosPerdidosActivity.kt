@@ -24,7 +24,7 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
     private lateinit var fabAgregar: FloatingActionButton
     private val listaPublicaciones = mutableListOf<Publicacion>()
 
-    // Hacemos el adapter propiedad de la clase para acceder a él desde cualquier lado
+    // Adaptador global
     private lateinit var adapter: PublicacionesAdapter
     private var miId: String = ""
 
@@ -40,7 +40,7 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
 
         rvPublicaciones.layoutManager = LinearLayoutManager(this)
 
-        // Inicializamos el adapter
+        // Configurar adaptador con lógica de borrado
         adapter = PublicacionesAdapter(listaPublicaciones, miId) { publicacion ->
             confirmarBorrado(publicacion)
         }
@@ -52,14 +52,13 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
         btnRegresar.setOnClickListener { finish() }
     }
 
-    // --- REFRESH AUTOMÁTICO ---
+    //  REFRESH AUTOMÁTICO
     override fun onResume() {
         super.onResume()
-        // Llamamos a cargarDatos cada vez que la pantalla se vuelve visible
         cargarDatos()
     }
 
-    // Esta función NO debe recibir argumentos, usa el adapter global
+    // CARGA DE DATOS
     private fun cargarDatos() {
         RetrofitClient.apiService.obtenerPublicaciones().enqueue(object : Callback<PublicacionesResponse> {
             override fun onResponse(call: Call<PublicacionesResponse>, response: Response<PublicacionesResponse>) {
@@ -68,7 +67,6 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
                     response.body()?.publicaciones?.let { listaPublicaciones.addAll(it) }
                     adapter.notifyDataSetChanged()
                 } else {
-                    // Si no hay publicaciones, no mostramos error, solo lista vacía
                     // Toast.makeText(this@ObjetosPerdidosActivity, "No hay publicaciones", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -79,7 +77,7 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
         })
     }
 
-    // --- LÓGICA DE BORRADO (AFUERA DE RETROFIT) ---
+    // LÓGICA DE BORRADO
     private fun confirmarBorrado(pub: Publicacion) {
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("¿Borrar publicación?")
@@ -97,7 +95,7 @@ class ObjetosPerdidosActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
                     if (response.isSuccessful && response.body()?.status == "exito") {
                         Toast.makeText(this@ObjetosPerdidosActivity, "Eliminado", Toast.LENGTH_SHORT).show()
-                        cargarDatos() // Recargamos la lista
+                        cargarDatos() // Recargar lista
                     } else {
                         Toast.makeText(this@ObjetosPerdidosActivity, "Error al borrar", Toast.LENGTH_SHORT).show()
                     }
