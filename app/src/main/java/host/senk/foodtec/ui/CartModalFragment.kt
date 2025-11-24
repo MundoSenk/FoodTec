@@ -66,7 +66,7 @@ class CartModalFragment : BottomSheetDialogFragment() {
         btnAgregarMas = view.findViewById(R.id.btnAgregarMas)
 
         // --- AQUÍ RELLENAMOS EL SPINNER (A MANO)
-        val lugares = arrayOf("Selecciona un lugar...", "Edificio A", "Edificio B", "Edificio C", "Rectoría")
+        val lugares = arrayOf("Selecciona un lugar...", "Edificio A", "Edificio B", "Edificio C","Edificio D", "Rectoría")
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, lugares)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerLugar.adapter = spinnerAdapter
