@@ -39,6 +39,7 @@ class PerfilActivity : AppCompatActivity() {
 
     // Variables para Gamificación
     private var misPedidosCompletados: Int = 0
+    private var soyUsuarioGod: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,12 +101,13 @@ class PerfilActivity : AppCompatActivity() {
     private fun cargarEstadisticas() {
         val userId = SessionManager.getUserId(this) ?: return
 
-        // Nota: Asegúrate de tener la clase EstadisticasResponse creada en model/
+
         RetrofitClient.apiService.obtenerEstadisticas(userId).enqueue(object : Callback<EstadisticasResponse> {
             override fun onResponse(call: Call<EstadisticasResponse>, response: Response<EstadisticasResponse>) {
                 if (response.isSuccessful && response.body()?.status == "exito") {
-                    // Guardamos el dato para usarlo en el diálogo
-                    misPedidosCompletados = response.body()!!.pedidos_como_cliente
+                    val stats = response.body()!!
+                    misPedidosCompletados = stats.pedidos_como_cliente
+                    soyUsuarioGod = stats.es_usuario_god // <--- ¡GUARDAMOS EL PODER!
                 }
             }
             override fun onFailure(call: Call<EstadisticasResponse>, t: Throwable) {}
@@ -123,6 +125,7 @@ class PerfilActivity : AppCompatActivity() {
             "avatar_7" -> R.drawable.avatar_7
             "avatar_8" -> R.drawable.avatar_8
             "avatar_9" -> R.drawable.avatar_9
+            "avatar_oculto" -> R.drawable.avatar_oculto
             else -> R.drawable.avatar_defaut
         }
     }
@@ -157,6 +160,19 @@ class PerfilActivity : AppCompatActivity() {
             dialogView.findViewById<ImageView>(R.id.select_avatar_8),
             dialogView.findViewById<ImageView>(R.id.select_avatar_9)
         )
+
+        val imgGod = dialogView.findViewById<ImageView>(R.id.select_avatar_god)
+        //You are god?
+        if (soyUsuarioGod) {
+            // ES DIGNO
+            imgGod.visibility = View.VISIBLE
+            imgGod.setOnClickListener {
+                llamarApiActualizarAvatar("avatar_oculto", dialog)
+            }
+        } else {
+            // MERO MORTAL.
+            imgGod.visibility = View.GONE
+        }
 
         avatars.forEachIndexed { index, imageView ->
             val numAvatar = index + 1
