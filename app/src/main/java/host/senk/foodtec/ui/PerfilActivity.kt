@@ -125,16 +125,23 @@ class PerfilActivity : AppCompatActivity() {
         // Inflamos el XML que creaste
         val dialogView = inflater.inflate(R.layout.dialog_seleccionar_avatar, null)
         builder.setView(dialogView)
-        builder.setTitle("Selecciona un Avatar")
 
-        val pedidosCompletados = 10
+
+        val pedidosCompletados = 50
 
         val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         // Amarramos las imágenes del DIÁLOGO
         val img1 = dialogView.findViewById<ImageView>(R.id.select_avatar_1)
         val img2 = dialogView.findViewById<ImageView>(R.id.select_avatar_2)
         val img3 = dialogView.findViewById<ImageView>(R.id.select_avatar_3)
+
+
+        val btnCancelar = dialogView.findViewById<Button>(R.id.btnCancelarAvatar)
+        btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
 
         // Lógica de Bloqueo (Ejemplo: Avatar 3 requiere 50 pedidos)
         if (pedidosCompletados < 50) {
