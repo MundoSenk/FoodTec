@@ -1,50 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="320dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/select_avatar_1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/avatar_1"
-            android:scaleType="centerCrop"
-            android:layout_margin="8dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/dark_grey"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ELIGE TU AVATAR"
+            android:fontFamily="@font/lilita_one_regular"
+            android:textSize="24sp"
+            android:textColor="@color/foodtec_naranja"
+            android:layout_marginBottom="24dp"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/select_avatar_2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/avatar_2"
-            android:scaleType="centerCrop"
-            android:layout_margin="8dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/dark_grey"/>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/select_avatar_3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/avatar_3"
-            android:scaleType="centerCrop"
-            android:layout_margin="8dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/dark_grey"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/select_avatar_1"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/avatar_1"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#DDDDDD"
+                android:layout_margin="8dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/select_avatar_2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/avatar_2"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#DDDDDD"
+                android:layout_margin="8dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/select_avatar_3"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/avatar_3"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#DDDDDD"
+                android:layout_margin="8dp"/>
+
+        </GridLayout>
+
+        <Button
+            android:id="@+id/btnCancelarAvatar"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:textColor="@color/dark_grey"
+            android:layout_marginTop="16dp"/>
+
     </LinearLayout>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

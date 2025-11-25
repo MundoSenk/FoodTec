@@ -62,15 +62,24 @@
                 android:scaleType="centerCrop"
                 app:civ_border_width="4dp"
                 app:civ_border_color="@color/foodtec_naranja"
-                tools:src="@drawable/avatar_defaut" /> <Button
-            android:id="@+id/btnCambiarAvatar"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cambiar Avatar"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/montserrat_alternates_semibold"
-            android:textColor="@color/foodtec_naranja" /> <TextView
+                tools:src="@drawable/avatar_defaut" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCambiarAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAMBIAR AVATAR "
+                android:fontFamily="@font/lilita_one_regular"
+                android:textSize="14sp"
+                android:textColor="@color/foodtec_naranja"
+                app:backgroundTint="@color/white"
+                app:strokeColor="@color/foodtec_naranja"
+                app:strokeWidth="2dp"
+                app:cornerRadius="20dp"
+                android:layout_marginBottom="24dp"/>
+
+
+            <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mi Valoración (Cliente)"

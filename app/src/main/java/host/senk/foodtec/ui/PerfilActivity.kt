@@ -50,7 +50,7 @@ class PerfilActivity : AppCompatActivity() {
         // Alambramos el Nav Bar
         setupBottomNav()
 
-        // Alambramos" el botón de Logout (queda igual)
+        // Alambramos" el botón de Logout
         btnCerrarSesion.setOnClickListener {
             SessionManager.logout(this)
             val intent = Intent(this, LoginActivity::class.java)
@@ -127,23 +127,30 @@ class PerfilActivity : AppCompatActivity() {
         builder.setView(dialogView)
         builder.setTitle("Selecciona un Avatar")
 
+        val pedidosCompletados = 10
+
         val dialog = builder.create()
 
         // Amarramos las imágenes del DIÁLOGO
-        val img1: ImageView = dialogView.findViewById(R.id.select_avatar_1)
-        val img2: ImageView = dialogView.findViewById(R.id.select_avatar_2)
-        val img3: ImageView = dialogView.findViewById(R.id.select_avatar_3)
+        val img1 = dialogView.findViewById<ImageView>(R.id.select_avatar_1)
+        val img2 = dialogView.findViewById<ImageView>(R.id.select_avatar_2)
+        val img3 = dialogView.findViewById<ImageView>(R.id.select_avatar_3)
 
-        // Asignamos los listeners
-        img1.setOnClickListener {
-            llamarApiActualizarAvatar("avatar_1", dialog)
+        // Lógica de Bloqueo (Ejemplo: Avatar 3 requiere 50 pedidos)
+        if (pedidosCompletados < 50) {
+            // Opción A: Ponerlo en gris/transparente
+            img3.alpha = 0.3f
+            img3.setOnClickListener {
+                Toast.makeText(this, "¡Necesitas 50 pedidos para desbloquear este!", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            img3.alpha = 1.0f
+            img3.setOnClickListener { llamarApiActualizarAvatar("avatar_3", dialog) }
         }
-        img2.setOnClickListener {
-            llamarApiActualizarAvatar("avatar_2", dialog)
-        }
-        img3.setOnClickListener {
-            llamarApiActualizarAvatar("avatar_3", dialog)
-        }
+
+        // Los básicos siempre libres
+        img1.setOnClickListener { llamarApiActualizarAvatar("avatar_1", dialog) }
+        img2.setOnClickListener { llamarApiActualizarAvatar("avatar_2", dialog) }
 
         dialog.show()
     }
