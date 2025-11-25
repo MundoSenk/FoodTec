@@ -300,7 +300,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun checkPatchNotes() {
-        val currentVersion = "1.0.1"
+        val currentVersion = "1.0.2"
 
         // Usamos las preferencias directas para algo rápido
         val prefs = getSharedPreferences("FoodTecPrefs", MODE_PRIVATE)

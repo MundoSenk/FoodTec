@@ -2,6 +2,7 @@ package host.senk.foodtec.api
 
 import host.senk.foodtec.model.AvatarRequest
 import host.senk.foodtec.model.CrearPedidoResponse
+import host.senk.foodtec.model.EstadisticasResponse
 import host.senk.foodtec.model.PedidoRequest
 import host.senk.foodtec.model.LoginResponse
 import host.senk.foodtec.model.MenuResponse
@@ -223,6 +224,13 @@ interface ApiService {
     fun obtenerMisNotificaciones(
         @Field("usuario_id") usuarioId: String
     ): Call<NotificacionesResponse>
+
+    ///ESTADISTICAS!
+    @FormUrlEncoded
+    @POST("obtenerEstadisticas.php")
+    fun obtenerEstadisticas(
+        @Field("usuario_id") usuarioId: String
+    ): Call<EstadisticasResponse>
 
 
 

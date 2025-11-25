@@ -2,10 +2,9 @@ package host.senk.foodtec.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log //
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView //
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
@@ -15,10 +14,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 import host.senk.foodtec.R
-import host.senk.foodtec.model.AvatarRequest
 import host.senk.foodtec.api.RetrofitClient
 import host.senk.foodtec.manager.SessionManager
+import host.senk.foodtec.model.AvatarRequest
 import host.senk.foodtec.model.CrearPedidoResponse
+import host.senk.foodtec.model.EstadisticasResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,24 +33,25 @@ class PerfilActivity : AppCompatActivity() {
     private lateinit var btnCerrarSesion: Button
     private lateinit var bottomNavView: BottomNavigationView
 
-    // NUEVAS VISTAS
+    // Avatar
     private lateinit var ivAvatar: CircleImageView
     private lateinit var btnCambiarAvatar: Button
+
+    // Variables para Gamificación
+    private var misPedidosCompletados: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
-        // Amarramos Vistas
         bindViews()
-
-        // Pintamos" los datos (¡Ahora también el avatar!)
         pintarDatos()
-
-        // Alambramos el Nav Bar
         setupBottomNav()
 
-        // Alambramos" el botón de Logout
+        // Cargamos estadísticas en segundo plano al entrar
+        cargarEstadisticas()
+
+        // Botón Logout
         btnCerrarSesion.setOnClickListener {
             SessionManager.logout(this)
             val intent = Intent(this, LoginActivity::class.java)
@@ -59,7 +60,7 @@ class PerfilActivity : AppCompatActivity() {
             finish()
         }
 
-        // NUEVO LISTENER
+        // Botón Cambiar Avatar
         btnCambiarAvatar.setOnClickListener {
             mostrarDialogoAvatares()
         }
@@ -72,28 +73,22 @@ class PerfilActivity : AppCompatActivity() {
         rbFoodter = findViewById(R.id.rbValoracionFoodter)
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
         bottomNavView = findViewById(R.id.bottomNavViewPerfil)
-
-        // --- ¡NUEVOS BINDS! ---
         ivAvatar = findViewById(R.id.ivAvatar)
         btnCambiarAvatar = findViewById(R.id.btnCambiarAvatar)
     }
 
     private fun pintarDatos() {
-        // Jalamos los datos del "archivero"
         val nombre = SessionManager.getUserName(this)
         val esFoodter = SessionManager.isFoodter(this)
         val valCliente = SessionManager.getValoracionCliente(this)
         val valFoodter = SessionManager.getValoracionFoodter(this)
-        val avatarId = SessionManager.getAvatarId(this) // <-- ¡¡NUEVO DATO!!
+        val avatarId = SessionManager.getAvatarId(this)
 
-        // ¡Pintamos!
         tvTitulo.text = "Perfil de: ${nombre ?: "Usuario"}"
         rbCliente.rating = valCliente
 
-        // PINTAMOS EL AVATAR
         ivAvatar.setImageResource(getAvatarResource(avatarId))
 
-        // Si es Foodter, mostramos su valoración
         if (esFoodter) {
             llFoodter.visibility = View.VISIBLE
             rbFoodter.rating = valFoodter
@@ -102,152 +97,145 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * ¡NUEVA FUNCIÓN "TRADUCTORA"!
-     * Convierte el "avatar_1" (String) en R.drawable.avatar_1 (Int)
-     */
+    private fun cargarEstadisticas() {
+        val userId = SessionManager.getUserId(this) ?: return
+
+        // Nota: Asegúrate de tener la clase EstadisticasResponse creada en model/
+        RetrofitClient.apiService.obtenerEstadisticas(userId).enqueue(object : Callback<EstadisticasResponse> {
+            override fun onResponse(call: Call<EstadisticasResponse>, response: Response<EstadisticasResponse>) {
+                if (response.isSuccessful && response.body()?.status == "exito") {
+                    // Guardamos el dato para usarlo en el diálogo
+                    misPedidosCompletados = response.body()!!.pedidos_como_cliente
+                }
+            }
+            override fun onFailure(call: Call<EstadisticasResponse>, t: Throwable) {}
+        })
+    }
+
     private fun getAvatarResource(avatarId: String): Int {
         return when (avatarId) {
             "avatar_1" -> R.drawable.avatar_1
             "avatar_2" -> R.drawable.avatar_2
             "avatar_3" -> R.drawable.avatar_3
-            // (Si agregas más, ponlos aquí)
-            else -> R.drawable.avatar_defaut // ¡Recuerda tener avatar_default.png!
+            "avatar_4" -> R.drawable.avatar_4
+            "avatar_5" -> R.drawable.avatar_5
+            "avatar_6" -> R.drawable.avatar_6
+            "avatar_7" -> R.drawable.avatar_7
+            "avatar_8" -> R.drawable.avatar_8
+            "avatar_9" -> R.drawable.avatar_9
+            else -> R.drawable.avatar_defaut
         }
     }
 
-    /**
-     * ¡NUEVA FUNCIÓN! Muestra el diálogo de selección.
-     */
     private fun mostrarDialogoAvatares() {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
-        // Inflamos el XML que creaste
         val dialogView = inflater.inflate(R.layout.dialog_seleccionar_avatar, null)
+
         builder.setView(dialogView)
-
-
-        val pedidosCompletados = 50
-
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        // Amarramos las imágenes del DIÁLOGO
-        val img1 = dialogView.findViewById<ImageView>(R.id.select_avatar_1)
-        val img2 = dialogView.findViewById<ImageView>(R.id.select_avatar_2)
-        val img3 = dialogView.findViewById<ImageView>(R.id.select_avatar_3)
+        val btnCancelar = dialogView.findViewById<View>(R.id.btnCancelarAvatar)
+        btnCancelar.setOnClickListener { dialog.dismiss() }
 
+        // DATOS PARA LA LÓGICA
+        val miRating = SessionManager.getValoracionCliente(this) // Estrellas
+        val misPedidos = misPedidosCompletados // Cantidad
 
-        val btnCancelar = dialogView.findViewById<Button>(R.id.btnCancelarAvatar)
-        btnCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
+        // LISTA DE IMAGENES
+        val avatars = listOf(
+            dialogView.findViewById<ImageView>(R.id.select_avatar_1),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_2),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_3),
+            // GRUPO ESTRELLAS
+            dialogView.findViewById<ImageView>(R.id.select_avatar_4),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_5),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_6),
+            //  GRUPO PEDIDOS
+            dialogView.findViewById<ImageView>(R.id.select_avatar_7),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_8),
+            dialogView.findViewById<ImageView>(R.id.select_avatar_9)
+        )
 
-        // Lógica de Bloqueo (Ejemplo: Avatar 3 requiere 50 pedidos)
-        if (pedidosCompletados < 50) {
-            // Opción A: Ponerlo en gris/transparente
-            img3.alpha = 0.3f
-            img3.setOnClickListener {
-                Toast.makeText(this, "¡Necesitas 50 pedidos para desbloquear este!", Toast.LENGTH_SHORT).show()
+        avatars.forEachIndexed { index, imageView ->
+            val numAvatar = index + 1
+            val idString = "avatar_$numAvatar"
+
+            var bloqueado = false
+            var mensajeBloqueo = ""
+
+            // --- LÓGICA HÍBRIDA ---
+            if (index in 0..2) {
+                bloqueado = false
             }
-        } else {
-            img3.alpha = 1.0f
-            img3.setOnClickListener { llamarApiActualizarAvatar("avatar_3", dialog) }
-        }
+            else if (index in 3..5) {
+                if (miRating < 4.0) {
+                    bloqueado = true
+                    mensajeBloqueo = "Requiere 4.0 estrellas de reputación"
+                }
+            }
+            else if (index in 6..8) {
+                if (misPedidos < 50) {
+                    bloqueado = true
+                    mensajeBloqueo = "Requiere haber completado 5 pedidos (Llevas $misPedidos)"
+                }
+            }
 
-        // Los básicos siempre libres
-        img1.setOnClickListener { llamarApiActualizarAvatar("avatar_1", dialog) }
-        img2.setOnClickListener { llamarApiActualizarAvatar("avatar_2", dialog) }
+            // APLICAR LÓGICA
+            if (bloqueado) {
+                imageView.alpha = 0.3f
+                imageView.setOnClickListener {
+                    Toast.makeText(this, mensajeBloqueo, Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                imageView.alpha = 1.0f
+                imageView.setOnClickListener {
+                    llamarApiActualizarAvatar(idString, dialog)
+                }
+            }
+        }
 
         dialog.show()
     }
 
-    /**
-     * ¡NUEVA FUNCIÓN! Esta es la que llama a Retrofit.
-     */
     private fun llamarApiActualizarAvatar(nuevoAvatarId: String, dialog: AlertDialog) {
-
-        // ¡Jalamos el ID de usuario ("RENO") del "archivero"!
-        val usuarioId = SessionManager.getUserId(this)
-        if (usuarioId == null) {
-            Toast.makeText(this, "Error fatal: No se encontró tu usuario.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        Log.d("AVATAR_API", "Intentando actualizar: Usuario $usuarioId, Avatar $nuevoAvatarId")
-
-        // Creamos el "molde" del Request
+        val usuarioId = SessionManager.getUserId(this) ?: return
         val request = AvatarRequest(usuario_id = usuarioId, avatar_id = nuevoAvatarId)
 
-        //  Llamamos a Retrofit
         RetrofitClient.apiService.actualizarAvatar(request).enqueue(object : Callback<CrearPedidoResponse> {
-
             override fun onResponse(call: Call<CrearPedidoResponse>, response: Response<CrearPedidoResponse>) {
-                if (response.isSuccessful && response.body() != null) {
-                    val respuesta = response.body()!!
-
-                    if (respuesta.status == "exito") {
-                        // ÉXITO
-                        Log.d("AVATAR_API", "¡Éxito! Avatar actualizado en BD.")
-
-                        // Guardamos el nuevo avatar en el "archivero"
-                        SessionManager.setAvatarId(this@PerfilActivity, nuevoAvatarId)
-
-                        // Actualizamos la imagen en la pantalla (sin recargar)
-                        ivAvatar.setImageResource(getAvatarResource(nuevoAvatarId))
-
-                        // Mostramos un Toast
-                        Toast.makeText(this@PerfilActivity, "¡Avatar actualizado!", Toast.LENGTH_SHORT).show()
-
-                        // Cerramos el diálogo
-                        dialog.dismiss()
-
-                    } else {
-                        // El PHP dijo "error"
-                        Log.e("AVATAR_API", "Error del PHP: ${respuesta.mensaje}")
-                        Toast.makeText(this@PerfilActivity, "Error: ${respuesta.mensaje}", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                    }
-                } else {
-                    // El server respondió 404, 500, etc.
-                    Log.e("AVATAR_API", "Error de servidor: ${response.code()}")
-                    Toast.makeText(this@PerfilActivity, "Error del servidor (${response.code()})", Toast.LENGTH_SHORT).show()
+                if (response.isSuccessful && response.body()?.status == "exito") {
+                    SessionManager.setAvatarId(this@PerfilActivity, nuevoAvatarId)
+                    ivAvatar.setImageResource(getAvatarResource(nuevoAvatarId))
+                    Toast.makeText(this@PerfilActivity, "¡Avatar actualizado!", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
+                } else {
+                    Toast.makeText(this@PerfilActivity, response.body()?.mensaje ?: "Error", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onFailure(call: Call<CrearPedidoResponse>, t: Throwable) {
-                // No hay net o Retrofit se rompió
-                Log.e("AVATAR_API", "Falla de Retrofit: ${t.message}", t)
-                Toast.makeText(this@PerfilActivity, "Error de red: ${t.message}", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                Toast.makeText(this@PerfilActivity, "Error de red", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-
-    // (setupBottomNav() queda igual)
     private fun setupBottomNav() {
         bottomNavView.selectedItemId = R.id.nav_perfil
-
         bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    startActivity(Intent(this, HomeActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
                     true
                 }
                 R.id.nav_search -> {
-                    val intent = Intent(this, SearchActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    startActivity(Intent(this, SearchActivity::class.java))
                     true
                 }
                 R.id.nav_pedidos -> {
-                    val intent = Intent(this, PedidosActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    startActivity(Intent(this, PedidosActivity::class.java))
                     true
                 }
                 R.id.nav_perfil -> true

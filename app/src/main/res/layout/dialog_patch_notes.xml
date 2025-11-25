@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="¡ACTUALIZACIÓN 1.0.1!"
+            android:text="¡ACTUALIZACIÓN 1.0.2!"
             android:fontFamily="@font/lilita_one_regular"
             android:textSize="24sp"
             android:textColor="@color/foodtec_azul"
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="• 🔔 Notificaciones en tiempo real.\n• ⭐ Califica a tus Foodters y la comida.\n• 🗑️ Opción para cancelar pedidos pendientes. \n•📞 Correción de bugs"
+            android:text="• ⭐ Nuevos Avatares ¡CORRE!\n• 🔔 Nuevos lugares de entrega.\n• 🗑️ Corrección de bugs."
             android:fontFamily="@font/montserrat_alternates_semibold"
             android:textSize="14sp"
             android:lineSpacingExtra="4dp"
