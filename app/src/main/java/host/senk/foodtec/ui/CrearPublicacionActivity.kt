@@ -35,7 +35,7 @@ class CrearPublicacionActivity : AppCompatActivity() {
     // Uri final (ya recortada) lista para subir
     private var uriFinalRecortada: Uri? = null
 
-    // 1. LANZADOR DE GALERÍA
+    //  LANZADOR DE GALERÍA
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             // En lugar de mostrarla directo, la mandamos al "Quirófano" (Recorte)
@@ -43,7 +43,7 @@ class CrearPublicacionActivity : AppCompatActivity() {
         }
     }
 
-    // 2. LANZADOR DEL RECORTE (uCrop)
+    // LANZADOR DEL RECORTE (uCrop)
     private val cropImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             val resultUri = UCrop.getOutput(result.data!!)

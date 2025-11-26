@@ -17,15 +17,15 @@ object RetrofitClient {
 
 
 
-    // Creamos el "chismoso"
+    // Creamos el chismoso
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // ¡Le decimos que chismee TODO el "cuerpo"!
+        level = HttpLoggingInterceptor.Level.BODY // Le decimos que chismee TODO el "cuerpo"
     }
 
-    // Creamos un "motor" (OkHttpClient) que USE el "chismoso"
+    // Creamos un motor"OkHttpClient que USE el chismoso
     private val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor) // ¡Lo conectamos!
-        .connectTimeout(30, TimeUnit.SECONDS) // (De paso, le damos más tiempo)
+        .connectTimeout(30, TimeUnit.SECONDS) // }
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 

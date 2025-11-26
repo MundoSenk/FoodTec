@@ -27,7 +27,7 @@ class NotificacionesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_notificacion, parent, false) // ¡OJO: CREA ESTE XML!
+            .inflate(R.layout.item_notificacion, parent, false)
         return ViewHolder(view)
     }
 
@@ -35,21 +35,35 @@ class NotificacionesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = lista[position]
+        val context = holder.itemView.context
 
         holder.tvTitulo.text = item.titulo
         holder.tvMensaje.text = item.mensaje
         holder.tvFecha.text = item.fecha_creacion
 
-        // Icono según tipo
-        if (item.tipo == "objeto") {
-            holder.ivIcono.setImageResource(android.R.drawable.ic_menu_search)
-            holder.ivIcono.setColorFilter(holder.itemView.context.getColor(R.color.foodtec_azul))
-        } else {
-            holder.ivIcono.setImageResource(android.R.drawable.ic_menu_agenda)
-            holder.ivIcono.setColorFilter(holder.itemView.context.getColor(R.color.foodtec_naranja))
-        }
 
-        // ... en onBindViewHolder ...
+        holder.ivIcono.clearColorFilter()
+        holder.ivIcono.setPadding(0,0,0,0)
+
+        // Icono según tipo
+        when {
+
+            item.tipo.contains("objeto") || item.tipo.contains("alerta_general") -> {
+                holder.ivIcono.setImageResource(R.drawable.objetos)
+
+            }
+
+            item.tipo.contains("disponible") -> {
+                holder.ivIcono.setImageResource(R.drawable.foodters)
+            }
+
+            else -> {
+                holder.ivIcono.setImageResource(android.R.drawable.ic_menu_agenda)
+                val colorNaranja = androidx.core.content.ContextCompat.getColor(context, R.color.foodtec_naranja)
+                holder.ivIcono.setColorFilter(colorNaranja)
+                holder.ivIcono.setPadding(8,8,8,8)
+            }
+        }
 
         // CLIC INTELIGENTE
         holder.itemView.setOnClickListener {
