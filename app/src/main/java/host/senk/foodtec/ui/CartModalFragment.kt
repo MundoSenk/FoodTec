@@ -55,7 +55,7 @@ class CartModalFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // --- AMARRAMOS EL XML ---
+        // XML
         rvItems = view.findViewById(R.id.rvModalItems)
         tvSubtotal = view.findViewById(R.id.tvSubtotal)
         tvComision = view.findViewById(R.id.tvComision)
@@ -65,14 +65,14 @@ class CartModalFragment : BottomSheetDialogFragment() {
         btnConfirmar = view.findViewById(R.id.btnConfirmarCompra)
         btnAgregarMas = view.findViewById(R.id.btnAgregarMas)
 
-        // --- AQUÍ RELLENAMOS EL SPINNER (A MANO)
+        // AQUÍ RELLENAMOS EL SPINNER (A MANO)
         val lugares = arrayOf("Selecciona un lugar...", "Edificio A", "Edificio B", "Edificio C","Edificio D", "Edificio E", "Edificio H", "Edificio Z",
             "Edificio L", "Biblioteca Escolar", "Rectoría")
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, lugares)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerLugar.adapter = spinnerAdapter
 
-        // JALE CHIDO EL REFRESH ---
+
         //
         refreshCartUI()
 

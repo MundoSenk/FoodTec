@@ -194,7 +194,7 @@ class PerfilActivity : AppCompatActivity() {
             else if (index in 6..8) {
                 if (misPedidos < 50) {
                     bloqueado = true
-                    mensajeBloqueo = "Requiere haber completado 5 pedidos (Llevas $misPedidos)"
+                    mensajeBloqueo = "Requiere haber completado 50 pedidos (Llevas $misPedidos)"
                 }
             }
 
